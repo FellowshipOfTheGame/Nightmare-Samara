@@ -6,8 +6,8 @@ public class InventoryManager : MonoBehaviour
 {
     // Start is called before the first frame update
 
-    private int poisonFlask;
-    private int woodenBat;
+    public int poisonFlask;
+    public int woodenBat;
     //private bool hasLifeFlask;
 
     private void Start()
