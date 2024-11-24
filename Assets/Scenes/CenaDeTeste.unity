@@ -743,9 +743,10 @@ GameObject:
   - component: {fileID: 1041017752}
   - component: {fileID: 1041017750}
   - component: {fileID: 1041017751}
+  - component: {fileID: 1041017753}
   m_Layer: 0
-  m_Name: Enemy
-  m_TagString: Enemy
+  m_Name: Skeleton
+  m_TagString: Skeleton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -904,6 +905,20 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &1041017753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1041017747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 406556b0040cd094c8055cb99268e46d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 2
+  delay: 2
 --- !u!1 &1406218973
 GameObject:
   m_ObjectHideFlags: 0
@@ -918,6 +933,7 @@ GameObject:
   - component: {fileID: 1406218977}
   - component: {fileID: 1406218979}
   - component: {fileID: 1406218980}
+  - component: {fileID: 1406218981}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1093,6 +1109,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca67a6f3606f65a44969ce6d4446bf9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  poisonFlask: 0
+  woodenBat: 0
+--- !u!114 &1406218981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1406218973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee4f3f7cf1fd7334998b4de90a55f5d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackPoint: {fileID: 922587670}
+  attackRadius: 2
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
