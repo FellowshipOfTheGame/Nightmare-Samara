@@ -25,14 +25,44 @@ public class PlayerCombat : MonoBehaviour
     private void Attack()
     {
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius);
+        Collider2D closestEnemyCollider = null;
+        float closestDistance = Mathf.Infinity;
+
+        // Encontra o inimigo mais próximo
         foreach (Collider2D enemyCollider in hitEnemies)
         {
-            // Verifica se o objeto atingido é um inimigo
             EnemyController enemy = enemyCollider.GetComponent<EnemyController>();
             if (enemy != null)
             {
-                enemy.TakeDamage(); // Aplica dano
+                float distanceToEnemy = Vector2.Distance(attackPoint.position, enemyCollider.transform.position);
+                if (distanceToEnemy < closestDistance)
+                {
+                    closestDistance = distanceToEnemy;
+                    closestEnemyCollider = enemyCollider;
+                }
             }
+        }
+
+        // Aplica dano ao inimigo mais próximo, se encontrado
+        if (closestEnemyCollider != null)
+        {
+            EnemyController closestEnemy = closestEnemyCollider.GetComponent<EnemyController>();
+            InventoryManager playerInventory = gameObject.GetComponent<InventoryManager>();
+
+            if (closestEnemyCollider.CompareTag("Skeleton") && playerInventory.woodenBat > 0)
+            {
+                //Hit no Esqueleto
+                playerInventory.woodenBat--;
+                closestEnemy.TakeDamage();
+            }
+            if (closestEnemyCollider.CompareTag("Rat") && playerInventory.poisonFlask > 0)
+            {
+                //Hit no rato
+                playerInventory.poisonFlask--;
+                closestEnemy.TakeDamage();
+            }
+
+            
         }
     }
 
