@@ -66,8 +66,6 @@ public class PlayerCombat : MonoBehaviour
         }
     }
 
-
-
     private void OnDrawGizmos()
     {
         if(attackPoint != null)
