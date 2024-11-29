@@ -13,7 +13,6 @@ public class PlayerController : MonoBehaviour
     [Header("Invincibility Frames")]
     [SerializeField] private float invincibilityDuration = 1f; // Duração dos iframes
     private bool isInvincible = false; // Controla se o jogador está invulnerável
-    private bool isFeedbackRunning = false; // Controla se o feedback visual está rodando
 
     void Start()
     {
@@ -43,11 +42,6 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            if (!isFeedbackRunning) // Garantia que o piscar ocorre uma vez
-            {
-                StartCoroutine(HitFeedback());
-            }
-
             StartCoroutine(InvincibilityFrames());
         }
     }
@@ -55,32 +49,16 @@ public class PlayerController : MonoBehaviour
     private IEnumerator InvincibilityFrames()
     {
         if (isInvincible) yield break; // Sai imediatamente se já está invencível
+        if (rend == null) yield break;
 
         isInvincible = true;
+        rend.color = (rend.color == originalColor) ? hitColor : originalColor;
         yield return new WaitForSeconds(invincibilityDuration);
+        rend.color = originalColor;
         isInvincible = false;
     }
 
-    private IEnumerator HitFeedback()
-    {
-        if (rend == null) yield break; // Sai da corrotina se o SpriteRenderer estiver ausente
-
-        isFeedbackRunning = true; // Marca o início do feedback visual
-
-        float elapsedTime = 0f;
-        while (elapsedTime < invincibilityDuration)
-        {
-            // Alterna entre hitColor e originalColor
-            rend.color = (rend.color == originalColor) ? hitColor : originalColor;
-            yield return new WaitForSeconds(0.1f);
-            elapsedTime += 0.1f;
-        }
-
-        // Garante que a cor original seja restaurada
-        rend.color = originalColor;
-
-        isFeedbackRunning = false; // Marca o fim do feedback visual
-    }
+   
 
     private void GameOver()
     {
