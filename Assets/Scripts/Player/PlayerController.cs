@@ -29,9 +29,20 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        //Debug.Log(isInvincible);
+    }
+
     public void TakeDamage(int damage)
     {
-        if (isInvincible || damage <= 0) return; // Ignora dano se estiver invencível ou se for negativo
+        if (isInvincible || currentHealth <= 0)
+        {
+            //Debug.Log("Teste");
+            return; // Ignora dano se estiver invencível ou se for negativo
+            
+        }
+        
 
         currentHealth -= damage;
         Debug.Log("Vida do Personagem: " + currentHealth);
@@ -64,5 +75,6 @@ public class PlayerController : MonoBehaviour
     {
         // Rotina de Game Over
         Debug.Log("Game Over");
+        Destroy(gameObject);
     }
 }

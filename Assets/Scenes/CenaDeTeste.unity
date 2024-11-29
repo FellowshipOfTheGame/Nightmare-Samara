@@ -746,7 +746,7 @@ GameObject:
   - component: {fileID: 1041017754}
   - component: {fileID: 1041017753}
   m_Layer: 0
-  m_Name: Skeleton
+  m_Name: Rat
   m_TagString: Rat
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1156,7 +1156,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 5
-  invincibilityDuration: 1
+  invincibilityDuration: 2
 --- !u!1 &1466160315
 GameObject:
   m_ObjectHideFlags: 0
