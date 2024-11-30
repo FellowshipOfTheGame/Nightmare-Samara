@@ -8,6 +8,10 @@ TagManager:
   - Box
   - Skeleton
   - Rat
+  - LootBox
+  - Veneno
+  - Taco
+  - ItemVida
   layers:
   - Default
   - TransparentFX

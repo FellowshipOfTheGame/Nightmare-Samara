@@ -4,47 +4,45 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public int poisonFlask; //qtd de frascos de veneno
+    public int woodenBat; //qtd de tacos de madeira
 
-    public int poisonFlask;
-    public int woodenBat;
-    //private bool hasLifeFlask;
 
-    private void Start()
+    void Start()
     {
-        poisonFlask = 0;    
+        poisonFlask = 0;
         woodenBat = 0;
-        //hasLifeFlask = false;
     }
 
-
-    private void ItemRandomizer()
+    void Update()
     {
-        int randomValue = Random.Range(0, 100);
-        if (randomValue < 80)
-        {
-            // PoisonFlask
-            poisonFlask++;
-            Debug.Log($"O número de venenos agora é: {poisonFlask}");
-        }
-        else if (randomValue < 90) // 80 a 89 (10% de chance)
-        {
-            // WoodenBat
-            woodenBat++;
-            Debug.Log($"O número de tacos agora é: {woodenBat}");
-        }
-        else // 90 a 99 (10% de chance)
-        {
-            // Nothing
-            Debug.Log("Nada");
-        }
+
     }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Box"))
+        //se tocar em algum frasco de veneno coleta ele
+        if (collision.gameObject.CompareTag("Veneno"))
         {
-            ItemRandomizer();
-            Destroy(collision.gameObject);
+            Destroy(collision.gameObject); 
+            poisonFlask++; 
+            Debug.Log("Frascos de veneno: " + poisonFlask);  
+        }
+
+        //se tocar em algum taco de madeira coleta ele
+        if (collision.gameObject.CompareTag("Taco"))
+        {   
+            Destroy(collision.gameObject);  
+            woodenBat++;  
+            Debug.Log("Tacos de madeira: " + woodenBat);  
+        }
+
+        //se tocar em algum taco de madeira coleta ele
+        if (collision.gameObject.CompareTag("ItemVida"))
+        {   
+            Destroy(collision.gameObject);  
+            woodenBat++;  
+            Debug.Log("Tacos de madeira: " + woodenBat);  
         }
     }
 }
