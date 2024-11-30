@@ -6,7 +6,7 @@ public class ItemDrop : MonoBehaviour
 {
     private Rigidbody2D itemRb;
     public float upForce = 5f;
-    public float horizontalForceRange = 1f; //a força aleatoria para a direita ou esquerda
+    public float horizontalForceRange = 2f; //a força aleatoria para a direita ou esquerda
 
     public GameObject spawnAreaPrefab; //prefab da LootBox
     private BoxCollider2D spawnAreaCollider; //collider da caixa para os objetos nao spawnarem fora da area

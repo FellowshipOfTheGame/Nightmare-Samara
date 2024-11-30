@@ -6,12 +6,14 @@ public class InventoryManager : MonoBehaviour
 {
     public int poisonFlask; //qtd de frascos de veneno
     public int woodenBat; //qtd de tacos de madeira
+    public int itemVida;
 
 
     void Start()
     {
         poisonFlask = 0;
         woodenBat = 0;
+        itemVida = 0;
     }
 
     void Update()
@@ -41,8 +43,8 @@ public class InventoryManager : MonoBehaviour
         if (collision.gameObject.CompareTag("ItemVida"))
         {   
             Destroy(collision.gameObject);  
-            woodenBat++;  
-            Debug.Log("Tacos de madeira: " + woodenBat);  
+            itemVida++;  
+            Debug.Log("Item de Vida: " + itemVida);  
         }
     }
 }
