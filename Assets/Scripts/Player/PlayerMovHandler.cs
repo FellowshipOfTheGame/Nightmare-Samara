@@ -11,7 +11,6 @@ public class PlayerMovement : MonoBehaviour
     private float moveInput;
     private bool isGrounded;
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -29,21 +28,34 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        //Movimento Horizontal
+        // Movimento Horizontal
         moveInput = 0f;
 
         if (Input.GetKey(KeyCode.D))
         {
-            //Debug.Log("D");
             moveInput = 1f;
         }
         if (Input.GetKey(KeyCode.A))
         {
-            //Debug.Log("A");
             moveInput = -1f;
         }
 
+        // Atualiza a velocidade
         rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
+
+        // Inverte o jogador dependendo da direção
+        FlipPlayer(moveInput);
+    }
+
+    private void FlipPlayer(float direction)
+    {
+        if (direction != 0)
+        {
+            // Ajusta a escala no eixo X para inverter o sprite
+            Vector3 scale = transform.localScale;
+            scale.x = Mathf.Abs(scale.x) * Mathf.Sign(direction); // Direção define o sinal
+            transform.localScale = scale;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -61,5 +73,4 @@ public class PlayerMovement : MonoBehaviour
             isGrounded = false;
         }
     }
-
 }
