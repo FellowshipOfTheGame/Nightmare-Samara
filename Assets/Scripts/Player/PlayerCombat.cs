@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour
 {
-    [SerializeField] private Transform attackPoint;
-    [SerializeField] private float attackRadius;
+    [SerializeField] private Transform attackPoint;  
+    [SerializeField] private float attackRadius; 
 
     // Update is called once per frame
     void Update()
     {
+        //Usa a tecla "Shift Esquerdo" para atacar
         if(Input.GetKeyDown(KeyCode.LeftShift))
         {
             Attack();
@@ -18,45 +19,65 @@ public class PlayerCombat : MonoBehaviour
 
     private void Attack()
     {
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius);
+        //Encontra todos os objetos no raio de ataque
+        Collider2D[] hitObjects = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius);
         Collider2D closestEnemyCollider = null;
+        Collider2D closestLootBoxCollider = null;
         float closestDistance = Mathf.Infinity;
 
-        // Encontra o inimigo mais próximo
-        foreach (Collider2D enemyCollider in hitEnemies)
+        //Percorre todos os objetos atingidos
+        foreach (Collider2D collider in hitObjects)
         {
-            EnemyController enemy = enemyCollider.GetComponent<EnemyController>();
+            //Verifica se o objeto eh uma LootBox
+            LootBox lootBox = collider.GetComponent<LootBox>();
+            if (lootBox != null)
+            {
+                float distanceToLootBox = Vector2.Distance(attackPoint.position, collider.transform.position);
+                if (distanceToLootBox < closestDistance)
+                {
+                    closestDistance = distanceToLootBox;
+                    closestLootBoxCollider = collider;
+                }
+            }
+
+            //Verifica se o objeto eh um inimigo
+            EnemyController enemy = collider.GetComponent<EnemyController>();
             if (enemy != null)
             {
-                float distanceToEnemy = Vector2.Distance(attackPoint.position, enemyCollider.transform.position);
+                float distanceToEnemy = Vector2.Distance(attackPoint.position, collider.transform.position);
                 if (distanceToEnemy < closestDistance)
                 {
                     closestDistance = distanceToEnemy;
-                    closestEnemyCollider = enemyCollider;
+                    closestEnemyCollider = collider;
                 }
             }
         }
 
-        // Aplica dano ao inimigo mais próximo, se encontrado
+        //Se encontrar uma lootbox, aplica o dano
+        if (closestLootBoxCollider != null)
+        {
+            LootBox closestLootBox = closestLootBoxCollider.GetComponent<LootBox>();
+            closestLootBox.TakeDamageBox(); 
+        }
+
+        //Se encontrar um inimigo proximo, aplica o dano
         if (closestEnemyCollider != null)
         {
             EnemyController closestEnemy = closestEnemyCollider.GetComponent<EnemyController>();
             InventoryManager playerInventory = gameObject.GetComponent<InventoryManager>();
 
+            //Se o inimigo proximo for um esqueleto, o ataque sera realizado com um taco de madeira, caso tenha no inventario
             if (closestEnemyCollider.CompareTag("Skeleton") && playerInventory.woodenBat > 0)
             {
-                //Hit no Esqueleto
                 playerInventory.woodenBat--;
                 closestEnemy.TakeDamage();
             }
-            if (closestEnemyCollider.CompareTag("Rat") && playerInventory.poisonFlask > 0)
+            //se o inimigo proximo for um rato, ele sÃ³ tomarÃ¡ dano com o veneno, caso o player tenha no inventario
+            else if (closestEnemyCollider.CompareTag("Rat") && playerInventory.poisonFlask > 0)
             {
-                //Hit no rato
                 playerInventory.poisonFlask--;
                 closestEnemy.TakeDamage();
             }
-
-            
         }
     }
 
