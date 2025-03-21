@@ -806,6 +806,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2346747349672326567, guid: 75229e5eb7b985c4db78e0a3aa802c33, type: 3}
+      propertyPath: m_Constraints
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1033,9 +1037,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca67a6f3606f65a44969ce6d4446bf9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  poisonFlask: 0
-  woodenBat: 0
-  itemVida: 0
 --- !u!114 &1406218981
 MonoBehaviour:
   m_ObjectHideFlags: 0

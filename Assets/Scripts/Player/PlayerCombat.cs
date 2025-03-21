@@ -67,15 +67,15 @@ public class PlayerCombat : MonoBehaviour
             InventoryManager playerInventory = gameObject.GetComponent<InventoryManager>();
 
             //Se o inimigo proximo for um esqueleto, o ataque sera realizado com um taco de madeira, caso tenha no inventario
-            if (closestEnemyCollider.CompareTag("Skeleton") && playerInventory.woodenBat > 0)
+            if (closestEnemyCollider.CompareTag("Skeleton") && playerInventory.getBat() > 0)
             {
-                playerInventory.woodenBat--;
+                playerInventory.useBat();
                 closestEnemy.TakeDamage();
             }
             //se o inimigo proximo for um rato, ele só tomará dano com o veneno, caso o player tenha no inventario
-            else if (closestEnemyCollider.CompareTag("Rat") && playerInventory.poisonFlask > 0)
+            else if (closestEnemyCollider.CompareTag("Rat") && playerInventory.getPoison() > 0)
             {
-                playerInventory.poisonFlask--;
+                playerInventory.usePoison();
                 closestEnemy.TakeDamage();
             }
         }

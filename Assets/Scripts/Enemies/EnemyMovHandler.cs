@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class EnemyMovHandler : MonoBehaviour
 {
-    public Transform player; // Referência ao Transform do jogador
-    public float detectionRadius = 5f; // Distância para detectar o jogador
-    public float speed = 2f; // Velocidade de perseguição
+    [SerializeField] private Transform player; // Referência ao Transform do jogador
+    [SerializeField] private float detectionRadius = 5f; // Distância para detectar o jogador
+    [SerializeField] private float speed = 2f; // Velocidade de perseguição
 
     private bool isChasing = false;
 
