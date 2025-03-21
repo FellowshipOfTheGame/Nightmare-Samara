@@ -41,12 +41,6 @@ public class LootBox : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     //funcao para a caixa tomar dano
     public void TakeDamageBox() {
         BoxHealth -= 1; //diminui 1 de viida

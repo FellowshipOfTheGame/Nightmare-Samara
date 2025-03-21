@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
-    public int poisonFlask; //qtd de frascos de veneno
-    public int woodenBat; //qtd de tacos de madeira
-    public int itemVida;
+    private int poisonFlask; //qtd de frascos de veneno
+    private int woodenBat; //qtd de tacos de madeira
+    private int itemVida;
 
 
     void Start()
@@ -14,11 +14,6 @@ public class InventoryManager : MonoBehaviour
         poisonFlask = 0;
         woodenBat = 0;
         itemVida = 0;
-    }
-
-    void Update()
-    {
-
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -47,4 +42,31 @@ public class InventoryManager : MonoBehaviour
             Debug.Log("Item de Vida: " + itemVida);  
         }
     }
+
+    public int getPoison()
+    {
+        return poisonFlask;
+    }
+
+    public void usePoison()
+    {
+        this.poisonFlask--;
+    }
+
+
+    public int getBat()
+    {
+        return woodenBat;
+    }
+
+    public void useBat()
+    {
+        this.poisonFlask--;
+    }
+
+    public int getVida()
+    {
+        return itemVida;
+    }
+
 }
