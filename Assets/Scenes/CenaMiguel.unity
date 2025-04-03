@@ -210,7 +210,7 @@ GameObject:
   - component: {fileID: 267153240}
   - component: {fileID: 267153239}
   - component: {fileID: 267153241}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Ground
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -559,10 +559,10 @@ GameObject:
   - component: {fileID: 1041017748}
   - component: {fileID: 1041017752}
   - component: {fileID: 1041017750}
-  - component: {fileID: 1041017751}
   - component: {fileID: 1041017754}
   - component: {fileID: 1041017753}
   - component: {fileID: 1041017755}
+  - component: {fileID: 1041017758}
   - component: {fileID: 1041017757}
   - component: {fileID: 1041017756}
   m_Layer: 6
@@ -685,21 +685,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.4044254, y: 1.0478591}
   m_EdgeRadius: 0
---- !u!114 &1041017751
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1041017747}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f499062eceae2c2488a67040c072dfe9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 1406218976}
-  detectionRadius: 5
-  speed: 2
 --- !u!50 &1041017752
 Rigidbody2D:
   serializedVersion: 4
@@ -771,8 +756,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   patrolState: {fileID: 1041017757}
   chaseState: {fileID: 1041017756}
-  player: {fileID: 1406218976}
-  detectionRadius: 5
   currentState: {fileID: 0}
 --- !u!114 &1041017756
 MonoBehaviour:
@@ -798,6 +781,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ae818ff1fb023f4fb67312118dd1d24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 3
+  range: 5
+  pauseDuration: 1
+--- !u!114 &1041017758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1041017747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de81f4d569460f04a81fe84157350943, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  viewDistance: 5
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  facingRight: 1
 --- !u!1001 &1132768439
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -901,7 +907,7 @@ GameObject:
   - component: {fileID: 1393700660}
   - component: {fileID: 1393700659}
   - component: {fileID: 1393700658}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Ground (1)
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -1131,7 +1137,7 @@ Transform:
   m_GameObject: {fileID: 1406218973}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.86, y: -0.19, z: 0}
+  m_LocalPosition: {x: 28.18, y: 0.44, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1251,9 +1257,11 @@ GameObject:
   - component: {fileID: 1648621736}
   - component: {fileID: 1648621735}
   - component: {fileID: 1648621734}
-  - component: {fileID: 1648621733}
   - component: {fileID: 1648621732}
   - component: {fileID: 1648621731}
+  - component: {fileID: 1648621740}
+  - component: {fileID: 1648621739}
+  - component: {fileID: 1648621738}
   m_Layer: 6
   m_Name: Skelleton
   m_TagString: Skeleton
@@ -1268,7 +1276,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1648621730}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 406556b0040cd094c8055cb99268e46d, type: 3}
   m_Name: 
@@ -1284,28 +1292,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1648621730}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9f5dda72874eef347a093ac80c2844b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   attackCooldown: 1
   damage: 1
---- !u!114 &1648621733
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1648621730}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f499062eceae2c2488a67040c072dfe9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 1406218976}
-  detectionRadius: 5
-  speed: 2
 --- !u!61 &1648621734
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1446,6 +1439,48 @@ Transform:
   - {fileID: 726286018}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1648621738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1648621730}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 549018d5dcd9d9340943ef13baeb59b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1648621739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1648621730}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ae818ff1fb023f4fb67312118dd1d24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 3
+  range: 5
+  pauseDuration: 1
+--- !u!114 &1648621740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1648621730}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c40c9726e161892478b88448a7669153, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  patrolState: {fileID: 0}
+  chaseState: {fileID: 0}
+  currentState: {fileID: 0}
 --- !u!1 &1658175706
 GameObject:
   m_ObjectHideFlags: 0
