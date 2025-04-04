@@ -3,39 +3,123 @@ using System.Collections;
 
 public class PatrolState : EnemyStates
 {
-    [SerializeField] private float speed = 2f;          // Velocidade do inimigo
-    [SerializeField] private float patrolDistance = 5f; // Distância total a percorrer
-    [SerializeField] private float waitTime = 2f;       // Tempo parado antes de inverter a direção
+    [Header("Movement Settings")]
+    [SerializeField] private float speed = 2f;
+    [SerializeField] private float patrolDistance = 5f;
+    [SerializeField] private float waitTime = 2f;
 
-    private Vector2 startPosition;    // Posição inicial do inimigo
+    [Header("Collision Detection")]
+    [SerializeField] private float wallCheckDistance = 0.5f;
+    [SerializeField] private float edgeCheckDistance = 0.5f;
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private LayerMask wallLayer;
+
+    private Vector2 startPosition;
     private bool isWaiting = false;
+    private bool shouldFlip = false;
+    private bool facingRight = true; // Cache the facing direction
+
+    protected override void Awake()
+    {
+        base.Awake();
+        if (detection != null)
+        {
+            facingRight = detection.isFacingRight();
+        }
+    }
 
     void Start()
     {
-        startPosition = transform.position; // Armazena a posição inicial
+        startPosition = transform.position;
     }
 
     void Update()
     {
-        if (!isWaiting) // Só move se não estiver esperando
-        {
-            float distanceTraveled = Vector2.Distance(startPosition, transform.position);
+        if (detection == null) return;
 
-            if (distanceTraveled >= patrolDistance)
+       
+        if (detection.SeesPlayer())
+        {
+            enemy.ChangeState(enemy.chaseState);
+            return;
+        }
+      
+        if (!isWaiting)
+        {
+            CheckForObstacles();
+
+            if (shouldFlip || ReachedPatrolDistance())
             {
-                StartCoroutine(WaitBeforeFlip()); // Inicia a espera antes de inverter
+                StartCoroutine(WaitBeforeFlip());
+                return;
             }
 
-            transform.Translate(Vector2.right * (detection.isFacingRight() ? speed : -speed) * Time.deltaTime);
+            Move();
         }
+    }
+
+    void CheckForObstacles()
+    {
+        Vector2 direction = facingRight ? Vector2.right : Vector2.left;
+
+        // Wall detection
+        RaycastHit2D wallHit = Physics2D.Raycast(
+            transform.position,
+            direction,
+            wallCheckDistance,
+            wallLayer);
+
+        // Edge detection
+        Vector2 edgeCheckPos = (Vector2)transform.position +
+                             (direction * edgeCheckDistance) +
+                             (Vector2.down * 0.5f);
+
+        bool hasGround = Physics2D.Raycast(
+            edgeCheckPos,
+            Vector2.down,
+            0.1f,
+            groundLayer);
+
+        shouldFlip = wallHit.collider != null || !hasGround;
+    }
+
+    bool ReachedPatrolDistance()
+    {
+        return Vector2.Distance(startPosition, transform.position) >= patrolDistance;
+    }
+
+    void Move()
+    {
+        float direction = facingRight ? speed : -speed;
+        transform.Translate(Vector2.right * direction * Time.deltaTime);
     }
 
     IEnumerator WaitBeforeFlip()
     {
-        isWaiting = true;  // Ativa o estado de espera
-        yield return new WaitForSeconds(waitTime); // Espera o tempo especificado
-        detection.Flip(); // Inverte a direção após a espera
-        startPosition = transform.position; // Define a nova posição inicial para o próximo ciclo
-        isWaiting = false; // Sai do estado de espera
+        isWaiting = true;
+        yield return new WaitForSeconds(waitTime);
+
+        facingRight = !facingRight;
+        if (detection != null) detection.Flip();
+        startPosition = transform.position;
+        shouldFlip = false;
+        isWaiting = false;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        // Use the cached facingRight instead of detection reference
+        Vector2 wallDir = facingRight ? Vector2.right : Vector2.left;
+
+        // Wall check visualization
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position, (Vector2)transform.position + wallDir * wallCheckDistance);
+
+        // Edge check visualization
+        Vector2 edgeStart = (Vector2)transform.position +
+                          (wallDir * edgeCheckDistance) +
+                          (Vector2.down * 0.5f);
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(edgeStart, edgeStart + Vector2.down * 0.1f);
     }
 }

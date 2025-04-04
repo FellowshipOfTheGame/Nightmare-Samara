@@ -1,11 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ChaseState : EnemyStates
 {
-    void Update()
+    private void Update()
     {
-        Debug.Log("CHASING...");
+        if (detection.LosePlayer())
+        {
+            enemy.ChangeState(enemy.patrolState);
+            return;
+        }
     }
 }

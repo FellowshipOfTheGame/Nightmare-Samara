@@ -16,6 +16,8 @@ public class StatesController : MonoBehaviour
 
     public void ChangeState(EnemyStates newState)
     {
+        if (currentState == newState) return;
+
         if (currentState != null) currentState.Exit();
         currentState = newState;
         currentState.Enter();
