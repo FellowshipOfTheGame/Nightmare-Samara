@@ -4,5 +4,8 @@ using UnityEngine;
 
 public class GroundedState : PlayerStates
 {
-   
+    private void Update()
+    {
+        
+    }
 }

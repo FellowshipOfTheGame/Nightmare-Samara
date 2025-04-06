@@ -4,40 +4,51 @@ using UnityEngine;
 
 public class MovementController : MonoBehaviour
 {
-
-    public WalkingState walking;
-    public JumpingState jumping;
-    public GroundedState grounded;
-
-    [HideInInspector] public Rigidbody2D rb;
+    private Dictionary<System.Type, PlayerStates> states;
 
     [HideInInspector] public PlayerStates currentXState;
     [HideInInspector] public PlayerStates currentYState;
 
-    [HideInInspector] public bool isGrounded;
+    private bool isGrounded;
+    private float moveInput;
 
     void Start()
-    {
-        // Começa no estado de andando
-        rb = GetComponent<Rigidbody2D>();
-        ChangeHorizontalState(walking);
+    { 
+        ChangeHorizontalState<IdleState>();
+        ChangeVerticalState<GroundedState>();
     }
 
-    public void ChangeHorizontalState(PlayerStates newState)
+    private void Awake()
     {
+        states = new Dictionary<System.Type, PlayerStates>
+        {
+            { typeof(IdleState), GetComponent<IdleState>() },
+            { typeof(WalkingState), GetComponent<WalkingState>() },
+            { typeof(RunningState), GetComponent<RunningState>() },
+            { typeof(JumpingState), GetComponent<JumpingState>() },
+            { typeof(GroundedState), GetComponent<GroundedState>() }
+        };
+    }
+
+
+    public void ChangeHorizontalState<T>() where T : PlayerStates
+    {
+        var newState = states[typeof(T)];
+
         if (currentXState == newState) return;
 
-        if (currentXState != null) currentXState.Exit();
+        currentXState?.Exit();
         currentXState = newState;
         currentXState.Enter();
     }
 
-    public void ChangeVerticalState(PlayerStates newState)
+    public void ChangeVerticalState<T>() where T : PlayerStates
     {
+        var newState = states[typeof(T)];
+
         if (currentYState == newState) return;
 
-
-        if (currentYState != null) currentYState.Exit();
+        currentYState?.Exit();
         currentYState = newState;
         currentYState.Enter();
     }
@@ -52,7 +63,7 @@ public class MovementController : MonoBehaviour
             transform.localScale = scale;
         }
     }
-
+    
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
@@ -68,4 +79,9 @@ public class MovementController : MonoBehaviour
             isGrounded = false;
         }
     }
+
+    public bool Grounded() => isGrounded;
+    public float getMoveInput() => moveInput;
+
+    public void setMoveInput(float value) { moveInput = value; }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class JumpingState : PlayerStates
 {
+
     [SerializeField] private float jumpPower = 5f;
     private bool hasJumped = false;
 
@@ -11,14 +12,14 @@ public class JumpingState : PlayerStates
     {
         if (!hasJumped)
         {
-            player.rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+            rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
             hasJumped = true;
         }
 
         // Volta pro estado de andar se estiver no chão
-        if (player.isGrounded && player.rb.velocity.y <= 0.1f)
+        if (player.Grounded() && rb.velocity.y <= 0.1f)
         {
-            player.ChangeVerticalState(player.grounded);
+            player.ChangeVerticalState<GroundedState>();
         }
     }
 
@@ -27,4 +28,5 @@ public class JumpingState : PlayerStates
         base.Enter();
         hasJumped = false;
     }
+
 }

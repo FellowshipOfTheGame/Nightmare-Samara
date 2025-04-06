@@ -11,7 +11,7 @@ public class PlayerCombat : MonoBehaviour
     void Update()
     {
         //Usa a tecla "Shift Esquerdo" para atacar
-        if(Input.GetKeyDown(KeyCode.LeftShift))
+        if(Input.GetKeyDown(KeyCode.F))
         {
             Attack();
         }
