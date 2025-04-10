@@ -2,56 +2,52 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WalkingState : PlayerStates
+public class WalkingState : PlayerState
 {
-    private float walkSpeed = 5f;
+    private float moveInput;
 
-    private void Update()
+    public WalkingState(PlayerStateMachine stateMachine, GameObject player)
+        : base(stateMachine, player) { }
+
+    public override void Enter()
     {
-        if (Input.GetKeyDown(KeyCode.Space)) player.ChangeVerticalState<JumpingState>();
+        //Debug.Log("Entrou no estado Walking");
     }
 
-    private void FixedUpdate()
+    public override void Update()
     {
+        moveInput = HandleInput();
+        stateMachine.FlipPlayer(moveInput);
 
-        HandleIdle();
-        HandleInput();
-
-        rb.velocity = new Vector2(player.getMoveInput() * walkSpeed, rb.velocity.y);
-
-        // Inverte o jogador dependendo da direção
-        player.FlipPlayer(player.getMoveInput());
-    }
-
-    public override void HandleInput()
-    {
-       base.HandleInput();
-       if(Input.GetKey(KeyCode.LeftShift) && player.getMoveInput() != 0) player.ChangeHorizontalState<RunningState>();
-    }
-
-    /*
-    private float walkSpeed;
-
-    private void Start()
-    {
-       walkSpeed = player.walkSpeed;
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space) && player.isGrounded)
+        if (Input.GetKeyDown(KeyCode.Space) && stateMachine.isGrounded())
         {
-            player.ChangeVerticalState(player.jumping);
+            stateMachine.ChangeState(new JumpingState(stateMachine, player));
+            return;
+        }
+
+        if (Mathf.Abs(moveInput) < 0.01f)
+        {
+            stateMachine.ChangeState(new IdleState(stateMachine, player));
         }
     }
 
-    void FixedUpdate()
+    public override void FixedUpdate()
     {
-        // Atualiza a velocidade
-        player.rb.velocity = new Vector2(player.moveInput * walkSpeed, player.rb.velocity.y);
+        Rigidbody2D rb = stateMachine.rb;
+        float targetSpeed = moveInput * stateMachine.getWalkSpeed();
+        float speedDiff = targetSpeed - rb.velocity.x;
 
-        // Inverte o jogador dependendo da direção
-        player.FlipPlayer(player.moveInput);
+        float accelRate = (Mathf.Abs(targetSpeed) > 0.01f)
+            ? stateMachine.getAcceleration()
+            : stateMachine.getDeceleration();
+
+        float movement = speedDiff * accelRate * Time.fixedDeltaTime;
+
+        rb.velocity = new Vector2(rb.velocity.x + movement, rb.velocity.y);
+
+        if (Mathf.Abs(rb.velocity.x) < 0.05f && Mathf.Abs(moveInput) < 0.01f)
+        {
+            rb.velocity = new Vector2(0f, rb.velocity.y);
+        }
     }
-    */
 }

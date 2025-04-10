@@ -2,27 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IdleState : PlayerStates
+public class IdleState : PlayerState
 {
-    private void Update()
+    public IdleState(PlayerStateMachine stateMachine, GameObject player)
+        : base(stateMachine, player) { }
+
+    public override void Enter()
     {
-        if (Input.GetKeyDown(KeyCode.Space)) player.ChangeVerticalState<JumpingState>();
+        //Debug.Log("Entrou no estado Idle");
     }
 
-    private void FixedUpdate()
+    public override void Update()
     {
-        HandleInput();
-        if (player.getMoveInput() != 0)
-        {
-            if (Input.GetKey(KeyCode.LeftShift))
-            {
-                player.ChangeHorizontalState<RunningState>();
-            }
-            else
-            {
-                player.ChangeHorizontalState<WalkingState>();
-            }
 
+        if (Input.GetKeyDown(KeyCode.Space) && stateMachine.isGrounded())
+        {
+            stateMachine.ChangeState(new JumpingState(stateMachine, player));
+            return;
+        }
+
+        if (HandleInput() != 0 ) 
+        {
+            stateMachine.ChangeState(new WalkingState(stateMachine, player));
         }
     }
 }
