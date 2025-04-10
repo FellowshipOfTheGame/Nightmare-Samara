@@ -9,10 +9,12 @@ public class PlayerStateMachine : MonoBehaviour
 
     [SerializeField] public Rigidbody2D rb;
 
+    [Header("Walk State")]
     [SerializeField] private float walkSpeed = 5f;
-    [SerializeField] private float acceleration = 10f;
-    [SerializeField] private float deceleration = 15f;
+    //[SerializeField] private float runSpeed = 10f;
 
+    [Header("Jump State")]
+    [SerializeField] private float jumpForce = 7f;
     [SerializeField] private float fallMultiplier = 2.5f;
 
     private bool grounded = false;
@@ -56,8 +58,9 @@ public class PlayerStateMachine : MonoBehaviour
     }
 
     public float getWalkSpeed() => walkSpeed;
-    public float getAcceleration() => acceleration;
-    public float getDeceleration() => deceleration;
+    //public float getRunSpeed() => runSpeed;
+
+    public float getJumpForce() => jumpForce;
     public float getFallMultiplier() => fallMultiplier;
 
     public bool isGrounded() => grounded;

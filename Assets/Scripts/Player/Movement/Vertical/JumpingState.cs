@@ -15,7 +15,7 @@ public class JumpingState : PlayerState
         if (!hasJumped)
         {
             stateMachine.rb.velocity = new Vector2(stateMachine.rb.velocity.x, 0f); // zera o Y antes
-            stateMachine.rb.AddForce(Vector2.up * 7f, ForceMode2D.Impulse); // pulo
+            stateMachine.rb.AddForce(Vector2.up * stateMachine.getJumpForce(), ForceMode2D.Impulse); // pulo
             hasJumped = true;
         }
     }

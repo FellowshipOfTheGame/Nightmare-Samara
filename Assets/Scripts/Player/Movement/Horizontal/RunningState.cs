@@ -2,18 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WalkingState : PlayerState
+public class RunningState : PlayerState
 {
+
     private float moveInput;
 
-    public WalkingState(PlayerStateMachine stateMachine, GameObject player)
-        : base(stateMachine, player) { }
+    public RunningState(PlayerStateMachine stateMachine, GameObject player)
+     : base(stateMachine, player) { }
 
     public override void Enter()
     {
-        //Debug.Log("Entrou no estado Walking");
+        Debug.Log("Entrou no estado Running");
     }
-
+    /*
     public override void Update()
     {
 
@@ -31,18 +32,24 @@ public class WalkingState : PlayerState
         {
             stateMachine.ChangeState(new IdleState(stateMachine, player));
         }
-        /*
-        else if (Input.GetKey(KeyCode.LeftShift))
+        else if (!Input.GetKey(KeyCode.LeftShift))
         {
-            stateMachine.ChangeState(new RunningState(stateMachine, player));
+            stateMachine.ChangeState(new WalkingState(stateMachine, player));
         }
-        */
     }
 
     public override void FixedUpdate()
     {
+        moveInput = HandleInput();
         Rigidbody2D rb = stateMachine.rb;
-        float targetSpeed = moveInput * stateMachine.getWalkSpeed();
+
+        if (Mathf.Abs(moveInput) < 0.01f)
+        {
+            rb.velocity = new Vector2(0f, rb.velocity.y);
+            return;
+        }
+        float targetSpeed = moveInput * stateMachine.getRunSpeed();
         rb.velocity = new Vector2(targetSpeed, rb.velocity.y);
     }
+    */
 }

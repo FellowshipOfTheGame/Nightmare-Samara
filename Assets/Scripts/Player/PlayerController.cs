@@ -69,8 +69,6 @@ public class PlayerController : MonoBehaviour
         isInvincible = false;
     }
 
-   
-
     private void GameOver()
     {
         // Rotina de Game Over

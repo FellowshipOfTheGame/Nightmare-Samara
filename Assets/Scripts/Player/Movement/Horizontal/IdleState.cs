@@ -21,10 +21,16 @@ public class IdleState : PlayerState
             return;
         }
 
-        if (HandleInput() != 0 ) 
+        if (HandleInput() != 0)
         {
             stateMachine.ChangeState(new WalkingState(stateMachine, player));
         }
+    }
+
+    public override void FixedUpdate()
+    {
+        Rigidbody2D rb = stateMachine.rb;
+        rb.velocity = new Vector2(0f, rb.velocity.y);
     }
 }
 
