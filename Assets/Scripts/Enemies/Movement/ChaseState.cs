@@ -1,13 +1,7 @@
 using UnityEngine;
 
-public class ChaseState : EnemyStates
+public class ChaseState : EnemyState
 {
-    private void Update()
-    {
-        if (detection.LosePlayer())
-        {
-            enemy.ChangeState(enemy.patrolState);
-            return;
-        }
-    }
+    public ChaseState(EnemyStateMachine stateMachine, GameObject enemy)
+     : base(stateMachine,enemy) { }
 }

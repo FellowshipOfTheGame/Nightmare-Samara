@@ -1,125 +1,83 @@
-using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-public class PatrolState : EnemyStates
+public class PatrolState : EnemyState
 {
-    [Header("Movement Settings")]
-    [SerializeField] private float speed = 2f;
-    [SerializeField] private float patrolDistance = 5f;
-    [SerializeField] private float waitTime = 2f;
-
-    [Header("Collision Detection")]
-    [SerializeField] private float wallCheckDistance = 0.5f;
-    [SerializeField] private float edgeCheckDistance = 0.5f;
-    [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private LayerMask wallLayer;
-
     private Vector2 startPosition;
     private bool isWaiting = false;
     private bool shouldFlip = false;
-    private bool facingRight = true; // Cache the facing direction
+    private bool facingRight;
 
-    protected override void Awake()
+    private float speed => stateMachine.GetPatrolSpeed();
+    private float patrolDistance => stateMachine.GetPatrolDistance();
+    private float waitTime => stateMachine.GetWaitTime();
+    private float wallCheckDistance => stateMachine.GetWallCheckDistance();
+    private float edgeCheckDistance => stateMachine.GetEdgeCheckDistance();
+    private LayerMask groundLayer => stateMachine.GetGroundLayer();
+    private LayerMask wallLayer => stateMachine.GetWallLayer();
+
+
+    public PatrolState(EnemyStateMachine stateMachine, GameObject enemy)
+        : base(stateMachine, enemy) { }
+
+    public override void Enter()
     {
-        base.Awake();
-        if (detection != null)
-        {
-            facingRight = detection.isFacingRight();
-        }
+        startPosition = enemy.transform.position;
+        facingRight = detection?.isFacingRight() ?? true;
     }
 
-    void Start()
+    public override void Update()
     {
-        startPosition = transform.position;
-    }
-
-    void Update()
-    {
-        if (detection == null) return;
-
-       
-        if (detection.SeesPlayer())
+        if (detection?.SeesPlayer() == true)
         {
-            enemy.ChangeState(enemy.chaseState);
+            stateMachine.ChangeState(new ChaseState(stateMachine, enemy));
             return;
         }
-      
-        if (!isWaiting)
+
+        if (isWaiting) return;
+
+        CheckForObstacles();
+
+        if (shouldFlip || ReachedPatrolDistance())
         {
-            CheckForObstacles();
-
-            if (shouldFlip || ReachedPatrolDistance())
-            {
-                StartCoroutine(WaitBeforeFlip());
-                return;
-            }
-
+            enemy.GetComponent<EnemyStateMachine>().StartCoroutine(WaitBeforeFlip());
+        }
+        else
+        {
             Move();
         }
     }
 
-    void CheckForObstacles()
+    private void CheckForObstacles()
     {
-        Vector2 direction = facingRight ? Vector2.right : Vector2.left;
+        Vector2 dir = facingRight ? Vector2.right : Vector2.left;
+        Vector2 pos = enemy.transform.position;
 
-        // Wall detection
-        RaycastHit2D wallHit = Physics2D.Raycast(
-            transform.position,
-            direction,
-            wallCheckDistance,
-            wallLayer);
+        bool hitWall = Physics2D.Raycast(pos, dir, wallCheckDistance, wallLayer);
+        bool onEdge = !Physics2D.Raycast(pos + (Vector2.down * 0.5f) + (dir * edgeCheckDistance), Vector2.down, 0.1f, groundLayer);
 
-        // Edge detection
-        Vector2 edgeCheckPos = (Vector2)transform.position +
-                             (direction * edgeCheckDistance) +
-                             (Vector2.down * 0.5f);
-
-        bool hasGround = Physics2D.Raycast(
-            edgeCheckPos,
-            Vector2.down,
-            0.1f,
-            groundLayer);
-
-        shouldFlip = wallHit.collider != null || !hasGround;
+        shouldFlip = hitWall || onEdge;
     }
 
-    bool ReachedPatrolDistance()
+    private bool ReachedPatrolDistance() =>
+        Vector2.Distance(startPosition, enemy.transform.position) >= patrolDistance;
+
+    private void Move()
     {
-        return Vector2.Distance(startPosition, transform.position) >= patrolDistance;
+        float dir = facingRight ? 1f : -1f;
+        enemy.transform.Translate(Vector2.right * dir * speed * Time.deltaTime);
     }
 
-    void Move()
-    {
-        float direction = facingRight ? speed : -speed;
-        transform.Translate(Vector2.right * direction * Time.deltaTime);
-    }
-
-    IEnumerator WaitBeforeFlip()
+    private IEnumerator WaitBeforeFlip()
     {
         isWaiting = true;
         yield return new WaitForSeconds(waitTime);
 
         facingRight = !facingRight;
-        if (detection != null) detection.Flip();
-        startPosition = transform.position;
+        detection?.Flip();
+        startPosition = enemy.transform.position;
         shouldFlip = false;
         isWaiting = false;
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        // Use the cached facingRight instead of detection reference
-        Vector2 wallDir = facingRight ? Vector2.right : Vector2.left;
-
-        // Wall check visualization
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, (Vector2)transform.position + wallDir * wallCheckDistance);
-
-        // Edge check visualization
-        Vector2 edgeStart = (Vector2)transform.position +
-                          (wallDir * edgeCheckDistance) +
-                          (Vector2.down * 0.5f);
-        Gizmos.color = Color.blue;
-        Gizmos.DrawLine(edgeStart, edgeStart + Vector2.down * 0.1f);
     }
 }
