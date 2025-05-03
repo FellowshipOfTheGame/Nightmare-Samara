@@ -5,49 +5,50 @@ using UnityEngine;
 public class PlayerStateMachine : MonoBehaviour
 {
 
-    private PlayerState currentState;
+    private PlayerState currentState; // Guarda o estado atual do jogador
 
-    [SerializeField] public Rigidbody2D rb;
+    [SerializeField] public Rigidbody2D rb; // Rigidbody para fazer operações com física
 
     [Header("Walk State")]
-    [SerializeField] private float walkSpeed = 5f;
+    [SerializeField] private float walkSpeed = 5f; //Velocidade ao andar
     //[SerializeField] private float runSpeed = 10f;
 
     [Header("Jump State")]
-    [SerializeField] private float jumpForce = 7f;
-    [SerializeField] private float fallMultiplier = 2.5f;
+    [SerializeField] private float jumpForce = 7f; //Força do pulo
+    [SerializeField] private float fallMultiplier = 2.5f; //Multiplicador da queda, que faz com que a queda aconteça mais rapido que o pulo
 
-    private bool grounded = false;
+    private bool grounded = false; // Guarda se o player esta no chão ou não
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>(); //Pega o componentes
     }
 
     private void Start()
     {
-        ChangeState(new IdleState(this, gameObject));
+        ChangeState(new IdleState(this, gameObject)); //Coloca o estado inicial do player como Idle
     }
 
     private void Update()
     {
-        currentState?.Update();
+        currentState?.Update(); //Chama o update para o estado atual
     }
 
     private void FixedUpdate()
     {
-        currentState?.FixedUpdate();
+        currentState?.FixedUpdate(); //Chama o fixedUpdate para o estado atual
     }
 
     public void ChangeState(PlayerState newState)
     {
-        currentState?.Exit();
-        currentState = newState;
-        currentState?.Enter();
+        currentState?.Exit(); //Sai do estado anterior
+        currentState = newState; //Troca o estado atual
+        currentState?.Enter(); // Entra no estado novo
     }
 
     public void FlipPlayer(float direction)
     {
+        //Verifica qual a direção do jogador para flipar ele conforme a direção que ele está andando
         if (direction != 0)
         {
             // Ajusta a escala no eixo X para inverter o sprite
@@ -57,6 +58,7 @@ public class PlayerStateMachine : MonoBehaviour
         }
     }
 
+    //Getters das variaveis que sao usadas em outras classes
     public float getWalkSpeed() => walkSpeed;
     //public float getRunSpeed() => runSpeed;
 
@@ -65,6 +67,7 @@ public class PlayerStateMachine : MonoBehaviour
 
     public bool isGrounded() => grounded;
 
+    /*Verifica a entrada na colisao com o chao e a saida para mudar a variavel grounded*/
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Ground"))

@@ -18,7 +18,8 @@ public class MoveCamera : MonoBehaviour
     {
         target = GameObject.FindGameObjectWithTag("Player")?.transform;
     }
-
+    
+    //Move a camera com um certo deadzone e suaviza o movimento
     private void FixedUpdate()
     {
         if (target == null) return;

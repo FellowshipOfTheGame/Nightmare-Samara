@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
-    private int poisonFlask; //qtd de frascos de veneno
+    private int poisonFlask; //Quantidade de 
     private int woodenBat; //qtd de tacos de madeira
-    private int itemVida;
+    //private int itemVida;
 
 
     void Start()
     {
         poisonFlask = 0;
         woodenBat = 0;
-        itemVida = 0;
+        //itemVida = 0;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -34,6 +34,7 @@ public class InventoryManager : MonoBehaviour
             Debug.Log("Tacos de madeira: " + woodenBat);  
         }
 
+        /*
         //se tocar em algum taco de madeira coleta ele
         if (collision.gameObject.CompareTag("ItemVida"))
         {   
@@ -41,6 +42,7 @@ public class InventoryManager : MonoBehaviour
             itemVida++;  
             Debug.Log("Item de Vida: " + itemVida);  
         }
+        */
     }
 
     public int getPoison()
@@ -64,9 +66,10 @@ public class InventoryManager : MonoBehaviour
         this.poisonFlask--;
     }
 
+    /*
     public int getVida()
     {
         return itemVida;
     }
-
+    */
 }

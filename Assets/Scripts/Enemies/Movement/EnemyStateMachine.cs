@@ -15,21 +15,25 @@ public class EnemyStateMachine : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask wallLayer;
 
+    // Define como estado inicial o estado de patrulhamento
     private void Start()
     {
         ChangeState(new PatrolState(this, gameObject));
     }
 
+    //Update do estado em que esta
     private void Update()
     {
         currentState?.Update();
     }
 
+    //FixedUpdate do estado em que esta
     private void FixedUpdate()
     {
         currentState?.FixedUpdate();
     }
 
+    //Muda de estado
     public void ChangeState(EnemyState newState)
     {
         currentState?.Exit();
@@ -37,6 +41,7 @@ public class EnemyStateMachine : MonoBehaviour
         currentState?.Enter();
     }
 
+    // Getters
     public float GetPatrolSpeed() => patrolSpeed;
     public float GetPatrolDistance() => patrolDistance;
     public float GetWaitTime() => waitTime;

@@ -8,6 +8,7 @@ public abstract class EnemyState{
     protected Detection detection;
     protected GameObject enemy;
 
+    //Construtor do estado
     public EnemyState(EnemyStateMachine stateMachine, GameObject enemy)
     {
         this.stateMachine = stateMachine;
@@ -16,6 +17,7 @@ public abstract class EnemyState{
 
     }
 
+    //Métodos padrões
     public virtual void Enter() { }
     public virtual void Exit() { }
     public virtual void Update() { }

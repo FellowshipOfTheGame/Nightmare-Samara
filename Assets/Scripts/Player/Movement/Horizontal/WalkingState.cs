@@ -6,6 +6,7 @@ public class WalkingState : PlayerState
 {
     private float moveInput;
 
+    //Construtor
     public WalkingState(PlayerStateMachine stateMachine, GameObject player)
         : base(stateMachine, player) { }
 
@@ -17,16 +18,17 @@ public class WalkingState : PlayerState
     public override void Update()
     {
 
-        moveInput = HandleInput();
-        stateMachine.FlipPlayer(moveInput);
+        moveInput = HandleInput(); // Pega a direção do input do usuario
+        stateMachine.FlipPlayer(moveInput); // Flipa o player de acordo com a direção
 
+        //Transiciona para o estado de jumping
         if (Input.GetKeyDown(KeyCode.Space) && stateMachine.isGrounded())
         {
             stateMachine.ChangeState(new JumpingState(stateMachine, player));
             return;
         }
 
-        // Transições de estado:
+        // Transiciona para o estado de idle
         if (Mathf.Abs(moveInput) < 0.01f)
         {
             stateMachine.ChangeState(new IdleState(stateMachine, player));
@@ -41,6 +43,7 @@ public class WalkingState : PlayerState
 
     public override void FixedUpdate()
     {
+        //Realiza a movimentação do player
         Rigidbody2D rb = stateMachine.rb;
         float targetSpeed = moveInput * stateMachine.getWalkSpeed();
         rb.velocity = new Vector2(targetSpeed, rb.velocity.y);
