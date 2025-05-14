@@ -12,44 +12,50 @@ public class RunningState : PlayerState
 
     public override void Enter()
     {
-        Debug.Log("Entrou no estado Running");
+        //Debug.Log("Entrou no estado Running");
     }
-    /*
+
     public override void Update()
     {
+        moveInput = HandleInput(); // Pega a direção do input do usuario
+        stateMachine.FlipPlayer(moveInput); // Flipa o player de acordo com a direção
 
-        moveInput = HandleInput();
-        stateMachine.FlipPlayer(moveInput);
-
+        // Pula se estiver no chão e apertar espaço
         if (Input.GetKeyDown(KeyCode.Space) && stateMachine.isGrounded())
         {
             stateMachine.ChangeState(new JumpingState(stateMachine, player));
             return;
         }
 
-        // Transições de estado:
+        // Sai da corrida se soltar o botão de movimento
         if (Mathf.Abs(moveInput) < 0.01f)
         {
             stateMachine.ChangeState(new IdleState(stateMachine, player));
+            return;
         }
-        else if (!Input.GetKey(KeyCode.LeftShift))
+
+        // Se ainda está se movendo, mas não segurando SHIFT, vai para caminhada
+        if (!Input.GetKey(KeyCode.LeftShift))
         {
             stateMachine.ChangeState(new WalkingState(stateMachine, player));
+            return;
         }
     }
 
     public override void FixedUpdate()
     {
-        moveInput = HandleInput();
-        Rigidbody2D rb = stateMachine.rb;
-
-        if (Mathf.Abs(moveInput) < 0.01f)
-        {
-            rb.velocity = new Vector2(0f, rb.velocity.y);
-            return;
-        }
+        float currentVelocityX = stateMachine.rb.velocity.x;
         float targetSpeed = moveInput * stateMachine.getRunSpeed();
-        rb.velocity = new Vector2(targetSpeed, rb.velocity.y);
+        float acceleration = stateMachine.getAcceleration();
+
+        // Verifica se está mudando de direção (sinais opostos)
+        bool turning = (currentVelocityX != 0f && Mathf.Sign(currentVelocityX) != Mathf.Sign(targetSpeed));
+
+        float effectiveAcceleration = turning ? acceleration * 0.5f : acceleration; // reduz aceleração ao virar
+
+        float speedX = Mathf.MoveTowards(currentVelocityX, targetSpeed, effectiveAcceleration * Time.fixedDeltaTime);
+
+        stateMachine.rb.velocity = new Vector2(speedX, stateMachine.rb.velocity.y);
     }
-    */
+
 }

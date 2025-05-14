@@ -33,12 +33,12 @@ public class WalkingState : PlayerState
         {
             stateMachine.ChangeState(new IdleState(stateMachine, player));
         }
-        /*
+       
         else if (Input.GetKey(KeyCode.LeftShift))
         {
             stateMachine.ChangeState(new RunningState(stateMachine, player));
         }
-        */
+       
     }
 
     public override void FixedUpdate()
