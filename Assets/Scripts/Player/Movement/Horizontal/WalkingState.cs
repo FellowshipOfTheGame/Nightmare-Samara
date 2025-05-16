@@ -6,6 +6,8 @@ public class WalkingState : PlayerState
 {
     private float moveInput;
 
+    private float staminaGain => stateMachine.getWalkingStaminaGain();
+
     //Construtor
     public WalkingState(PlayerStateMachine stateMachine, GameObject player)
         : base(stateMachine, player) { }
@@ -47,5 +49,7 @@ public class WalkingState : PlayerState
         Rigidbody2D rb = stateMachine.rb;
         float targetSpeed = moveInput * stateMachine.getWalkSpeed();
         rb.velocity = new Vector2(targetSpeed, rb.velocity.y);
+
+        stateMachine.GainStamina(staminaGain);
     }
 }

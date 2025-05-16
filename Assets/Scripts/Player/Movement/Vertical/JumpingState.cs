@@ -6,6 +6,8 @@ public class JumpingState : PlayerState
 {
     private bool hasJumped = false;
 
+    private float staminaLoss => stateMachine.getJumpingStaminaLoss();
+
     //Construtor 
     public JumpingState(PlayerStateMachine stateMachine, GameObject player)
      : base(stateMachine, player) { }
@@ -20,6 +22,7 @@ public class JumpingState : PlayerState
             stateMachine.rb.velocity = new Vector2(stateMachine.rb.velocity.x, 0f); // zera o Y antes
             stateMachine.rb.AddForce(Vector2.up * stateMachine.getJumpForce(), ForceMode2D.Impulse); // pulo
             hasJumped = true;
+            stateMachine.LossStamina(staminaLoss);
         }
     }
 

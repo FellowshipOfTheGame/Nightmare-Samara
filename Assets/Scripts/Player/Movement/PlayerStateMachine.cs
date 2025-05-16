@@ -10,7 +10,7 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] public Rigidbody2D rb; // Rigidbody para fazer operações com física
 
     [Header("Moving States")]
-    [SerializeField] private float walkSpeed = 5f; //Velocidade ao andar
+    [SerializeField] private float walkSpeed = 5f; 
     [SerializeField] private float runSpeed = 10f;
     [SerializeField] private float acceleration = 100f;
 
@@ -18,6 +18,14 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] private float jumpForce = 7f; //Força do pulo
     [SerializeField] private float fallMultiplier = 2.5f; //Multiplicador da queda, que faz com que a queda aconteça mais rapido que o pulo
     [SerializeField] private float lowJumpMultiplier = 2f; //Multiplicador da subida, que faz com que a subida seja rapida
+
+    [Header("Stamina")]
+    [SerializeField] private float maxStamina = 10f;
+    private float currentStamina;
+    [SerializeField] private float idleStaminaGain = 0.01f;
+    [SerializeField] private float walkingStaminaGain = 0.1f;
+    [SerializeField] private float runningStaminaLoss = 0.3f;
+    [SerializeField] private float jumpingStaminaLoss = 0.5f;
 
     private bool grounded = false; // Guarda se o player esta no chão ou não
 
@@ -29,11 +37,13 @@ public class PlayerStateMachine : MonoBehaviour
     private void Start()
     {
         ChangeState(new IdleState(this, gameObject)); //Coloca o estado inicial do player como Idle
+        currentStamina = maxStamina;
     }
 
     private void Update()
     {
         //Debug.Log(rb.velocity.x);
+        Debug.Log(getCurrentStamina());
         currentState?.Update(); //Chama o update para o estado atual
     }
 
@@ -65,12 +75,42 @@ public class PlayerStateMachine : MonoBehaviour
     public float getWalkSpeed() => walkSpeed;
     public float getRunSpeed() => runSpeed;
     public float getAcceleration() => acceleration;
-
     public float getJumpForce() => jumpForce;
     public float getFallMultiplier() => fallMultiplier;
     public float getLowJumpMultiplier() => lowJumpMultiplier;
-
     public bool isGrounded() => grounded;
+
+    
+    public float getCurrentStamina() => currentStamina;
+
+    public bool hasLackOfStamina()
+    {
+        return currentStamina<maxStamina;
+    }
+
+    public void GainStamina(float amount)
+    {
+        if (currentStamina + amount > maxStamina || currentStamina == maxStamina) { 
+            currentStamina = maxStamina;
+            return;
+        }
+        currentStamina += amount;
+    }
+
+    public void LossStamina(float amount)
+    {
+        if (currentStamina - amount < 0 || currentStamina == 0)
+        {
+            currentStamina = 0;
+            return;
+        }
+        currentStamina -= amount;
+    }
+
+    public float getIdleStaminaGain() => idleStaminaGain;
+    public float getWalkingStaminaGain() => walkingStaminaGain;
+    public float getRunningStaminaLoss() => runningStaminaLoss;
+    public float getJumpingStaminaLoss() => jumpingStaminaLoss;
 
     /*Verifica a entrada na colisao com o chao e a saida para mudar a variavel grounded*/
     private void OnTriggerEnter2D(Collider2D collision)

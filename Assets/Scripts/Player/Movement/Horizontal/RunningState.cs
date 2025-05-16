@@ -7,6 +7,8 @@ public class RunningState : PlayerState
 
     private float moveInput;
 
+    private float staminaLoss => stateMachine.getRunningStaminaLoss();
+
     public RunningState(PlayerStateMachine stateMachine, GameObject player)
      : base(stateMachine, player) { }
 
@@ -28,7 +30,7 @@ public class RunningState : PlayerState
         }
 
         // Sai da corrida se soltar o botão de movimento
-        if (Mathf.Abs(moveInput) < 0.01f)
+        if (Mathf.Abs(moveInput) < 0.01f || stateMachine.getCurrentStamina() == 0)
         {
             stateMachine.ChangeState(new IdleState(stateMachine, player));
             return;
@@ -56,6 +58,9 @@ public class RunningState : PlayerState
         float speedX = Mathf.MoveTowards(currentVelocityX, targetSpeed, effectiveAcceleration * Time.fixedDeltaTime);
 
         stateMachine.rb.velocity = new Vector2(speedX, stateMachine.rb.velocity.y);
+
+        stateMachine.LossStamina(staminaLoss);
+
     }
 
 }
