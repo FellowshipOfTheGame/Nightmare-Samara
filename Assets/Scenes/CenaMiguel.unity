@@ -1394,6 +1394,11 @@ MonoBehaviour:
   jumpForce: 7
   fallMultiplier: 1.8
   lowJumpMultiplier: 2
+  maxStamina: 10
+  idleStaminaGain: 0.2
+  walkingStaminaGain: 0.1
+  runningStaminaLoss: 0.3
+  jumpingStaminaLoss: 0.5
 --- !u!114 &1406218983
 MonoBehaviour:
   m_ObjectHideFlags: 0
