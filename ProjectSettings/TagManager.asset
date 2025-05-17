@@ -12,6 +12,7 @@ TagManager:
   - Veneno
   - Taco
   - ItemVida
+  - Wall
   layers:
   - Default
   - TransparentFX
