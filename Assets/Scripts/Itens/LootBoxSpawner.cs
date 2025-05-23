@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LootBoxSpawner : MonoBehaviour
 {
-
+    [SerializeField] private SpawnersController spawnersController;
     [SerializeField] private GameObject lootBox;
     [SerializeField] private float spawnRate = 50f;
 
@@ -15,7 +15,7 @@ public class LootBoxSpawner : MonoBehaviour
 
         float range = Random.Range(0, 100);
 
-        if(spawnRate > range)
+        if(spawnRate > range && spawnersController.canSpawnLBox())
         {
             Instantiate(lootBox, transform.position, Quaternion.identity);
         }
