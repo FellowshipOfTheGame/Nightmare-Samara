@@ -18,7 +18,7 @@ public class IdleState : PlayerState
 
     public override void Update()
     {
-        Debug.Log(exhausted);
+        //Debug.Log(exhausted);
         if(stateMachine.getCurrentStamina() == 0)
         {
             exhausted = true;

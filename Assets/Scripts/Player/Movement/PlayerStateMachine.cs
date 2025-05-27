@@ -43,7 +43,7 @@ public class PlayerStateMachine : MonoBehaviour
     private void Update()
     {
         //Debug.Log(rb.velocity.x);
-        Debug.Log(getCurrentStamina());
+        //Debug.Log(getCurrentStamina());
         currentState?.Update(); //Chama o update para o estado atual
     }
 

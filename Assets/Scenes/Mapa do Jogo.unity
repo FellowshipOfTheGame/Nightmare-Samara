@@ -274,6 +274,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5b9cc0693041984399f7e8578ed9086, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnersController: {fileID: 853081569}
   lootBox: {fileID: 98905706144868989, guid: 75229e5eb7b985c4db78e0a3aa802c33, type: 3}
   spawnRate: 100
 --- !u!1 &646920668
@@ -7647,8 +7648,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxLootBoxes: 0
   maxEnemies: 0
-  maxSkelletons: 0
-  maxRats: 0
 --- !u!1 &1278096320
 GameObject:
   m_ObjectHideFlags: 0

@@ -15,6 +15,7 @@ public class LootBoxSpawner : MonoBehaviour
 
         float range = Random.Range(0, 100);
 
+        Debug.Log(spawnersController.canSpawnLBox());
         if(spawnRate > range && spawnersController.canSpawnLBox())
         {
             Instantiate(lootBox, transform.position, Quaternion.identity);
