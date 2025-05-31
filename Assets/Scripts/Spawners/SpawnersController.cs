@@ -6,7 +6,7 @@ public class SpawnersController : MonoBehaviour
 {
 
     private int lootBoxCount = 0;
-    [SerializeField] private int maxLootBoxes = 10;
+    [SerializeField] private int maxLootBoxes = 2;
 
     private int enemyCount = 0;
     [SerializeField] private int maxEnemies = 10;
@@ -30,7 +30,7 @@ public class SpawnersController : MonoBehaviour
         return true;
     }
 
-    public bool canSpawnLBox()
+    public bool canSpawnLootBox()
     {
         if (lootBoxCount >= maxLootBoxes)
         {
