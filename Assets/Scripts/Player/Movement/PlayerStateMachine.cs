@@ -19,6 +19,12 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] private float fallMultiplier = 2.5f; //Multiplicador da queda, que faz com que a queda aconteça mais rapido que o pulo
     [SerializeField] private float lowJumpMultiplier = 2f; //Multiplicador da subida, que faz com que a subida seja rapida
 
+    [Header("Ground Check")]
+    [SerializeField] private Vector2 boxSize;
+    [SerializeField] private float castDistance;
+    [SerializeField] LayerMask groundLayer;
+
+
     [Header("Stamina")]
     [SerializeField] private float maxStamina = 10f;
     private float currentStamina;
@@ -26,8 +32,6 @@ public class PlayerStateMachine : MonoBehaviour
     [SerializeField] private float walkingStaminaGain = 0.1f;
     [SerializeField] private float runningStaminaLoss = 0.3f;
     [SerializeField] private float jumpingStaminaLoss = 0.5f;
-
-    private bool grounded = false; // Guarda se o player esta no chão ou não
 
     private void Awake()
     {
@@ -78,9 +82,18 @@ public class PlayerStateMachine : MonoBehaviour
     public float getJumpForce() => jumpForce;
     public float getFallMultiplier() => fallMultiplier;
     public float getLowJumpMultiplier() => lowJumpMultiplier;
-    public bool isGrounded() => grounded;
+    public bool isGrounded() {
+        if (Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, castDistance, groundLayer)) {
+            return true;
+        }
+        else { return false; }
+    }
 
-    
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireCube(transform.position - transform.up * castDistance, boxSize);
+    }
+
     public float getCurrentStamina() => currentStamina;
 
     public bool hasLackOfStamina()
@@ -111,22 +124,5 @@ public class PlayerStateMachine : MonoBehaviour
     public float getWalkingStaminaGain() => walkingStaminaGain;
     public float getRunningStaminaLoss() => runningStaminaLoss;
     public float getJumpingStaminaLoss() => jumpingStaminaLoss;
-
-    /*Verifica a entrada na colisao com o chao e a saida para mudar a variavel grounded*/
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            grounded = true;
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            grounded = false;
-        }
-    }
 
 }
