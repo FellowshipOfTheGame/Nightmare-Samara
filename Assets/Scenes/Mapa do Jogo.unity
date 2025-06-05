@@ -317,6 +317,10 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 128
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  wallSlidingSpeed: 3
   maxStamina: 10
   idleStaminaGain: 0.2
   walkingStaminaGain: 0.1
@@ -8180,7 +8184,7 @@ GameObject:
   - component: {fileID: 1323555663}
   - component: {fileID: 1323555665}
   - component: {fileID: 1323555664}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}

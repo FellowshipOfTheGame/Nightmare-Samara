@@ -28,14 +28,19 @@ public class JumpingState : PlayerState
 
     public override void Update()
     {
+        float move = HandleInput();
         //Verifica se esta no chão e se nao tem velocidade em y para trocar para os estados de walking ou de idle
         if (stateMachine.isGrounded() && stateMachine.rb.velocity.y <= 0.01f)
         {
-            float move = HandleInput();
+            
             if (Mathf.Abs(move) > 0.1f)
                 stateMachine.ChangeState(new WalkingState(stateMachine, player));
             else
                 stateMachine.ChangeState(new IdleState(stateMachine, player));
+        }
+
+        if (!stateMachine.isGrounded() && Mathf.Abs(move) > 0.1f && stateMachine.IsWalled(move)) {
+            stateMachine.ChangeState(new WallSlideState(stateMachine,player));
         }
     }
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerStateMachine : MonoBehaviour
@@ -22,7 +23,11 @@ public class PlayerStateMachine : MonoBehaviour
     [Header("Ground Check")]
     [SerializeField] private Vector2 boxSize;
     [SerializeField] private float castDistance;
-    [SerializeField] LayerMask groundLayer;
+    [SerializeField] private LayerMask groundLayer;
+
+    [Header("Wall Jump")]
+    [SerializeField] private LayerMask wallLayer;
+    [SerializeField] private float wallSlidingSpeed;
 
 
     [Header("Stamina")]
@@ -89,6 +94,15 @@ public class PlayerStateMachine : MonoBehaviour
         else { return false; }
     }
 
+    public bool IsWalled(float direction)
+    {
+        Vector2 castDirection = Vector2.right * direction;
+        Vector2 origin = transform.position;
+        Vector2 size = boxSize;
+        float distance = castDistance;
+        return Physics2D.BoxCast(origin, size, 0, castDirection, distance, wallLayer);
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireCube(transform.position - transform.up * castDistance, boxSize);
@@ -124,5 +138,7 @@ public class PlayerStateMachine : MonoBehaviour
     public float getWalkingStaminaGain() => walkingStaminaGain;
     public float getRunningStaminaLoss() => runningStaminaLoss;
     public float getJumpingStaminaLoss() => jumpingStaminaLoss;
+
+    public float getWallSlideSpeed() => wallSlidingSpeed;
 
 }
