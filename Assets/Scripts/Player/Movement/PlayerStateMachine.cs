@@ -28,6 +28,8 @@ public class PlayerStateMachine : MonoBehaviour
     [Header("Wall Jump")]
     [SerializeField] private LayerMask wallLayer;
     [SerializeField] private float wallSlidingSpeed;
+    [SerializeField] private Vector2 wallJumpingPower = new Vector2(8f, 16f);
+
 
 
     [Header("Stamina")]
@@ -87,6 +89,8 @@ public class PlayerStateMachine : MonoBehaviour
     public float getJumpForce() => jumpForce;
     public float getFallMultiplier() => fallMultiplier;
     public float getLowJumpMultiplier() => lowJumpMultiplier;
+
+    public Vector2 getwallJumpingPower()=> wallJumpingPower;
     public bool isGrounded() {
         if (Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, castDistance, groundLayer)) {
             return true;
@@ -132,6 +136,13 @@ public class PlayerStateMachine : MonoBehaviour
             return;
         }
         currentStamina -= amount;
+    }
+
+    public int GetWallDirection()
+    {
+        if (IsWalled(1f)) return 1;
+        if (IsWalled(-1f)) return -1;
+        return 0;
     }
 
     public float getIdleStaminaGain() => idleStaminaGain;

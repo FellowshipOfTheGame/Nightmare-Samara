@@ -5,43 +5,39 @@ using UnityEngine;
 public class JumpingState : PlayerState
 {
     private bool hasJumped = false;
-
     private float staminaLoss => stateMachine.getJumpingStaminaLoss();
 
-    //Construtor 
     public JumpingState(PlayerStateMachine stateMachine, GameObject player)
-     : base(stateMachine, player) { }
+        : base(stateMachine, player) { }
 
     public override void Enter()
     {
-        //Debug.Log("Entrou no estado Jumping");
-
-        //Verifica se ainda esta no meio do pulo para evitar mais de um pulo no meio do ar
         if (!hasJumped)
         {
-            stateMachine.rb.velocity = new Vector2(stateMachine.rb.velocity.x, 0f); // zera o Y antes
-            stateMachine.rb.AddForce(Vector2.up * stateMachine.getJumpForce(), ForceMode2D.Impulse); // pulo
-            hasJumped = true;
+            stateMachine.rb.velocity = new Vector2(stateMachine.rb.velocity.x, 0f); // Zera Y antes do impulso
+            stateMachine.rb.AddForce(Vector2.up * stateMachine.getJumpForce(), ForceMode2D.Impulse);
             stateMachine.LossStamina(staminaLoss);
+            hasJumped = true;
         }
     }
 
     public override void Update()
     {
         float move = HandleInput();
-        //Verifica se esta no chão e se nao tem velocidade em y para trocar para os estados de walking ou de idle
-        if (stateMachine.isGrounded() && stateMachine.rb.velocity.y <= 0.01f)
+
+        // Começou a cair -> transição para FallingState
+        if (stateMachine.rb.velocity.y < 0f)
         {
-            
-            if (Mathf.Abs(move) > 0.1f)
-                stateMachine.ChangeState(new WalkingState(stateMachine, player));
-            else
-                stateMachine.ChangeState(new IdleState(stateMachine, player));
+            stateMachine.ChangeState(new FallingState(stateMachine, player));
+            return;
         }
 
-        if (!stateMachine.isGrounded() && Mathf.Abs(move) > 0.1f && stateMachine.IsWalled(move)) {
-            stateMachine.ChangeState(new WallSlideState(stateMachine,player));
-        }
+        // (opcional: transição para WallSlide na subida, se quiser permitir pulo em parede para trás)
+        // if (Mathf.Abs(move) > 0.1f && stateMachine.IsWalled(move))
+        // {
+        //     stateMachine.ChangeState(new WallSlideState(stateMachine, player));
+        //     return;
+        // }
     }
 
     public override void FixedUpdate()
@@ -49,29 +45,17 @@ public class JumpingState : PlayerState
         float move = HandleInput();
         stateMachine.FlipPlayer(move);
 
+        // Movimento horizontal no ar
         float maxSpeed = stateMachine.getWalkSpeed();
         Vector2 velocity = stateMachine.rb.velocity;
-
         float clampedX = Mathf.Clamp(move * maxSpeed, -maxSpeed, maxSpeed);
         stateMachine.rb.velocity = new Vector2(clampedX, velocity.y);
 
-        // 🌠 Subida mais rápida OU pulo curto se soltar espaço
-        if (velocity.y > 0f)
+        // Pulo curto se jogador soltar espaço
+        if (velocity.y > 0f && !Input.GetKey(KeyCode.Space))
         {
             float lowJumpMultiplier = stateMachine.getLowJumpMultiplier();
-
-            // Se o jogador soltou o botão de pulo no meio do salto, aplica gravidade extra
-            if (!Input.GetKey(KeyCode.Space))
-            {
-                stateMachine.rb.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1f) * Time.fixedDeltaTime;
-            }
-        }
-
-        // ⬇️ Queda mais rápida
-        if (velocity.y < 0f)
-        {
-            float fallMultiplier = stateMachine.getFallMultiplier();
-            stateMachine.rb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1f) * Time.fixedDeltaTime;
+            stateMachine.rb.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1f) * Time.fixedDeltaTime;
         }
     }
 }

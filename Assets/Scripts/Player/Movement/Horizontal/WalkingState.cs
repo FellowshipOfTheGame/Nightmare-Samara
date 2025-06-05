@@ -40,7 +40,13 @@ public class WalkingState : PlayerState
         {
             stateMachine.ChangeState(new RunningState(stateMachine, player));
         }
-       
+
+        if (stateMachine.rb.velocity.y < 0f)
+        {
+            stateMachine.ChangeState(new FallingState(stateMachine, player));
+            return;
+        }
+
     }
 
     public override void FixedUpdate()
