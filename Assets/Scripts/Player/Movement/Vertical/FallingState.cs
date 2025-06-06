@@ -5,16 +5,6 @@ public class FallingState : PlayerState
     public FallingState(PlayerStateMachine stateMachine, GameObject player) : base(stateMachine, player) { }
 
 
-    public override void Enter()
-    {
-        Debug.Log("Entrou no estado de caindo");
-    }
-
-    public override void Exit()
-    {
-        Debug.Log("Saiu no estado de caindo");
-    }
-
     public override void Update()
     {
         float move = HandleInput();

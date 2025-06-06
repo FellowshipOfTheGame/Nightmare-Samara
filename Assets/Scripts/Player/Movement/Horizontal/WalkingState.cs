@@ -12,11 +12,6 @@ public class WalkingState : PlayerState
     public WalkingState(PlayerStateMachine stateMachine, GameObject player)
         : base(stateMachine, player) { }
 
-    public override void Enter()
-    {
-        //Debug.Log("Entrou no estado Walking");
-    }
-
     public override void Update()
     {
 
