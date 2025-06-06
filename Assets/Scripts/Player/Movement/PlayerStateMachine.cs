@@ -53,8 +53,7 @@ public class PlayerStateMachine : MonoBehaviour
 
     private void Update()
     {
-        //Debug.Log(rb.velocity.x);
-        //Debug.Log(getCurrentStamina());
+        stateDebug(currentState);
         currentState?.Update(); //Chama o update para o estado atual
     }
 
@@ -79,6 +78,44 @@ public class PlayerStateMachine : MonoBehaviour
             Vector3 scale = transform.localScale;
             scale.x = Mathf.Abs(scale.x) * Mathf.Sign(direction); // Direção define o sinal
             transform.localScale = scale;
+        }
+    }
+
+
+    private void stateDebug(PlayerState currentState) {
+        if (currentState == null) {
+            return; }
+
+        if(currentState is IdleState ){
+            Debug.Log("Estado Atual: Idle.");
+        }
+        else if (currentState is RunningState)
+        {
+            Debug.Log("Estado Atual: Running.");
+        }
+        else if (currentState is JumpingState)
+        {
+            Debug.Log("Estado Atual: Jumping.");
+        }
+        else if (currentState is WalkingState)
+        {
+            Debug.Log("Estado Atual: Walking.");
+        }
+        else if (currentState is FallingState)
+        {
+            Debug.Log("Estado Atual: Falling.");
+        }
+        else if (currentState is WallJumpState)
+        {
+            Debug.Log("Estado Atual: WallJump.");
+        }
+        else if (currentState is WallSlideState)
+        {
+            Debug.Log("Estado Atual: WallSlide.");
+        }
+        else if (currentState is ExhaustedState)
+        {
+            Debug.Log("Estado Atual: Exhausted.");
         }
     }
 

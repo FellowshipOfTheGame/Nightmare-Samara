@@ -16,9 +16,6 @@ public class WallSlideState : PlayerState
     {
         float move = HandleInput();
 
-        // Debug para testes
-        Debug.Log("Estado de WALL SLIDE");
-
         // Pulo na parede
         if (Input.GetKeyDown(KeyCode.Space))
         {
