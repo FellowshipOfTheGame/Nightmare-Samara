@@ -19,7 +19,7 @@ public class ExhaustedState : PlayerState
             exhausted = true;
         }
 
-        if (exhausted == false) {
+        if (rested()) {
             stateMachine.ChangeState(new IdleState(stateMachine, player));
         }
     }

@@ -1,74 +1,58 @@
+// RunningState.cs CORRIGIDO
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class RunningState : PlayerState
 {
-
     private float moveInput;
-
     private float staminaLoss => stateMachine.getRunningStaminaLoss();
 
     public RunningState(PlayerStateMachine stateMachine, GameObject player)
-     : base(stateMachine, player) { }
-
-    public override void Enter()
-    {
-        //Debug.Log("Entrou no estado Running");
-    }
+        : base(stateMachine, player) { }
 
     public override void Update()
     {
-        moveInput = HandleInput(); // Pega a direção do input do usuario
-        stateMachine.FlipPlayer(moveInput); // Flipa o player de acordo com a direção
+        moveInput = HandleInput();
+        stateMachine.FlipPlayer(moveInput);
 
-        // Pula se estiver no chão e apertar espaço
-        if (Input.GetKeyDown(KeyCode.Space) && stateMachine.isGrounded())
+        // Hierarquia de prioridades para sair do estado de corrida
+        if (isFalling())
+        {
+            stateMachine.ChangeState(new FallingState(stateMachine, player));
+        }
+        else if (isExhausted())
+        {
+            stateMachine.ChangeState(new ExhaustedState(stateMachine, player));
+        }
+        else if (isJumping())
         {
             stateMachine.ChangeState(new JumpingState(stateMachine, player));
-            return;
         }
-
-        // Sai da corrida se soltar o botão de movimento
-        if (Mathf.Abs(moveInput) < 0.01f || stateMachine.getCurrentStamina() == 0)
-        {
-            stateMachine.ChangeState(new IdleState(stateMachine, player));
-            return;
-        }
-
-        // Se ainda está se movendo, mas não segurando SHIFT, vai para caminhada
-        if (!Input.GetKey(KeyCode.LeftShift))
+        // Se soltar o Shift mas continuar se movendo, mude para Walking
+        else if (isWalking())
         {
             stateMachine.ChangeState(new WalkingState(stateMachine, player));
-            return;
         }
-
-       
-        //if (stateMachine.rb.velocity.y < 0f)
-        //{
-        //    stateMachine.ChangeState(new FallingState(stateMachine, player));
-        //    return;
-        //}
-       
+        // Se parar de se mover completamente, mude para Idle
+        else if (!isMoving())
+        {
+            stateMachine.ChangeState(new IdleState(stateMachine, player));
+        }
     }
 
     public override void FixedUpdate()
     {
+        // ... (seu código de aceleração e movimento continua o mesmo)
         float currentVelocityX = stateMachine.rb.velocity.x;
         float targetSpeed = moveInput * stateMachine.getRunSpeed();
         float acceleration = stateMachine.getAcceleration();
-
-        // Verifica se está mudando de direção (sinais opostos)
         bool turning = (currentVelocityX != 0f && Mathf.Sign(currentVelocityX) != Mathf.Sign(targetSpeed));
-
-        float effectiveAcceleration = turning ? acceleration * 0.5f : acceleration; // reduz aceleração ao virar
-
+        float effectiveAcceleration = turning ? acceleration * 0.5f : acceleration;
         float speedX = Mathf.MoveTowards(currentVelocityX, targetSpeed, effectiveAcceleration * Time.fixedDeltaTime);
-
         stateMachine.rb.velocity = new Vector2(speedX, stateMachine.rb.velocity.y);
 
         stateMachine.LossStamina(staminaLoss);
-
     }
-
 }

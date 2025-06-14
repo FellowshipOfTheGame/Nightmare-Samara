@@ -18,30 +18,31 @@ public class WalkingState : PlayerState
         moveInput = HandleInput(); // Pega a direção do input do usuario
         stateMachine.FlipPlayer(moveInput); // Flipa o player de acordo com a direção
 
-        //Transiciona para o estado de jumping
-        if (Input.GetKeyDown(KeyCode.Space) && stateMachine.isGrounded())
+        if (isFalling())
+        {
+            stateMachine.ChangeState(new FallingState(stateMachine, player));
+            return;
+        }
+        else if (isJumping())
         {
             stateMachine.ChangeState(new JumpingState(stateMachine, player));
             return;
         }
-
-        // Transiciona para o estado de idle
-        if (Mathf.Abs(moveInput) < 0.01f)
-        {
-            stateMachine.ChangeState(new IdleState(stateMachine, player));
-        }
-       
-        else if (Input.GetKey(KeyCode.LeftShift))
+        else  if (isRunning())
         {
             stateMachine.ChangeState(new RunningState(stateMachine, player));
+            return;
         }
-
-
-        //if (stateMachine.rb.velocity.y < 0f)
-        //{
-        //    stateMachine.ChangeState(new FallingState(stateMachine, player));
-        //    return;
-        //}
+        else if (!isMoving())
+        {
+            stateMachine.ChangeState(new IdleState(stateMachine, player));
+            return;
+        }
+        else if (isExhausted())
+        {
+            stateMachine.ChangeState(new ExhaustedState(stateMachine, player));
+            return;
+        }
 
     }
 

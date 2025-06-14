@@ -26,7 +26,7 @@ public class JumpingState : PlayerState
         float move = HandleInput();
 
         // Começou a cair -> transição para FallingState
-        if (stateMachine.rb.velocity.y < 0f)
+        if (isFalling() && stateMachine.rb.velocity.y < 0f)
         {
             stateMachine.ChangeState(new FallingState(stateMachine, player));
             return;
