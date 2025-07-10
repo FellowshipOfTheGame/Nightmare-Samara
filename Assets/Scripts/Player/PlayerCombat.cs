@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour
 {
-    [SerializeField] private Transform attackPoint;  
-    [SerializeField] private float attackRadius; 
+    [SerializeField] private Transform attackPoint;  //Recebe o transform de um objeto atrelado ao player que representa seu ponto de ataque
+    [SerializeField] private float attackRadius; // Recebe o raio de ataque do player
 
-    // Update is called once per frame
     void Update()
     {
         //Usa a tecla "Shift Esquerdo" para atacar
-        if(Input.GetKeyDown(KeyCode.LeftShift))
+        if(Input.GetKeyDown(KeyCode.F))
         {
             Attack();
         }
@@ -83,6 +82,7 @@ public class PlayerCombat : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        //Desenha o raio de ataque para ficar visivel no editor
         if(attackPoint != null)
         {
             Gizmos.DrawWireSphere(attackPoint.position, attackRadius);

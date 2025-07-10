@@ -34,6 +34,7 @@ public class EnemyController : MonoBehaviour
 
     public void TakeDamage()
     {
+        // Reduz a vida do inimigo se estiver com o item certo em mãos
         currentHealth -= 1;
         Debug.Log("Vida do inimigo: " + currentHealth);
 

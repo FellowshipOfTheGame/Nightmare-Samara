@@ -11,12 +11,10 @@ public class EnemyCombat : MonoBehaviour
 
     private Coroutine attackCoroutine;
 
-    private void Update()
-    {
-        
-    }
+ 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        // Verifica colisao com o player e começa a atacar continuamente
         if (collision.gameObject.CompareTag("Player"))
         {
             ableToHit = true;
@@ -31,6 +29,7 @@ public class EnemyCombat : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+        // Verifica colisao com o player e para de atacar
         if (collision.gameObject.CompareTag("Player"))
         {
             ableToHit = false;
@@ -44,6 +43,7 @@ public class EnemyCombat : MonoBehaviour
 
     IEnumerator Attack(PlayerController player)
     {
+        //Ataca o player e espera alguns segundos de cooldown
         while (ableToHit)
         {
             player.TakeDamage(damage);
