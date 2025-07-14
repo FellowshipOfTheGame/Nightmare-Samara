@@ -9,7 +9,6 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private float skelletonSpawnRate = 30f;
     [SerializeField] private GameObject rat;
     [SerializeField] private float ratSpawnRate = 40f;
-    [SerializeField] private float nothingSpawnRate = 30f;
 
 
     // Start is called before the first frame update
@@ -20,13 +19,16 @@ public class EnemySpawner : MonoBehaviour
         if (skelleton == null || rat ==null) return;
 
         float range = Random.Range(0, 100);
-        /*
-        Debug.Log(spawnRate > range);
-        if (spawnRate > range && spawnersController.canSpawnLootBox())
+
+        if (ratSpawnRate > range && spawnersController.canSpawnEnemy())
         {
-            Instantiate(lootBox, transform.position, Quaternion.identity);
-            spawnersController.addLootBox();
+            Instantiate(rat, transform.position, Quaternion.identity);
+            spawnersController.addEnemy();
         }
-        */
+        else if (skelletonSpawnRate > range && spawnersController.canSpawnEnemy())
+        {
+            Instantiate(skelleton, transform.position, Quaternion.identity);
+            spawnersController.addEnemy();
+        }
     }
 }

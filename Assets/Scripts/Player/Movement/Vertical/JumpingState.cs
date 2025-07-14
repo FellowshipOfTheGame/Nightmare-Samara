@@ -31,6 +31,11 @@ public class JumpingState : PlayerState
             stateMachine.ChangeState(new FallingState(stateMachine, player));
             return;
         }
+        else if (stateMachine.IsWalled(HandleInput()))
+        {
+            stateMachine.ChangeState(new WallSlideState(stateMachine, player));
+            return;
+        }
 
         // (opcional: transição para WallSlide na subida, se quiser permitir pulo em parede para trás)
         // if (Mathf.Abs(move) > 0.1f && stateMachine.IsWalled(move))
