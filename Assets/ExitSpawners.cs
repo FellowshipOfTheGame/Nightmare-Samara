@@ -15,9 +15,6 @@ public class ExitSpawners : MonoBehaviour
     [SerializeField] private float gizmoRadius = 0.3f;
 
     private List<Transform> spawnPoints = new List<Transform>();
-    private bool spawnou = false;
-    private float maxDistance = float.MinValue;
-    private Transform farthestPoint = null;
 
     void Start()
     {
