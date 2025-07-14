@@ -7,6 +7,7 @@ public class PlayerSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
+    [Header("Debug")]
     [SerializeField] private Color gizmoColor = Color.green;
     [SerializeField] private float gizmoRadius = 0.3f;
 
