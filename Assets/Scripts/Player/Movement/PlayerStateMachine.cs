@@ -74,7 +74,7 @@
             currentState = newState; //Troca o estado atual
             currentState?.Enter(); // Entra no estado novo
 
-            Debug.Log("Estado atual: " + currentState.GetType().Name);
+            //Debug.Log("Estado atual: " + currentState.GetType().Name);
         }
 
         public void FlipPlayer(float direction)

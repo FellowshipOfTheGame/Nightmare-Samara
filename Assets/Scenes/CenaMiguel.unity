@@ -511,9 +511,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9241f467c0cb58843859d0b490718ae6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  smoothTime: 0.25
-  deadZoneX: 1.5
-  deadZoneY: 1
 --- !u!1 &726286017
 GameObject:
   m_ObjectHideFlags: 0
@@ -856,9 +853,8 @@ MonoBehaviour:
   edgeCheckDistance: 0.5
   wallLayer:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 256
   chaseSpeed: 5
-  jumpForce: 5
 --- !u!1001 &1132768439
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1394,6 +1390,16 @@ MonoBehaviour:
   jumpForce: 7
   fallMultiplier: 1.8
   lowJumpMultiplier: 2
+  boxSize: {x: 0, y: 0}
+  castDistance: 0
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  wallSlidingSpeed: 0
+  wallJumpingPower: {x: 8, y: 16}
   maxStamina: 10
   idleStaminaGain: 0.2
   walkingStaminaGain: 0.1

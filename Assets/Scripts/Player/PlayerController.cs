@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -79,7 +80,7 @@ public class PlayerController : MonoBehaviour
     private void GameOver()
     {
         //Metodo de game over que por enquanto só destroi o objeto do player
-        Debug.Log("Game Over");
+        SceneManager.LoadScene("GameOver");
         Destroy(gameObject);
     }
 }

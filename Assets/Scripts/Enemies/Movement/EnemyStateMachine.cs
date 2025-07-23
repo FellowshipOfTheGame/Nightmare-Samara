@@ -19,13 +19,18 @@ public class EnemyStateMachine : MonoBehaviour
 
     [Header("Chase Settings")]
     [SerializeField] private float chaseSpeed = 5f;
-    [SerializeField] private float jumpForce = 5f;
 
     private bool grounded = false; // Guarda se o inimigo esta no chão ou não
 
     // Define como estado inicial o estado de patrulhamento
     private void Start()
     {
+        // Garanta a existência do Rigidbody
+        if (rb == null) rb = GetComponent<Rigidbody2D>();
+
+        // Inicialize com velocidade zero
+        if (rb != null) rb.velocity = Vector2.zero;
+
         ChangeState(new PatrolState(this, gameObject));
     }
 
@@ -45,8 +50,16 @@ public class EnemyStateMachine : MonoBehaviour
     public void ChangeState(EnemyState newState)
     {
         currentState?.Exit();
+
+        // Reset da física ao trocar estados
+        if (rb != null)
+        {
+            rb.velocity = Vector2.zero;
+        }
+
         currentState = newState;
         currentState?.Enter();
+        Debug.Log("Estado atual: " + currentState.GetType().Name);
     }
 
     // Getters
@@ -58,7 +71,6 @@ public class EnemyStateMachine : MonoBehaviour
     public LayerMask GetGroundLayer() => groundLayer;
     public LayerMask GetWallLayer() => wallLayer;
     public float GetChaseSpeed() => chaseSpeed;
-    public float GetJumpForce() => jumpForce;
     public bool IsGrounded() => grounded;
 
     private void OnTriggerEnter2D(Collider2D collision)

@@ -10,11 +10,15 @@ public class ChaseState : EnemyState
 
     private Rigidbody2D rb => stateMachine.rb;
     private float chaseSpeed => stateMachine.GetChaseSpeed();
-    private float jumpForce => stateMachine.GetJumpForce();
-    private float alturaMaximaAlcancavel => jumpForce * 0.8f;
+    private float edgeCheckDistance => stateMachine.GetEdgeCheckDistance();
+    private LayerMask groundLayer => stateMachine.GetGroundLayer();
+
+    private Vector2 initialPosition;
+    private bool returningToOrigin = false;
 
     public override void Enter()
     {
+        initialPosition = stateMachine.transform.position;
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
         if (playerObject != null)
         {
@@ -25,7 +29,7 @@ public class ChaseState : EnemyState
 
     public override void Update()
     {
-        if (detection.LosePlayer())
+        if (!returningToOrigin && detection.LosePlayer())
         {
             stateMachine.ChangeState(new PatrolState(stateMachine, enemy));
             return;
@@ -36,44 +40,63 @@ public class ChaseState : EnemyState
     {
         if (player == null) return;
 
+        if (returningToOrigin)
+        {
+            // Voltar à posição inicial
+            Vector2 currentPosition = rb.position;
+            float distance = Vector2.Distance(currentPosition, initialPosition);
+
+            if (distance < 0.1f)
+            {
+                rb.velocity = Vector2.zero;
+                stateMachine.ChangeState(new PatrolState(stateMachine, enemy));
+                return;
+            }
+
+            Vector2 direction = (initialPosition - currentPosition).normalized;
+            float returnSpeed = chaseSpeed * 0.75f;
+            rb.velocity = new Vector2(direction.x * returnSpeed, rb.velocity.y);
+
+            FlipTowards(initialPosition);
+            return;
+        }
+
         Vector2 position = rb.position;
         Vector2 targetPosition = new Vector2(player.position.x, position.y);
 
         float horizontalDistance = Mathf.Abs(targetPosition.x - position.x);
 
         float targetVelocityX = 0f;
-        if (horizontalDistance > 1f)
+        if (horizontalDistance > 1f && !IsNearLedge())
         {
             float direction = Mathf.Sign(targetPosition.x - position.x);
             targetVelocityX = direction * chaseSpeed;
             Flip();
         }
 
-        rb.velocity = new Vector2(Mathf.Lerp(rb.velocity.x, targetVelocityX, 0.1f), rb.velocity.y);
-
-        Debug.Log(ShouldJump());
-
-        if (ShouldJump())
+        if (IsNearLedge())
         {
-            Jump();
+            returningToOrigin = true;
+            return;
         }
+
+        rb.velocity = new Vector2(Mathf.Lerp(rb.velocity.x, targetVelocityX, 0.1f), rb.velocity.y);
+        
     }
 
-    private bool ShouldJump()
+    private bool IsNearLedge()
     {
-        if (playerSM == null) return false;
+        Vector2 dir = detection.isFacingRight() ? Vector2.right : Vector2.left;
+        Vector2 edgeCheckOrigin = (Vector2)enemy.transform.position + (dir * edgeCheckDistance);
 
-        float horizontalDistance = Mathf.Abs(player.position.x - stateMachine.transform.position.x);
+        // Faz um raycast vertical para baixo a partir da "beirada"
+        bool groundDetected = Physics2D.Raycast(edgeCheckOrigin, Vector2.down, 0.1f, groundLayer);
 
-        if (!playerSM.isGrounded()) return false;
+        Debug.DrawRay(edgeCheckOrigin, Vector2.down * 0.1f, Color.red); // Para visualização no editor
 
-        return PlayerIsAbove() && stateMachine.IsGrounded();
+        return !groundDetected; // Se não detectou chão, está na borda
     }
 
-    private bool PlayerIsAbove()
-    {
-        return player.position.y > stateMachine.transform.position.y + 0.5f;
-    }
 
     private void Flip()
     {
@@ -88,12 +111,12 @@ public class ChaseState : EnemyState
         }
     }
 
-    private void Jump()
+    private void FlipTowards(Vector2 target)
     {
-        // Removi a verificação do cooldown aqui também
-
-        Debug.Log("PULANDO");
-        rb.velocity = new Vector2(rb.velocity.x, 0f);
-        rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        bool targetRight = target.x > stateMachine.transform.position.x;
+        if (targetRight != detection.isFacingRight())
+        {
+            detection.Flip();
+        }
     }
 }
