@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class ExitSpawners : MonoBehaviour
 {
-    private GameObject playerInstance;
+    private GameObject exitInstance;
 
     [SerializeField] private GameObject exitPrefab;
 
@@ -29,9 +29,9 @@ public class ExitSpawners : MonoBehaviour
 
     IEnumerator TrySpawnExit()
     {
-        while (playerInstance == null)
+        while (exitInstance == null)
         {
-            playerInstance = GameObject.FindWithTag("Player");
+            exitInstance = GameObject.FindWithTag("Player");
             yield return null;
         }
 
@@ -49,7 +49,7 @@ public class ExitSpawners : MonoBehaviour
 
         foreach (Transform t in spawnPoints)
         {
-            float distance = Vector2.Distance(t.position, playerInstance.transform.position);
+            float distance = Vector2.Distance(t.position, exitInstance.transform.position);
             //Debug.Log(distance);
             if (distance > maxDistance)
             {
