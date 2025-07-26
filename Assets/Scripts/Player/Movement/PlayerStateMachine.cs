@@ -20,25 +20,15 @@
         [SerializeField] private float fallMultiplier = 2.5f; //Multiplicador da queda, que faz com que a queda aconteça mais rapido que o pulo
         [SerializeField] private float lowJumpMultiplier = 2f; //Multiplicador da subida, que faz com que a subida seja rapida
 
-        [Header("Ground Check")]
-        [SerializeField] private Vector2 boxSize;
-        [SerializeField] private float castDistance;
-        [SerializeField] private LayerMask groundLayer;
-
         [Header("Wall Jump")]
         [SerializeField] private LayerMask wallLayer;
         [SerializeField] private float wallSlidingSpeed;
         [SerializeField] private Vector2 wallJumpingPower = new Vector2(8f, 16f);
 
-
-
-        [Header("Stamina")]
-        [SerializeField] private float maxStamina = 10f;
-        private float currentStamina;
-        [SerializeField] private float idleStaminaGain = 0.01f;
-        [SerializeField] private float walkingStaminaGain = 0.1f;
-        [SerializeField] private float runningStaminaLoss = 0.3f;
-        [SerializeField] private float jumpingStaminaLoss = 0.5f;
+        [Header("Ground Check")]
+        [SerializeField] private Vector2 boxSize;
+        [SerializeField] private float castDistance;
+        [SerializeField] private LayerMask groundLayer;
 
         private bool isChangingState = false;
 
@@ -50,7 +40,6 @@
         private void Start()
         {
             ChangeState(new IdleState(this, gameObject)); //Coloca o estado inicial do player como Idle
-            currentStamina = maxStamina;
         }
 
         private void Update()
@@ -159,43 +148,12 @@
             Gizmos.DrawWireCube(transform.position - transform.up * castDistance, boxSize);
         }
 
-        public float getCurrentStamina() => currentStamina;
-
-        public bool hasLackOfStamina()
-        {
-            return currentStamina<maxStamina;
-        }
-
-        public void GainStamina(float amount)
-        {
-            if (currentStamina + amount > maxStamina || currentStamina == maxStamina) { 
-                currentStamina = maxStamina;
-                return;
-            }
-            currentStamina += amount;
-        }
-
-        public void LossStamina(float amount)
-        {
-            if (currentStamina - amount < 0 || currentStamina == 0)
-            {
-                currentStamina = 0;
-                return;
-            }
-            currentStamina -= amount;
-        }
-
         public int GetWallDirection()
         {
             if (IsWalled(1f)) return 1;
             if (IsWalled(-1f)) return -1;
             return 0;
         }
-
-        public float getIdleStaminaGain() => idleStaminaGain;
-        public float getWalkingStaminaGain() => walkingStaminaGain;
-        public float getRunningStaminaLoss() => runningStaminaLoss;
-        public float getJumpingStaminaLoss() => jumpingStaminaLoss;
 
         public float getWallSlideSpeed() => wallSlidingSpeed;
 

@@ -7,6 +7,7 @@ using UnityEngine;
 public abstract class PlayerState
 {
     protected PlayerStateMachine stateMachine; //Maquina de estado
+    protected StaminaSystem staminaSystem;
     protected GameObject player; //Game object do player
 
     //Construtor padrao para estados do player
@@ -40,6 +41,7 @@ public abstract class PlayerState
         return Input.GetKeyDown(KeyCode.Space) && stateMachine.isGrounded();
     }
 
+    /*
     protected bool isExhausted() {
         return stateMachine.getCurrentStamina() == 0;
     }
@@ -48,7 +50,7 @@ public abstract class PlayerState
     {
         return !stateMachine.hasLackOfStamina();
     }
-
+    */
     protected bool isWalking() {
         return HandleInput() != 0 && !Input.GetKey(KeyCode.LeftShift);
     }

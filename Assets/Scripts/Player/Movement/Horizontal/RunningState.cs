@@ -7,7 +7,7 @@ using UnityEngine;
 public class RunningState : PlayerState
 {
     private float moveInput;
-    private float staminaLoss => stateMachine.getRunningStaminaLoss();
+    //private float staminaLoss => stateMachine.getRunningStaminaLoss();
 
     public RunningState(PlayerStateMachine stateMachine, GameObject player)
         : base(stateMachine, player) { }
@@ -22,10 +22,12 @@ public class RunningState : PlayerState
         {
             stateMachine.ChangeState(new FallingState(stateMachine, player));
         }
+        /*
         else if (isExhausted())
         {
             stateMachine.ChangeState(new ExhaustedState(stateMachine, player));
         }
+        */
         else if (isJumping())
         {
             stateMachine.ChangeState(new JumpingState(stateMachine, player));
@@ -53,6 +55,6 @@ public class RunningState : PlayerState
         float speedX = Mathf.MoveTowards(currentVelocityX, targetSpeed, effectiveAcceleration * Time.fixedDeltaTime);
         stateMachine.rb.velocity = new Vector2(speedX, stateMachine.rb.velocity.y);
 
-        stateMachine.LossStamina(staminaLoss);
+        //stateMachine.LossStamina(staminaLoss);
     }
 }

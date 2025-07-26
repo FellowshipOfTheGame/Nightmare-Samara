@@ -5,7 +5,7 @@ using UnityEngine;
 public class JumpingState : PlayerState
 {
     private bool hasJumped = false;
-    private float staminaLoss => stateMachine.getJumpingStaminaLoss();
+    //private float staminaLoss => stateMachine.getJumpingStaminaLoss();
 
     public JumpingState(PlayerStateMachine stateMachine, GameObject player)
         : base(stateMachine, player) { }
@@ -16,7 +16,7 @@ public class JumpingState : PlayerState
         {
             stateMachine.rb.velocity = new Vector2(stateMachine.rb.velocity.x, 0f); // Zera Y antes do impulso
             stateMachine.rb.AddForce(Vector2.up * stateMachine.getJumpForce(), ForceMode2D.Impulse);
-            stateMachine.LossStamina(staminaLoss);
+            //stateMachine.LossStamina(staminaLoss);
             hasJumped = true;
         }
     }

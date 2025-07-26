@@ -25,7 +25,7 @@ public class WallJumpState : PlayerState
         stateMachine.rb.AddForce(force, ForceMode2D.Impulse);
 
         // Gasta estamina
-        stateMachine.LossStamina(stateMachine.getJumpingStaminaLoss());
+        //stateMachine.LossStamina(stateMachine.getJumpingStaminaLoss());
 
         // Flipa o personagem na direção do pulo
         stateMachine.FlipPlayer(jumpDir);

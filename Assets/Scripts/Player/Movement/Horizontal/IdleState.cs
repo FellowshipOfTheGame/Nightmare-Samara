@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class IdleState : PlayerState
 {
-    private float staminaGain => stateMachine.getIdleStaminaGain();
+    //private float staminaGain => stateMachine.getIdleStaminaGain();
 
     public IdleState(PlayerStateMachine stateMachine, GameObject player)
         : base(stateMachine, player) { }
@@ -32,10 +32,12 @@ public class IdleState : PlayerState
         {
             stateMachine.ChangeState(new WalkingState(stateMachine, player));
         }
+        /*
         else if (isExhausted())
         {
             stateMachine.ChangeState(new ExhaustedState(stateMachine, player));
         }
+        */
     }
 
     public override void FixedUpdate()
@@ -46,9 +48,11 @@ public class IdleState : PlayerState
             rb.velocity = new Vector2(0f, rb.velocity.y);
         }
 
+        /*
         if (stateMachine.hasLackOfStamina())
         {
             stateMachine.GainStamina(staminaGain);
         }
+        */
     }
 }

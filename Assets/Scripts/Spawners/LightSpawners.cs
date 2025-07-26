@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LightSpawner : MonoBehaviour
 {
-    [SerializeField] private GameObject light;
+    [SerializeField] private GameObject lightPost;
     [SerializeField] private float spawnRate = 50f;
     [SerializeField] private int max = 10;
     [SerializeField] private Transform lightParent;
@@ -19,7 +19,7 @@ public class LightSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (light == null) return;
+        if (lightPost == null) return;
 
         spawnPoints.Clear();
         foreach (Transform t in GetComponentsInChildren<Transform>())
@@ -34,7 +34,7 @@ public class LightSpawner : MonoBehaviour
 
             if (spawnRate > range && aux < max)
             {
-                Instantiate(light, spawnPoints[i].position, Quaternion.identity, lightParent);
+                Instantiate(lightPost, spawnPoints[i].position, Quaternion.identity, lightParent);
                 aux++;
             }
         }

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ExhaustedState : PlayerState
 {
-    private float staminaGain => stateMachine.getIdleStaminaGain();
+    //private float staminaGain => stateMachine.getIdleStaminaGain();
     private bool exhausted = false;
 
     public ExhaustedState(PlayerStateMachine stateMachine, GameObject player) : base(stateMachine, player)
@@ -14,6 +14,7 @@ public class ExhaustedState : PlayerState
 
     public override void Update()
     {
+        /*
         if (stateMachine.getCurrentStamina() == 0)
         {
             exhausted = true;
@@ -22,6 +23,7 @@ public class ExhaustedState : PlayerState
         if (rested()) {
             stateMachine.ChangeState(new IdleState(stateMachine, player));
         }
+        */
     }
 
     public override void FixedUpdate()
@@ -32,7 +34,7 @@ public class ExhaustedState : PlayerState
             Rigidbody2D rb = stateMachine.rb;
             rb.velocity = new Vector2(0f, rb.velocity.y);
         }
-
+        /*
         if (stateMachine.hasLackOfStamina())
         {
             stateMachine.GainStamina(staminaGain);
@@ -41,6 +43,6 @@ public class ExhaustedState : PlayerState
         {
             exhausted = false;
         }
-
+        */
     }
 }

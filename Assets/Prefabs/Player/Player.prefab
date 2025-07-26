@@ -47,6 +47,7 @@ GameObject:
   - component: {fileID: 7866778984396483684}
   - component: {fileID: 4240790395799256525}
   - component: {fileID: 8857675065353706879}
+  - component: {fileID: 7181828432017935095}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -213,16 +214,16 @@ MonoBehaviour:
   jumpForce: 7
   fallMultiplier: 1.8
   lowJumpMultiplier: 2
-  boxSize: {x: 1, y: 0.2}
-  castDistance: 0.52
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 128
   wallLayer:
     serializedVersion: 2
     m_Bits: 256
   wallSlidingSpeed: 3
   wallJumpingPower: {x: 8, y: 16}
+  boxSize: {x: 1, y: 0.2}
+  castDistance: 0.52
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 128
   maxStamina: 10
   idleStaminaGain: 0.2
   walkingStaminaGain: 0.1
@@ -266,5 +267,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ca67a6f3606f65a44969ce6d4446bf9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7181828432017935095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7578951533980748361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81451258aa3b8ea49a0fed4ba0d807fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
