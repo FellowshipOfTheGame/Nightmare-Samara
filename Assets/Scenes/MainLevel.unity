@@ -34611,7 +34611,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 936cbc44960a87b40aa62395c9f509df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  light: {fileID: 0}
+  lightPost: {fileID: 0}
   spawnRate: 50
   max: 10
   lightParent: {fileID: 785203940}

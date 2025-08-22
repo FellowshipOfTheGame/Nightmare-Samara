@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1336261036719428050
+--- !u!1 &4542487117472145878
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8113838344622212683}
-  - component: {fileID: 51550500100546797}
-  m_Layer: 6
+  - component: {fileID: 3901274347864239087}
+  - component: {fileID: 3779737406638720935}
+  m_Layer: 7
   m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8113838344622212683
+--- !u!4 &3901274347864239087
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1336261036719428050}
+  m_GameObject: {fileID: 4542487117472145878}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -32,13 +32,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3064503633374427643}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &51550500100546797
-BoxCollider2D:
+--- !u!58 &3779737406638720935
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1336261036719428050}
+  m_GameObject: {fileID: 4542487117472145878}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -64,20 +64,10 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.41042817}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_Offset: {x: 0, y: -0.4972978}
   serializedVersion: 2
-  m_Size: {x: 1, y: 0.391958}
-  m_EdgeRadius: 0
---- !u!1 &4566889830629771107
+  m_Radius: 0.061207123
+--- !u!1 &5291421299924045808
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -85,22 +75,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8836602939014465535}
-  - component: {fileID: 4046763314512447154}
-  m_Layer: 0
-  m_Name: Collider
+  - component: {fileID: 4290676845181924040}
+  - component: {fileID: 3907778869693434008}
+  m_Layer: 8
+  m_Name: WallCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8836602939014465535
+--- !u!4 &4290676845181924040
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4566889830629771107}
+  m_GameObject: {fileID: 5291421299924045808}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -109,13 +99,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3064503633374427643}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &4046763314512447154
-BoxCollider2D:
+--- !u!58 &3907778869693434008
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4566889830629771107}
+  m_GameObject: {fileID: 5291421299924045808}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -141,19 +131,9 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_Offset: {x: 0.8116028, y: 0}
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
+  m_Radius: 0.048826437
 --- !u!1 &7898798834588608610
 GameObject:
   m_ObjectHideFlags: 0
@@ -170,6 +150,7 @@ GameObject:
   - component: {fileID: 9187226750441441240}
   - component: {fileID: 3067037620056676169}
   - component: {fileID: 3706709596665038988}
+  - component: {fileID: 6776051021942860428}
   m_Layer: 6
   m_Name: Rat
   m_TagString: Rat
@@ -190,8 +171,8 @@ Transform:
   m_LocalScale: {x: 0.7485, y: 0.7230812, z: 1.2475}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8113838344622212683}
-  - {fileID: 8836602939014465535}
+  - {fileID: 3901274347864239087}
+  - {fileID: 4290676845181924040}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7814413741398791537
@@ -305,7 +286,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.00000059604645, y: 0.028626427}
+  m_Offset: {x: 0.0030623078, y: 0.0032651722}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -316,7 +297,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.4044254, y: 0.9906063}
+  m_Size: {x: 1.0246757, y: 1.0413289}
   m_EdgeRadius: 0
 --- !u!114 &2161976165716466246
 MonoBehaviour:
@@ -345,19 +326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 2339830450043988080}
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  patrolSpeed: 2
-  patrolDistance: 5
-  waitTime: 2
-  wallCheckDistance: 0.5
-  edgeCheckDistance: 0.5
-  wallLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  chaseSpeed: 5
-  jumpForce: 5
+  enemyConfig: {fileID: 11400000, guid: 784dd3b62154c9542952d6ed3292eebd, type: 2}
 --- !u!114 &3067037620056676169
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -391,3 +360,17 @@ MonoBehaviour:
   detectionMask:
     serializedVersion: 2
     m_Bits: 136
+--- !u!114 &6776051021942860428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7898798834588608610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be0e46122906baf4ca6840325ae878a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGrounded: 0
+  isWalled: 0

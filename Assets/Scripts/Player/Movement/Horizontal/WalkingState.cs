@@ -54,6 +54,6 @@ public class WalkingState : PlayerState
         float targetSpeed = moveInput * stateMachine.getWalkSpeed();
         rb.velocity = new Vector2(targetSpeed, rb.velocity.y);
 
-        //stateMachine.GainStamina(staminaGain);
+        //staminaSystem.GainStamina(staminaGain);
     }
 }
