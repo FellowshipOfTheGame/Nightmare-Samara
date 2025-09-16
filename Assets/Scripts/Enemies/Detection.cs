@@ -1,21 +1,18 @@
+ï»¿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using System.Collections;
 
-public class Detection : MonoBehaviour
+public class Detection
 {
-    [SerializeField] private float viewDistance = 4f;
-    [SerializeField] private float loseTime = 4f;
-    [SerializeField] private LayerMask detectionMask;
-
+    private Enemy enemy; 
     private Transform player;
-    private bool facingRight = true;
 
     private bool losing = false;
     private bool lostPlayer = false;
 
-    // Tenta achar o objeto do player
-    void Start()
+    public Detection(Enemy enemy)
     {
+        this.enemy = enemy;
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
     }
 
@@ -23,78 +20,64 @@ public class Detection : MonoBehaviour
     {
         if (!player) return false;
 
-        //Verifica se o jogador esta na frente do inimigo
-        bool playerIsInFront = facingRight
-        ? player.position.x > transform.position.x
-        : player.position.x < transform.position.x;
+        bool playerIsInFront = enemy.facingRight
+            ? player.position.x > enemy.transform.position.x
+            : player.position.x < enemy.transform.position.x;
 
-        // Retorna falso se o jogador nao estiver na frente do inimigo
-        if (!playerIsInFront)
-            return false;
+        if (!playerIsInFront) return false;
 
-        Vector2 direction = facingRight ? Vector2.right : Vector2.left; // Define a direção do raycast
+        Vector2 direction = enemy.facingRight ? Vector2.right : Vector2.left;
 
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, viewDistance, detectionMask); // Cria um raycast com a distancia de visao para vereficar se o player esta na frente do inimigo
+        // Desenha o raycast no editor (Scene View)
+        Debug.DrawRay(enemy.transform.position, direction * enemy.viewDistance, Color.red);
 
-        return hit.collider != null && hit.collider.CompareTag("Player"); //Retorna se encontrou ou não o jogador
-    }
+        RaycastHit2D hit = Physics2D.Raycast(enemy.transform.position, direction, enemy.viewDistance, enemy.detectionMask);
 
-    // Desenha o raycast para visualização
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = SeesPlayer() ? Color.red : Color.yellow;
-        Gizmos.DrawLine(transform.position, transform.position + (facingRight ? Vector3.right : Vector3.left) * viewDistance);
+        return hit.collider != null && hit.collider.CompareTag("Player");
     }
 
 
-    public bool LosePlayer()
+
+    public bool HasLostPlayer()
     {
         if (!player) return false;
 
-        // Se já perdeu o jogador, retorna true uma única vez
+        // Se jï¿½ perdeu o jogador, retorna true uma ï¿½nica vez
+        // Retorna o valor de lostPlayer e reseta a flag para evitar que seja chamada mï¿½ltiplas vezes
         if (lostPlayer)
         {
             lostPlayer = false; // reseta
+            lostPlayer = false;
             return true;
         }
 
-        // Se saiu da câmera e ainda não está esperando
+        // Se saiu da cï¿½mera e ainda nï¿½o estï¿½ esperando
         if (!IsVisibleInCamera() && !losing)
         {
-            StartCoroutine(WaitToLose());
+            enemy.StartCoroutine(WaitToLose());
         }
 
         return false;
     }
 
-    // Verifica se o inimigo não esta sendo mais visto pela camera
-    bool IsVisibleInCamera()
-    {
-        Vector3 viewPos = Camera.main.WorldToViewportPoint(transform.position);
-        return viewPos.x >= 0 && viewPos.x <= 1 &&
-           viewPos.y >= 0 && viewPos.y <= 1 &&
-           viewPos.z > 0;
-    }
-
-    //Coroutine que espera um tempo para fazer com que o inimigo perca o jogador
     private IEnumerator WaitToLose()
     {
         losing = true;
-        yield return new WaitForSeconds(loseTime);
+        yield return new WaitForSeconds(enemy.loseTime);
         lostPlayer = true;
         losing = false;
         Debug.Log("Tempo passou, perdeu o jogador.");
     }
 
-    // FLipa o inimigo de acordo com a direção que ele está indo
-    public void Flip()
+
+    bool IsVisibleInCamera()
     {
-        facingRight = !facingRight;
-        transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        Vector3 viewPos = Camera.main.WorldToViewportPoint(enemy.transform.position);
+        return viewPos.x >= 0 && viewPos.x <= 1 &&
+           viewPos.y >= 0 && viewPos.y <= 1 &&
+           viewPos.z > 0;
     }
 
-    public bool isFacingRight() => facingRight;
-
-    public Transform PlayerPosition() => player;
-   
 }
+
+

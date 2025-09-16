@@ -40,7 +40,7 @@ public class PlayerCombat : MonoBehaviour
             }
 
             //Verifica se o objeto eh um inimigo
-            EnemyController enemy = collider.GetComponent<EnemyController>();
+            Enemy enemy = collider.GetComponent<Enemy>();
             if (enemy != null)
             {
                 float distanceToEnemy = Vector2.Distance(attackPoint.position, collider.transform.position);
@@ -62,20 +62,20 @@ public class PlayerCombat : MonoBehaviour
         //Se encontrar um inimigo proximo, aplica o dano
         if (closestEnemyCollider != null)
         {
-            EnemyController closestEnemy = closestEnemyCollider.GetComponent<EnemyController>();
+            Enemy closestEnemy = closestEnemyCollider.GetComponent<Enemy>();
             InventoryManager playerInventory = gameObject.GetComponent<InventoryManager>();
 
             //Se o inimigo proximo for um esqueleto, o ataque sera realizado com um taco de madeira, caso tenha no inventario
             if (closestEnemyCollider.CompareTag("Skeleton") && playerInventory.getBat() > 0)
             {
                 playerInventory.useBat();
-                closestEnemy.TakeDamage();
+                closestEnemy.Damage();
             }
             //se o inimigo proximo for um rato, ele só tomará dano com o veneno, caso o player tenha no inventario
             else if (closestEnemyCollider.CompareTag("Rat") && playerInventory.getPoison() > 0)
             {
                 playerInventory.usePoison();
-                closestEnemy.TakeDamage();
+                closestEnemy.Damage();
             }
         }
     }
