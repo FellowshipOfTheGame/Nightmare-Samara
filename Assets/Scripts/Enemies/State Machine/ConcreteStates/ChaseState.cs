@@ -5,7 +5,6 @@ public class ChaseState : EnemyState
 
     private Vector2 startPosition;
     private bool returningToOrigin = false;
-    private bool foundLedge = false;
 
     private Transform player;
 
@@ -18,6 +17,7 @@ public class ChaseState : EnemyState
         startPosition = enemy.transform.position;
         enemy.rb = enemy.GetComponent<Rigidbody2D>();
 
+        returningToOrigin = false;
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
     }
 
@@ -25,22 +25,19 @@ public class ChaseState : EnemyState
     {
         if (!returningToOrigin && enemy.detection.HasLostPlayer())
         {
-            enemyStateMachine.ChangeState(enemy.patrolState);
-            return;
+            returningToOrigin = true;
         }
     }
 
     public override void PhysicsUpdate()
     {
-        if (!this.foundLedge) {
-            this.foundLedge = enemy.isWalled || !enemy.isGrounded;
-        }
+        bool foundLedge = enemy.isWalled || !enemy.isGrounded;
         
         if (player == null) return;
 
         if (returningToOrigin)
         {
-            ReturnToOrigin();
+            ReturnToOrigin(foundLedge);
             return;
         }
 
@@ -49,7 +46,7 @@ public class ChaseState : EnemyState
         ChasePlayer();
     }
 
-    private void ReturnToOrigin()
+    private void ReturnToOrigin(bool foundLedge)
     {
         // Voltar à posição inicial
         Vector2 currentPosition = enemy.rb.position;
@@ -66,17 +63,19 @@ public class ChaseState : EnemyState
         float returnSpeed = enemy.chaseSpeed * 0.75f;
 
         // Verifica se há obstáculos durante o retorno
-        if (enemy.isWalled || foundLedge)
+        if (foundLedge)
         {
-            // Para o movimento se encontrar obstáculo
-            enemy.rb.velocity = new Vector2(0, enemy.rb.velocity.y);
+            FlipTowards(startPosition);
+            enemy.rb.velocity = new Vector2(0f, enemy.rb.velocity.y);
         }
         else
         {
             enemy.rb.velocity = new Vector2(direction.x * returnSpeed, enemy.rb.velocity.y);
+            FlipTowards(startPosition);
         }
 
-        FlipTowards(startPosition);
+
+        Debug.DrawLine(currentPosition, startPosition, Color.green);
     }
 
     private void ChasePlayer()

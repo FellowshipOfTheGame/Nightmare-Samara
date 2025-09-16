@@ -7,8 +7,6 @@ public abstract class EnemyState
     protected Enemy enemy;
     protected EnemyStateMachine enemyStateMachine;
 
-    protected WallCollider collisions;
-
     public EnemyState(Enemy enemy, EnemyStateMachine enemyStateMachine)
     {
         this.enemy = enemy;

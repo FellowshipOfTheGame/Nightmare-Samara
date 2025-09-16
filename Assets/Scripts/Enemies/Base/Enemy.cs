@@ -48,6 +48,7 @@ public class Enemy : MonoBehaviour
     [Header("Patrol State")]
     public float patrolSpeed = 2f;
     public float patrolDistance = 5f;
+    public float waitTime = 1f;
     #endregion
 
     #region Chase State
@@ -58,7 +59,6 @@ public class Enemy : MonoBehaviour
     #region Collision Flags
     [HideInInspector] public bool isGrounded;
     [HideInInspector] public bool isWalled;
-    [HideInInspector] public bool isColliding;
     #endregion
 
     private void Awake()
