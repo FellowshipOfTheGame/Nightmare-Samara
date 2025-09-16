@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Detection
+public class DetectionSystem
 {
     private Enemy enemy; 
     private Transform player;
@@ -10,7 +10,7 @@ public class Detection
     private bool losing = false;
     private bool lostPlayer = false;
 
-    public Detection(Enemy enemy)
+    public DetectionSystem(Enemy enemy)
     {
         this.enemy = enemy;
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
@@ -26,7 +26,7 @@ public class Detection
 
         if (!playerIsInFront) return false;
 
-        Vector2 direction = enemy.facingRight ? Vector2.right : Vector2.left;
+        Vector2 direction = Vector2.right * Mathf.Sign(enemy.transform.localScale.x);
 
         // Desenha o raycast no editor (Scene View)
         Debug.DrawRay(enemy.transform.position, direction * enemy.viewDistance, Color.red);
@@ -46,7 +46,6 @@ public class Detection
         // Retorna o valor de lostPlayer e reseta a flag para evitar que seja chamada m�ltiplas vezes
         if (lostPlayer)
         {
-            lostPlayer = false; // reseta
             lostPlayer = false;
             return true;
         }

@@ -38,7 +38,6 @@ public class PatrolState : EnemyState
 
             bool isColliding = !enemy.isGrounded || enemy.isWalled;
 
-            // só entra no cooldown se acabou de colidir
             if (isColliding && !collidedThisFrame)
             {
                 collidedThisFrame = true;
@@ -54,7 +53,6 @@ public class PatrolState : EnemyState
         }
         else
         {
-            // reset flag quando não está colidindo
             if (!enemy.isWalled && enemy.isGrounded)
                 collidedThisFrame = false;
         }

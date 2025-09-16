@@ -22,8 +22,8 @@ public class Enemy : MonoBehaviour
     #endregion
 
     #region Detection Variables
-    [Header("Detection")]
-    [HideInInspector] public Detection detection;
+    [Header("DetectionSystem")]
+    [HideInInspector] public DetectionSystem detection;
     [HideInInspector] public bool facingRight = true;
     public float viewDistance = 4f;
     public float loseTime = 4f;
@@ -65,7 +65,7 @@ public class Enemy : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
-        detection = new Detection(this);
+        detection = new DetectionSystem(this);
 
         stateMachine = new EnemyStateMachine();
         patrolState = new PatrolState(this, stateMachine);
@@ -100,7 +100,7 @@ public class Enemy : MonoBehaviour
     {
         facingRight = !facingRight;
         Vector3 scale = transform.localScale;
-        transform.localScale = new Vector3(-scale.x, scale.y, scale.z);
+        transform.localScale = new Vector3(scale.x * -1, scale.y, scale.z);
     }
 
 

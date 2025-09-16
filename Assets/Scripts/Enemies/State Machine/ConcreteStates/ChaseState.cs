@@ -1,12 +1,12 @@
+using TMPro;
 using UnityEngine;
 
 public class ChaseState : EnemyState
 {
-
     private Vector2 startPosition;
     private bool returningToOrigin = false;
-
     private Transform player;
+    private Vector2 nextPos;
 
     public ChaseState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
     {
@@ -15,10 +15,8 @@ public class ChaseState : EnemyState
     public override void Enter()
     {
         startPosition = enemy.transform.position;
-        enemy.rb = enemy.GetComponent<Rigidbody2D>();
-
-        returningToOrigin = false;
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
+        returningToOrigin = false;
     }
 
     public override void FrameUpdate()
@@ -27,102 +25,62 @@ public class ChaseState : EnemyState
         {
             returningToOrigin = true;
         }
+
+        if (returningToOrigin && enemy.detection.SeesPlayer()) {
+            returningToOrigin = false;
+        }
     }
 
     public override void PhysicsUpdate()
     {
-        bool foundLedge = enemy.isWalled || !enemy.isGrounded;
-        
-        if (player == null) return;
-
-        if (returningToOrigin)
+        if (!returningToOrigin)
         {
-            ReturnToOrigin(foundLedge);
-            return;
-        }
+            // Verifica se o player ainda existe
+            if (player == null)
+            {
+                returningToOrigin = true;
+                return;
+            }
 
-        if (player == null) return;
+            // Determina a direção do player em relação ao inimigo
+            float playerDirection = Mathf.Sign(player.position.x - enemy.transform.position.x);
 
-        ChasePlayer();
-    }
+            // Vira o inimigo na direção do player
+            if ((playerDirection > 0 && !enemy.facingRight) || (playerDirection < 0 && enemy.facingRight))
+            {
+                enemy.Flip();
+            }
 
-    private void ReturnToOrigin(bool foundLedge)
-    {
-        // Voltar à posição inicial
-        Vector2 currentPosition = enemy.rb.position;
-        float distance = Vector2.Distance(currentPosition, startPosition);
-
-        if (distance < 0.1f)
-        {
-            enemy.rb.velocity = Vector2.zero;
-            enemyStateMachine.ChangeState(enemy.patrolState);
-            return;
-        }
-
-        Vector2 direction = (startPosition - currentPosition).normalized;
-        float returnSpeed = enemy.chaseSpeed * 0.75f;
-
-        // Verifica se há obstáculos durante o retorno
-        if (foundLedge)
-        {
-            FlipTowards(startPosition);
-            enemy.rb.velocity = new Vector2(0f, enemy.rb.velocity.y);
+            bool isColliding = !enemy.isGrounded || enemy.isWalled;
+            if (!isColliding)
+            {
+                // Move na direção do player
+                enemy.rb.velocity = new Vector2(playerDirection * enemy.chaseSpeed, enemy.rb.velocity.y);
+            }
+            else
+            {
+                returningToOrigin = true;
+            }
         }
         else
         {
-            enemy.rb.velocity = new Vector2(direction.x * returnSpeed, enemy.rb.velocity.y);
-            FlipTowards(startPosition);
-        }
+            // Lógica para retornar à posição original
+            float directionToOrigin = Mathf.Sign(startPosition.x - enemy.transform.position.x);
 
+            // Vira na direção da posição original
+            if ((directionToOrigin > 0 && !enemy.facingRight) || (directionToOrigin < 0 && enemy.facingRight))
+            {
+                enemy.Flip();
+            }
 
-        Debug.DrawLine(currentPosition, startPosition, Color.green);
-    }
+            nextPos = Vector2.MoveTowards(enemy.transform.position, startPosition, enemy.patrolSpeed * Time.deltaTime);
+            enemy.rb.MovePosition(nextPos);
 
-    private void ChasePlayer()
-    {
-        Vector2 position = enemy.rb.position;
-        Vector2 targetPosition = new Vector2(player.position.x, position.y);
-
-        float horizontalDistance = Mathf.Abs(targetPosition.x - position.x);
-
-        // Verifica se há obstáculos antes de se mover
-        if ((enemy.isWalled) && horizontalDistance > 1f)
-        {
-            // Para o movimento se encontrar obstáculo
-            enemy.rb.velocity = new Vector2(0, enemy.rb.velocity.y);
-            return;
-        }
-
-        float targetVelocityX = 0f;
-        if (horizontalDistance > 1f)
-        {
-            float direction = Mathf.Sign(targetPosition.x - position.x);
-            targetVelocityX = direction * enemy.chaseSpeed;
-            Flip();
-        }
-
-        enemy.rb.velocity = new Vector2(Mathf.Lerp(enemy.rb.velocity.x, targetVelocityX, 0.1f), enemy.rb.velocity.y);
-    }
-
-    private void Flip()
-    {
-        bool playerRightOfEnemy = player.position.x > enemy.transform.position.x;
-        if (playerRightOfEnemy && !enemy.facingRight)
-        {
-            enemy.Flip();
-        }
-        else if (!playerRightOfEnemy && enemy.facingRight)
-        {
-            enemy.Flip();
-        }
-    }
-
-    private void FlipTowards(Vector2 target)
-    {
-        bool targetRight = target.x > enemy.transform.position.x;
-        if (targetRight != enemy.facingRight)
-        {
-            enemy.Flip();
+            if (Vector2.Distance(enemy.transform.position, startPosition) < 0.1f)
+            {
+                enemyStateMachine.ChangeState(enemy.patrolState);
+                return;
+            }
         }
     }
 }
