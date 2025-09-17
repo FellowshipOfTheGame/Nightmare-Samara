@@ -30,6 +30,11 @@ public class FallingState : PlayerState
                 return;
             }
         }
+
+        if (player.isWalled) { 
+            stateMachine.ChangeState(player.wallSlideState);
+            return;
+        }
     }
 
     public override void PhysicsUpdate()

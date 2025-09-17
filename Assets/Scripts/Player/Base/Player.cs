@@ -59,9 +59,11 @@ public class Player : MonoBehaviour
     [HideInInspector] public ExhaustedState exhaustedState;
     [HideInInspector] public FallingState fallingState;
     [HideInInspector] public JumpingState jumpingState;
-    //[HideInInspector] public WallJumpState wallJumpState;
-    //[HideInInspector] public WallSlideState wallSlideState;
+    [HideInInspector] public WallJumpState wallJumpState;
+    [HideInInspector] public WallSlideState wallSlideState;
     [HideInInspector] public bool isGrounded = false;
+    [HideInInspector] public bool isWalled = false;
+    [HideInInspector] public bool canMove = true;
 
     #endregion
 
@@ -83,6 +85,18 @@ public class Player : MonoBehaviour
     public float lowJumpMult = 2f;
     #endregion
 
+    #region WallSlide State
+    [Header("WallSlide State")]
+    public float wallSlideSpeed = 2f;
+    #endregion
+
+    #region WallJump State
+    [Header("WallJump State")]
+    public Vector2 wallJumpForce = new Vector2(10f, 15f);
+    public float disableMoveTime = 0.2f;
+    [HideInInspector] public int wallDirection = 1;
+    #endregion
+
     private void Awake()
     {
         staminaSystem = new StaminaSystem(this);
@@ -94,6 +108,8 @@ public class Player : MonoBehaviour
         fallingState = new FallingState(this, stateMachine);
         exhaustedState = new ExhaustedState(this, stateMachine);
         jumpingState = new JumpingState(this, stateMachine);
+        wallSlideState = new WallSlideState(this, stateMachine);
+        wallJumpState = new WallJumpState(this, stateMachine);
 
         poisonFlask = 0;
         woodenBat = 0;
@@ -181,7 +197,7 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isKnockbackActive)
+        if (isKnockbackActive || !canMove)
         {
             return;
         }
