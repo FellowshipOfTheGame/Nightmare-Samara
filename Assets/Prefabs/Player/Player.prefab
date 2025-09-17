@@ -43,11 +43,9 @@ GameObject:
   - component: {fileID: 7037650647630679748}
   - component: {fileID: 5292022439081389611}
   - component: {fileID: 1100300914165618648}
-  - component: {fileID: 5693622643427673757}
   - component: {fileID: 7866778984396483684}
   - component: {fileID: 4240790395799256525}
   - component: {fileID: 8857675065353706879}
-  - component: {fileID: 7181828432017935095}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -195,40 +193,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &5693622643427673757
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7578951533980748361}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c907b3ef4bc31b4392ad6032c0eaebd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rb: {fileID: 5292022439081389611}
-  walkSpeed: 7
-  runSpeed: 10
-  acceleration: 100
-  jumpForce: 7
-  fallMultiplier: 1.8
-  lowJumpMultiplier: 2
-  wallLayer:
-    serializedVersion: 2
-    m_Bits: 256
-  wallSlidingSpeed: 3
-  wallJumpingPower: {x: 8, y: 16}
-  boxSize: {x: 1, y: 0.2}
-  castDistance: 0.52
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  maxStamina: 10
-  idleStaminaGain: 0.2
-  walkingStaminaGain: 0.1
-  runningStaminaLoss: 0.3
-  jumpingStaminaLoss: 0.5
 --- !u!114 &7866778984396483684
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,8 +205,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06b231b982785ef4f8760b999fdf3464, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rb: {fileID: 0}
   maxHealth: 5
   invincibilityDuration: 1
+  maxStamina: 10
+  currentStamina: 0
+  exhaustedWalkSpeed: 3
+  exhaustedJumpForce: 4
+  staminaRegenRate: 1
+  staminaDrainRate: 2
+  minStamina: 18
+  isGrounded: 1
+  walkSpeed: 5
+  runSpeed: 7
+  acceleration: 100
+  jumpForce: 7
+  fallMult: 2.5
+  lowJumpMult: 2
 --- !u!114 &4240790395799256525
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -267,17 +246,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ca67a6f3606f65a44969ce6d4446bf9c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &7181828432017935095
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7578951533980748361}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81451258aa3b8ea49a0fed4ba0d807fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

@@ -4,56 +4,58 @@ using UnityEngine;
 
 public class WalkingState : PlayerState
 {
-    private float moveInput;
-
-    //private float staminaGain => stateMachine.getWalkingStaminaGain();
-
-    //Construtor
-    public WalkingState(PlayerStateMachine stateMachine, GameObject player)
-        : base(stateMachine, player) { }
-
-    public override void Update()
+    public WalkingState(Player player, PlayerStateMachine stateMachine) : base(player, stateMachine)
     {
-
-        moveInput = HandleInput(); // Pega a direção do input do usuario
-        stateMachine.FlipPlayer(moveInput); // Flipa o player de acordo com a direção
-
-        if (isFalling())
-        {
-            stateMachine.ChangeState(new FallingState(stateMachine, player));
-            return;
-        }
-        else if (isJumping())
-        {
-            stateMachine.ChangeState(new JumpingState(stateMachine, player));
-            return;
-        }
-        else  if (isRunning())
-        {
-            stateMachine.ChangeState(new RunningState(stateMachine, player));
-            return;
-        }
-        else if (!isMoving())
-        {
-            stateMachine.ChangeState(new IdleState(stateMachine, player));
-            return;
-        }
-        /*
-        else if (isExhausted())
-        {
-            stateMachine.ChangeState(new ExhaustedState(stateMachine, player));
-            return;
-        }
-        */
     }
 
-    public override void FixedUpdate()
+    public override void FrameUpdate()
     {
-        //Realiza a movimentação do player
-        Rigidbody2D rb = stateMachine.rb;
-        float targetSpeed = moveInput * stateMachine.getWalkSpeed();
-        rb.velocity = new Vector2(targetSpeed, rb.velocity.y);
+        FlipPlayer();
+        float input = HandleInput();
 
-        //staminaSystem.GainStamina(staminaGain);
+        if (!player.isGrounded)
+        {
+            stateMachine.ChangeState(player.fallingState);
+            return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            stateMachine.ChangeState(player.jumpingState);
+            return;
+        }
+
+        // Lógica de transição mais fluida
+        if (input == 0)
+        {
+            // Transição para ocioso se não houver input e a velocidade for baixa
+            if (Mathf.Abs(player.rb.velocity.x) < 0.1f)
+            {
+                stateMachine.ChangeState(player.idleState);
+                return;
+            }
+        }
+        else if (Input.GetKey(KeyCode.LeftShift))
+        {
+            stateMachine.ChangeState(player.runningState);
+            return;
+        }
+    }
+
+    public override void PhysicsUpdate()
+    {
+        float currentVelocityX = player.rb.velocity.x;
+        float targetSpeed = HandleInput() * player.walkSpeed;
+
+        float accelerationRate = player.acceleration;
+        if (Mathf.Sign(targetSpeed) != Mathf.Sign(currentVelocityX) && currentVelocityX != 0)
+        {
+            accelerationRate = player.acceleration * 1.5f;
+        }
+        float effectiveAcceleration = accelerationRate * Time.fixedDeltaTime;
+        float speedX = Mathf.MoveTowards(currentVelocityX, targetSpeed, effectiveAcceleration);
+
+        player.rb.velocity = new Vector2(speedX, player.rb.velocity.y);
+        player.staminaSystem.GainStamina(player.staminaRegenRate * 0.5f);
     }
 }

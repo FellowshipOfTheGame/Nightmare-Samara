@@ -5,44 +5,67 @@ using UnityEngine;
 
 public class ExhaustedState : PlayerState
 {
-    //private float staminaGain => stateMachine.getIdleStaminaGain();
-    private bool exhausted = false;
+    private float moveInput;
 
-    public ExhaustedState(PlayerStateMachine stateMachine, GameObject player) : base(stateMachine, player)
+    public ExhaustedState(Player player, PlayerStateMachine stateMachine) : base(player, stateMachine)
     {
     }
 
-    public override void Update()
+    //public override void Enter()
+    //{
+    //    Debug.Log("Entrando em exausto");
+    //}
+
+    //public override void Exit()
+    //{
+    //    Debug.Log("Saindo de exausto");
+    //}
+
+    public override void FrameUpdate()
     {
-        /*
-        if (stateMachine.getCurrentStamina() == 0)
+        FlipPlayer();
+        float input = HandleInput();
+        // Pulo baixo
+        if (Input.GetKeyDown(KeyCode.Space) && player.isGrounded)
         {
-            exhausted = true;
+            player.rb.velocity = new Vector2(player.rb.velocity.x, player.exhaustedJumpForce);
         }
 
-        if (rested()) {
-            stateMachine.ChangeState(new IdleState(stateMachine, player));
+        if (input == 0 && Mathf.Abs(player.rb.velocity.x) < 0.1f)
+        {
+            stateMachine.ChangeState(player.idleState);
+            return;
         }
-        */
+
+        if (player.currentStamina > player.minStamina)
+        {
+            stateMachine.ChangeState(player.runningState);
+            return;
+        }
     }
 
-    public override void FixedUpdate()
+    public override void PhysicsUpdate()
     {
-        //Zera a velocidade em x para fazer com que o player pare instantaneamente e nao deslize
-        if (Mathf.Abs(HandleInput()) < 0.01f || exhausted)
+        // Regenerar estamina
+        player.staminaSystem.GainStamina(player.staminaRegenRate);
+        player.currentStamina = Mathf.Clamp(player.currentStamina, 0, player.maxStamina);
+
+        float currentVelocityX = player.rb.velocity.x;
+        float targetSpeed = HandleInput() * player.exhaustedWalkSpeed;
+        float acceleration = player.acceleration;
+
+        if (Mathf.Sign(targetSpeed) != Mathf.Sign(currentVelocityX) && currentVelocityX != 0)
         {
-            Rigidbody2D rb = stateMachine.rb;
-            rb.velocity = new Vector2(0f, rb.velocity.y);
-        }
-        /*
-        if (stateMachine.hasLackOfStamina())
-        {
-            stateMachine.GainStamina(staminaGain);
+            acceleration *= 0.25f; 
         }
         else
         {
-            exhausted = false;
+            acceleration *= 0.5f; 
         }
-        */
+
+        float effectiveAcceleration = acceleration * Time.fixedDeltaTime;
+        float speedX = Mathf.MoveTowards(currentVelocityX, targetSpeed, effectiveAcceleration);
+
+        player.rb.velocity = new Vector2(speedX, player.rb.velocity.y);
     }
 }

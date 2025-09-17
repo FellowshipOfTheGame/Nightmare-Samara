@@ -2,74 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/*Classe Abstrata na qual todas as classes dos estados se baseiam */
 
 public abstract class PlayerState
 {
-    protected PlayerStateMachine stateMachine; //Maquina de estado
-    protected StaminaSystem staminaSystem;
-    protected GameObject player; //Game object do player
 
-    //Construtor padrao para estados do player
-    public PlayerState(PlayerStateMachine stateMachine, GameObject player)
+    protected Player player; 
+    protected PlayerStateMachine stateMachine;
+    
+
+    public PlayerState(Player player, PlayerStateMachine stateMachine)
     {
-        this.stateMachine = stateMachine;
         this.player = player;
+        this.stateMachine = stateMachine;
     }
 
-    public PlayerState(PlayerState p)
-    {
-        this.stateMachine = p.stateMachine;
-        this.player = p.player;
-    }
-
-    /*Todas as os metodos que vao ser utilizados pelas classes que herdam dessa */
     public virtual void Enter() { }
     public virtual void Exit() { }
-    public virtual void Update() { }
-    public virtual void FixedUpdate() { }
+    public virtual void FrameUpdate() { }
+    public virtual void PhysicsUpdate() { }
     public virtual float HandleInput() {
-        //Retorna o 1 se o player vai pra direita, -1 se o player vai pra esquerda e se o player fica parado retorna 0
-        return Input.GetAxisRaw("Horizontal");
+        float raw = Input.GetAxisRaw("Horizontal");
+        if (Mathf.Abs(raw) < 0.01f)
+            return 0f;
+        return Mathf.Sign(raw);
     }
 
-    protected bool isFalling() {
-        return !stateMachine.isGrounded() && !stateMachine.IsWalled(HandleInput());
-    }
-
-    protected bool isJumping() {
-        return Input.GetKeyDown(KeyCode.Space) && stateMachine.isGrounded();
-    }
-
-    /*
-    protected bool isExhausted() {
-        return stateMachine.getCurrentStamina() == 0;
-    }
-
-    protected bool rested()
+    public virtual void FlipPlayer()
     {
-        return !stateMachine.hasLackOfStamina();
-    }
-    */
-    protected bool isWalking() {
-        return HandleInput() != 0 && !Input.GetKey(KeyCode.LeftShift);
-    }
-
-    protected bool isRunning() {
-        return HandleInput() != 0 && Input.GetKey(KeyCode.LeftShift);
-    }
-
-    protected bool isMoving() { 
-        return HandleInput() != 0 && stateMachine.isGrounded();
-    }
-
-    protected bool isWallSliding()
-    {
-        float move = HandleInput();
-        return !stateMachine.isGrounded() && Mathf.Abs(move) > 0.1f && stateMachine.IsWalled(move);
-    }
-
-    protected bool isWallJumping() {
-        return Input.GetKeyDown(KeyCode.Space);
+        float input = HandleInput();
+        if (input > 0)
+            player.transform.localScale = new Vector2(Mathf.Abs(player.transform.localScale.x), player.transform.localScale.y);
+        else if (input < 0)
+            player.transform.localScale = new Vector2(-Mathf.Abs(player.transform.localScale.x), player.transform.localScale.y);
     }
 }

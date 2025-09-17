@@ -1,4 +1,3 @@
-// IdleState.cs CORRIGIDO
 
 using System.Collections;
 using System.Collections.Generic;
@@ -6,53 +5,42 @@ using UnityEngine;
 
 public class IdleState : PlayerState
 {
-    //private float staminaGain => stateMachine.getIdleStaminaGain();
-
-    public IdleState(PlayerStateMachine stateMachine, GameObject player)
-        : base(stateMachine, player) { }
-
-    public override void Update()
+    public IdleState(Player player, PlayerStateMachine stateMachine) : base(player, stateMachine)
     {
-        // A hierarquia de checagens é importante.
-        // As ações mais "ativas" (pular, cair) devem vir primeiro.
-        if (isFalling())
-        {
-            stateMachine.ChangeState(new FallingState(stateMachine, player));
-        }
-        else if (isJumping())
-        {
-            stateMachine.ChangeState(new JumpingState(stateMachine, player));
-        }
-        // Dê prioridade para a corrida sobre a caminhada
-        else if (isRunning())
-        {
-            stateMachine.ChangeState(new RunningState(stateMachine, player));
-        }
-        else if (isWalking())
-        {
-            stateMachine.ChangeState(new WalkingState(stateMachine, player));
-        }
-        /*
-        else if (isExhausted())
-        {
-            stateMachine.ChangeState(new ExhaustedState(stateMachine, player));
-        }
-        */
     }
 
-    public override void FixedUpdate()
+    public override void FrameUpdate()
     {
-        if (Mathf.Abs(HandleInput()) < 0.01f)
+        float input = HandleInput();
+        if (Input.GetKeyDown(KeyCode.Space) && player.isGrounded)
         {
-            Rigidbody2D rb = stateMachine.rb;
-            rb.velocity = new Vector2(0f, rb.velocity.y);
+            stateMachine.ChangeState(player.jumpingState);
+            return;
+        }
+        if (!player.isGrounded)
+        {
+            stateMachine.ChangeState(player.fallingState);
+            return;
         }
 
-        /*
-        if (stateMachine.hasLackOfStamina())
+        if (input != 0)
         {
-            stateMachine.GainStamina(staminaGain);
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                stateMachine.ChangeState(player.runningState);
+            }
+            else
+            {
+                stateMachine.ChangeState(player.walkingState);
+            }
+            return;
         }
-        */
+    }
+
+    public override void PhysicsUpdate()
+    {
+        
+        player.rb.velocity = new Vector2(0f, player.rb.velocity.y);
+        player.staminaSystem.GainStamina(player.staminaRegenRate * 0.8f);
     }
 }

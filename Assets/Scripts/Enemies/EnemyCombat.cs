@@ -21,7 +21,7 @@ public class EnemyCombat : MonoBehaviour
 
             if (attackCoroutine == null)
             {
-                attackCoroutine = StartCoroutine(Attack(collision.gameObject.GetComponent<PlayerController>()));
+                attackCoroutine = StartCoroutine(Attack(collision.gameObject.GetComponent<Player>()));
             }
         }
     }
@@ -41,12 +41,12 @@ public class EnemyCombat : MonoBehaviour
         }
     }
 
-    IEnumerator Attack(PlayerController player)
+    IEnumerator Attack(Player player)
     {
         //Ataca o player e espera alguns segundos de cooldown
         while (ableToHit)
         {
-            player.TakeDamage(damage);
+            player.Damage(damage);
             yield return new WaitForSeconds(attackCooldown);
         }
     }

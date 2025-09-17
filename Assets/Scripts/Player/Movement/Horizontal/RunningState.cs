@@ -1,60 +1,77 @@
-// RunningState.cs CORRIGIDO
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class RunningState : PlayerState
 {
-    private float moveInput;
-    //private float staminaLoss => stateMachine.getRunningStaminaLoss();
-
-    public RunningState(PlayerStateMachine stateMachine, GameObject player)
-        : base(stateMachine, player) { }
-
-    public override void Update()
+    public RunningState(Player player, PlayerStateMachine stateMachine) : base(player, stateMachine)
     {
-        moveInput = HandleInput();
-        stateMachine.FlipPlayer(moveInput);
+    }
 
-        // Hierarquia de prioridades para sair do estado de corrida
-        if (isFalling())
+    public override void FrameUpdate()
+    {
+        FlipPlayer();
+        float input = HandleInput();
+
+        if (!player.isGrounded)
         {
-            stateMachine.ChangeState(new FallingState(stateMachine, player));
+            stateMachine.ChangeState(player.fallingState);
+            return;
         }
-        /*
-        else if (isExhausted())
+
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            stateMachine.ChangeState(new ExhaustedState(stateMachine, player));
+            stateMachine.ChangeState(player.jumpingState);
+            return;
         }
-        */
-        else if (isJumping())
+
+        // Lógica de transição mais fluida
+        if (input == 0)
         {
-            stateMachine.ChangeState(new JumpingState(stateMachine, player));
+            // Transição para ocioso se não houver input e a velocidade for baixa
+            if (Mathf.Abs(player.rb.velocity.x) < 0.1f)
+            {
+                stateMachine.ChangeState(player.idleState);
+                return;
+            }
         }
-        // Se soltar o Shift mas continuar se movendo, mude para Walking
-        else if (isWalking())
+        else if (!Input.GetKey(KeyCode.LeftShift))
         {
-            stateMachine.ChangeState(new WalkingState(stateMachine, player));
-        }
-        // Se parar de se mover completamente, mude para Idle
-        else if (!isMoving())
-        {
-            stateMachine.ChangeState(new IdleState(stateMachine, player));
+            stateMachine.ChangeState(player.walkingState);
+            return;
         }
     }
 
-    public override void FixedUpdate()
+    public override void PhysicsUpdate()
     {
-        // ... (seu código de aceleração e movimento continua o mesmo)
-        float currentVelocityX = stateMachine.rb.velocity.x;
-        float targetSpeed = moveInput * stateMachine.getRunSpeed();
-        float acceleration = stateMachine.getAcceleration();
-        bool turning = (currentVelocityX != 0f && Mathf.Sign(currentVelocityX) != Mathf.Sign(targetSpeed));
-        float effectiveAcceleration = turning ? acceleration * 0.5f : acceleration;
-        float speedX = Mathf.MoveTowards(currentVelocityX, targetSpeed, effectiveAcceleration * Time.fixedDeltaTime);
-        stateMachine.rb.velocity = new Vector2(speedX, stateMachine.rb.velocity.y);
+        // Debug.Log("Running"); // Mova esta linha para o EnterState se precisar, mas não é necessária aqui
 
-        //stateMachine.LossStamina(staminaLoss);
+        if (player.currentStamina <= 0)
+        {
+            stateMachine.ChangeState(player.exhaustedState);
+            return;
+        }
+        else
+        {
+            player.staminaSystem.LoseStamina(player.staminaDrainRate);
+        }
+
+        float currentVelocityX = player.rb.velocity.x;
+        float targetSpeed = HandleInput() * player.runSpeed;
+
+        // Acelerando ou desacelerando
+        float speedDifference = targetSpeed - currentVelocityX;
+        float accelerationRate = player.acceleration;
+
+        // Aumenta a aceleração ao virar para dar mais controle
+        if (Mathf.Sign(speedDifference) != Mathf.Sign(currentVelocityX) && currentVelocityX != 0)
+        {
+            accelerationRate = player.acceleration * 2.0f;
+        }
+
+        float effectiveAcceleration = accelerationRate * Time.fixedDeltaTime;
+        float speedX = Mathf.MoveTowards(currentVelocityX, targetSpeed, effectiveAcceleration);
+
+        player.rb.velocity = new Vector2(speedX, player.rb.velocity.y);
     }
 }

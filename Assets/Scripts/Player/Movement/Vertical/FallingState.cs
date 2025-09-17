@@ -2,49 +2,50 @@
 
 public class FallingState : PlayerState
 {
-    public FallingState(PlayerStateMachine stateMachine, GameObject player) : base(stateMachine, player) { }
-
-    public override void Update()
+    public FallingState(Player player, PlayerStateMachine stateMachine) : base(player, stateMachine)
     {
-        if (stateMachine.isGrounded())
+    }
+
+    public override void FrameUpdate()
+    {
+        float input = HandleInput();
+        if (player.isGrounded)
         {
-            if (isRunning())
-            {
-                stateMachine.ChangeState(new RunningState(stateMachine, player));
-            }
-            else if (isWalking())
-            {
-                stateMachine.ChangeState(new WalkingState(stateMachine, player));
+            if (input != 0) {
+                if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    stateMachine.ChangeState(player.runningState);
+                    return;
+                }
+                else
+                {
+                    stateMachine.ChangeState(player.walkingState);
+                    return;
+                }
+
             }
             else
             {
-                stateMachine.ChangeState(new IdleState(stateMachine, player));
+                stateMachine.ChangeState(player.idleState);
+                return;
             }
-            return;
         }
-        else if (stateMachine.IsWalled(HandleInput())) { 
-            stateMachine.ChangeState(new WallSlideState(stateMachine, player));
-            return;
-        }
-
     }
 
-    public override void FixedUpdate()
+    public override void PhysicsUpdate()
     {
-        float move = HandleInput();
-        stateMachine.FlipPlayer(move);
+        FlipPlayer();
+        float maxSpeed = player.walkSpeed;
+        float targetX = HandleInput() * maxSpeed;
 
-        float maxSpeed = stateMachine.getWalkSpeed();
-        float targetX = move * maxSpeed;
+        float newVelocityX = Mathf.Lerp(player.rb.velocity.x, targetX, Time.fixedDeltaTime * 10f);
 
-        float newVelocityX = Mathf.Lerp(stateMachine.rb.velocity.x, targetX, Time.fixedDeltaTime * 10f);
+        player.rb.velocity = new Vector2(newVelocityX, player.rb.velocity.y);
 
-        stateMachine.rb.velocity = new Vector2(newVelocityX, stateMachine.rb.velocity.y);
-
-        if (stateMachine.rb.velocity.y < 0f)
+        if (player.rb.velocity.y < 0f)
         {
-            float fallMultiplier = stateMachine.getFallMultiplier();
-            stateMachine.rb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1f) * Time.fixedDeltaTime;
+            float fallMultiplier = player.fallMult;
+            player.rb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1f) * Time.fixedDeltaTime;
         }
     }
 }
