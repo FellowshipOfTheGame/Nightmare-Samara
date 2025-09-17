@@ -38,6 +38,12 @@ public class Player : MonoBehaviour
     public bool IsExhausted => currentStamina <= 0;
     #endregion  
 
+    #region Inventory System
+    [HideInInspector] public int poisonFlask;
+    [HideInInspector] public int woodenBat;
+    [HideInInspector] public int itemVida;
+    #endregion  
+
     #region State Machine
     private PlayerStateMachine stateMachine;
     [HideInInspector] public IdleState idleState;
@@ -81,6 +87,10 @@ public class Player : MonoBehaviour
         fallingState = new FallingState(this, stateMachine);
         exhaustedState = new ExhaustedState(this, stateMachine);
         jumpingState = new JumpingState(this, stateMachine);
+
+        poisonFlask = 0;
+        woodenBat = 0;
+        itemVida = 0;
 
         rend = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
@@ -137,7 +147,6 @@ public class Player : MonoBehaviour
     }
     #endregion
 
-
     private void Update()
     {
         stateMachine.FrameUpdate();
@@ -147,5 +156,29 @@ public class Player : MonoBehaviour
     {
         stateMachine.PhysicsUpdate();
         //Debug.Log("Estamina Atual: " + currentStamina);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Veneno"))
+        {
+            Destroy(collision.gameObject);
+            poisonFlask++;
+            Debug.Log("Frascos de veneno: " + poisonFlask);
+        }
+
+        if (collision.gameObject.CompareTag("Taco"))
+        {
+            Destroy(collision.gameObject);
+            woodenBat++;
+            Debug.Log("Tacos de madeira: " + woodenBat);
+        }
+
+        if (collision.gameObject.CompareTag("ItemVida"))
+        {   
+            Destroy(collision.gameObject);  
+            itemVida++;  
+            Debug.Log("Item de Vida: " + itemVida);  
+        }
     }
 }
