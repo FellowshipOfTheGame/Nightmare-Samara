@@ -54,7 +54,7 @@ public class Player : MonoBehaviour
     [HideInInspector] public JumpingState jumpingState;
     //[HideInInspector] public WallJumpState wallJumpState;
     //[HideInInspector] public WallSlideState wallSlideState;
-    [HideInInspector] public bool isGrounded = true;
+    [HideInInspector] public bool isGrounded = false;
 
     #endregion
 
