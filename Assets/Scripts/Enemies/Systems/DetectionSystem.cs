@@ -7,9 +7,6 @@ public class DetectionSystem
     private Enemy enemy; 
     private Transform player;
 
-    private bool losing = false;
-    private bool lostPlayer = false;
-
     public DetectionSystem(Enemy enemy)
     {
         this.enemy = enemy;
@@ -34,47 +31,6 @@ public class DetectionSystem
         RaycastHit2D hit = Physics2D.Raycast(enemy.transform.position, direction, enemy.viewDistance, enemy.detectionMask);
 
         return hit.collider != null && hit.collider.CompareTag("Player");
-    }
-
-
-
-    public bool HasLostPlayer()
-    {
-        if (!player) return false;
-
-        // Se j� perdeu o jogador, retorna true uma �nica vez
-        // Retorna o valor de lostPlayer e reseta a flag para evitar que seja chamada m�ltiplas vezes
-        if (lostPlayer)
-        {
-            lostPlayer = false;
-            return true;
-        }
-
-        // Se saiu da c�mera e ainda n�o est� esperando
-        if (!IsVisibleInCamera() && !losing)
-        {
-            enemy.StartCoroutine(WaitToLose());
-        }
-
-        return false;
-    }
-
-    private IEnumerator WaitToLose()
-    {
-        losing = true;
-        yield return new WaitForSeconds(enemy.loseTime);
-        lostPlayer = true;
-        losing = false;
-        Debug.Log("Tempo passou, perdeu o jogador.");
-    }
-
-
-    bool IsVisibleInCamera()
-    {
-        Vector3 viewPos = Camera.main.WorldToViewportPoint(enemy.transform.position);
-        return viewPos.x >= 0 && viewPos.x <= 1 &&
-           viewPos.y >= 0 && viewPos.y <= 1 &&
-           viewPos.z > 0;
     }
 
 }

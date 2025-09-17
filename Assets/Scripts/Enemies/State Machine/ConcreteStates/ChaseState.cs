@@ -8,6 +8,8 @@ public class ChaseState : EnemyState
     private Transform player;
     private Vector2 nextPos;
 
+    private float lostPlayerTimer;
+    
     public ChaseState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
     {
     }
@@ -17,17 +19,39 @@ public class ChaseState : EnemyState
         startPosition = enemy.transform.position;
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
         returningToOrigin = false;
+        lostPlayerTimer = 0f;
+
+        enemy.chaseSpeed *= Random.Range(0.9f, 1.1f);
+        enemy.lostPlayerDelay += Random.Range(0f, 0.3f);
     }
 
     public override void FrameUpdate()
     {
-        if (!returningToOrigin && enemy.detection.HasLostPlayer())
+        if (!returningToOrigin)
         {
-            returningToOrigin = true;
+            // Se não vê o player, começa a contar o tempo de hesitação
+            if (!enemy.detection.SeesPlayer())
+            {
+                lostPlayerTimer += Time.deltaTime;
+                if (lostPlayerTimer >= enemy.lostPlayerDelay)
+                {
+                    returningToOrigin = true;
+                }
+            }
+            else
+            {
+                // Se vê o player de novo, zera o contador
+                lostPlayerTimer = 0f;
+            }
         }
-
-        if (returningToOrigin && enemy.detection.SeesPlayer()) {
-            returningToOrigin = false;
+        else
+        {
+            // Se estava retornando mas voltou a ver o player, cancela o retorno
+            if (enemy.detection.SeesPlayer())
+            {
+                returningToOrigin = false;
+                lostPlayerTimer = 0f;
+            }
         }
     }
 
@@ -54,8 +78,9 @@ public class ChaseState : EnemyState
             bool isColliding = !enemy.isGrounded || enemy.isWalled;
             if (!isColliding)
             {
-                // Move na direção do player
-                enemy.rb.velocity = new Vector2(playerDirection * enemy.chaseSpeed, enemy.rb.velocity.y);
+                float targetSpeed = playerDirection * enemy.chaseSpeed;
+                float newX = Mathf.MoveTowards(enemy.rb.velocity.x, targetSpeed, enemy.acceleration * Time.deltaTime);
+                enemy.rb.velocity = new Vector2(newX, enemy.rb.velocity.y);
             }
             else
             {

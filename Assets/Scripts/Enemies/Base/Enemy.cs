@@ -54,6 +54,8 @@ public class Enemy : MonoBehaviour
     #region Chase State
     [Header("Chase Settings")]
     public float chaseSpeed = 5f;
+    public float acceleration = 80f;
+    public float lostPlayerDelay = 0.5f;
     #endregion
 
     #region Collision Flags
