@@ -46,7 +46,7 @@ public class EnemyCombat : MonoBehaviour
         //Ataca o player e espera alguns segundos de cooldown
         while (ableToHit)
         {
-            player.Damage(damage);
+            player.TakeDamage(damage);
             yield return new WaitForSeconds(attackCooldown);
         }
     }

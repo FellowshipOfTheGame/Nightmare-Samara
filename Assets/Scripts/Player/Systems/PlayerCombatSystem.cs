@@ -68,13 +68,13 @@
 //            if (closestEnemyCollider.CompareTag("Skeleton") && playerInventory.getBat() > 0)
 //            {
 //                playerInventory.useBat();
-//                closestEnemy.Damage();
+//                closestEnemy.TakeDamage();
 //            }
 //            //se o inimigo proximo for um rato, ele só tomará dano com o veneno, caso o player tenha no inventario
 //            else if (closestEnemyCollider.CompareTag("Rat") && playerInventory.getPoison() > 0)
 //            {
 //                playerInventory.usePoison();
-//                closestEnemy.Damage();
+//                closestEnemy.TakeDamage();
 //            }
 //        }
 //    }

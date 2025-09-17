@@ -42,7 +42,14 @@ public class Player : MonoBehaviour
     [HideInInspector] public int poisonFlask;
     [HideInInspector] public int woodenBat;
     [HideInInspector] public int itemVida;
-    #endregion  
+    #endregion
+
+    #region Knockback System
+    [Header("Knockback")]
+    public float knockbackForce = 10f;
+    public float knockbackDuration = 0.3f;
+    private bool isKnockbackActive = false;
+    #endregion
 
     #region State Machine
     private PlayerStateMachine stateMachine;
@@ -108,7 +115,7 @@ public class Player : MonoBehaviour
     }
 
     #region Damage
-    public void Damage(int damage)
+    public void TakeDamage(int damage)
     {
         if (isInvincible || currentHealth <= 0)
         {
@@ -140,6 +147,26 @@ public class Player : MonoBehaviour
         isInvincible = false;
     }
 
+    public IEnumerator ApplyKnockback(Vector2 direction)
+    {
+        isKnockbackActive = true;
+
+        isInvincible = true;
+
+        rb.velocity = Vector2.zero;
+        rb.AddForce(direction * knockbackForce, ForceMode2D.Impulse);
+
+        yield return new WaitForSeconds(knockbackDuration);
+
+        // Reduz a velocidade gradualmente
+        rb.velocity = new Vector2(rb.velocity.x * 0.5f, rb.velocity.y);
+        isKnockbackActive = false;
+
+        // Mantém a invencibilidade por um tempo adicional se necessário
+        yield return new WaitForSeconds(0.2f);
+        isInvincible = false;
+    }
+
     private void GameOver()
     {
         SceneManager.LoadScene("GameOver");
@@ -154,6 +181,10 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (isKnockbackActive)
+        {
+            return;
+        }
         stateMachine.PhysicsUpdate();
         //Debug.Log("Estamina Atual: " + currentStamina);
     }
