@@ -1,73 +1,109 @@
-using Cinemachine;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteAlways]
 public class ExitSpawners : MonoBehaviour
 {
-    private GameObject exitInstance;
-
     [SerializeField] private GameObject exitPrefab;
 
-    [Header("Debug")]
-    [SerializeField] private Color gizmoColor = Color.green;
-    [SerializeField] private float gizmoRadius = 0.3f;
+    [Header("Gizmos")]
+    [SerializeField] private bool showGraphGizmos = true;
+    [SerializeField] private Color nodeColor = Color.yellow;
+    [SerializeField] private Color edgeColor = Color.green;
+    [SerializeField] private float gizmoRadius = 0.25f;
 
+    private GameObject exitInstance;
     private List<Transform> spawnPoints = new List<Transform>();
+    private Graph graph;
+    private Transform player;
 
     void Start()
+    {
+        CollectSpawnPoints();
+        graph = new Graph(spawnPoints);
+        StartCoroutine(TrySpawnExit());
+        player = GetComponent<Transform>();
+    }
+
+    private void CollectSpawnPoints()
     {
         spawnPoints.Clear();
         foreach (Transform t in GetComponentsInChildren<Transform>())
         {
-            if (t != transform)
-                spawnPoints.Add(t);
+            if (t != transform) spawnPoints.Add(t);
         }
-        StartCoroutine(TrySpawnExit());
     }
 
-    IEnumerator TrySpawnExit()
+    private IEnumerator TrySpawnExit()
     {
-        while (exitInstance == null)
+
+        GameObject playerObject = null;
+        while (playerObject == null)
         {
-            exitInstance = GameObject.FindWithTag("Player");
+            playerObject = GameObject.FindWithTag("Player");
             yield return null;
         }
 
-        Transform farthestPoint = GetFarthestSpawnPoint();
+        Transform startNode = FindNodeClosestTo(playerObject.transform);
+        if (startNode == null)
+        {
+            Debug.LogError("Não foi possível encontrar um nó de partida no grafo.");
+            yield break;
+        }
+
+        Transform farthestPoint = graph.FindFarthestNode(startNode);
+
         if (farthestPoint != null)
         {
             Instantiate(exitPrefab, farthestPoint.position, Quaternion.identity);
+            Debug.Log($"Saída criada em '{farthestPoint.name}'");
         }
     }
 
-    private Transform GetFarthestSpawnPoint()
-    {
-        float maxDistance = float.MinValue;
-        Transform farthest = null;
 
-        foreach (Transform t in spawnPoints)
+    private Transform FindNodeClosestTo(Transform target)
+    {
+        if (target == null || spawnPoints.Count == 0) return null;
+
+        float minDistance = float.MaxValue;
+        Transform closestNode = null;
+
+        foreach (Transform node in spawnPoints)
         {
-            float distance = Vector2.Distance(t.position, exitInstance.transform.position);
-            //Debug.Log(distance);
-            if (distance > maxDistance)
+            if (node == null) continue;
+
+            float dist = Vector2.Distance(node.position, target.position);
+            if (dist < minDistance)
             {
-                maxDistance = distance;
-                farthest = t;
-                
+                minDistance = dist;
+                closestNode = node;
             }
         }
-
-        return farthest;
+        return closestNode;
     }
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = gizmoColor;
-        foreach (Transform t in transform)
+        if (!showGraphGizmos) return;
+
+ 
+        if (graph == null || graph.AdjacencyList.Count != (transform.childCount))
         {
-            Gizmos.DrawCube(t.position, new Vector3(gizmoRadius * 3, gizmoRadius *6, 0.1f));
+            CollectSpawnPoints();
+            graph = new Graph(spawnPoints);
+        }
+
+        // Apenas desenha o grafo
+        graph.DrawGizmos(nodeColor, edgeColor, gizmoRadius);
+    }
+
+    private void OnValidate()
+    {
+        if (!Application.isPlaying)
+        {
+            CollectSpawnPoints();
+            graph = new Graph(spawnPoints);
         }
     }
 }
