@@ -28,9 +28,6 @@ public class Enemy : MonoBehaviour
     public float viewDistance = 4f;
     public float loseTime = 4f;
     public LayerMask detectionMask;
-
-    private bool losing = false;
-    private bool lostPlayer = false;
     #endregion
 
     #region Enemy Components

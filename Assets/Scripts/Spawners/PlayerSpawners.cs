@@ -23,8 +23,27 @@ public class PlayerSpawner : MonoBehaviour
         }
 
         int randomIndex = Random.Range(0, spawnPoints.Count);
+        
+
         GameObject playerInstance = Instantiate(playerPrefab, spawnPoints[randomIndex].position, Quaternion.identity);
+        playerInstance.transform.localScale = new Vector2(PlayerDirection(spawnPoints[randomIndex]), 1f);
         virtualCamera.Follow = playerInstance.transform;
+    }
+
+
+    private float PlayerDirection(Transform spawnPos)
+    {
+        RaycastHit2D rightRay = Physics2D.Raycast(spawnPos.position, Vector2.right, 10f);
+        RaycastHit2D leftRay = Physics2D.Raycast(spawnPos.position, Vector2.left, 10f);
+
+        if (rightRay.collider != null) {
+            return -1f;
+        }
+        if(leftRay.collider != null) {
+            return 1f;
+        }
+
+        return 1f;
     }
 
     private void OnDrawGizmos()
