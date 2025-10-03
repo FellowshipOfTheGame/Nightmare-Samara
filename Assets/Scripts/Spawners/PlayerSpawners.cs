@@ -7,6 +7,7 @@ public class PlayerSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
+    [SerializeField] private LayerMask obstacleLayers;
     [Header("Debug")]
     [SerializeField] private Color gizmoColor = Color.green;
     [SerializeField] private float gizmoRadius = 0.3f;
@@ -16,10 +17,9 @@ public class PlayerSpawner : MonoBehaviour
     void Start()
     {
         spawnPoints.Clear();
-        foreach (Transform t in GetComponentsInChildren<Transform>())
+        foreach (Transform child in transform)
         {
-            if (t != transform)
-                spawnPoints.Add(t);
+            spawnPoints.Add(child);
         }
 
         int randomIndex = Random.Range(0, spawnPoints.Count);
@@ -33,17 +33,20 @@ public class PlayerSpawner : MonoBehaviour
 
     private float PlayerDirection(Transform spawnPos)
     {
-        RaycastHit2D rightRay = Physics2D.Raycast(spawnPos.position, Vector2.right, 10f);
-        RaycastHit2D leftRay = Physics2D.Raycast(spawnPos.position, Vector2.left, 10f);
+        RaycastHit2D rightRay = Physics2D.Raycast(spawnPos.position, Vector2.right, 10f, obstacleLayers);
+        RaycastHit2D leftRay = Physics2D.Raycast(spawnPos.position, Vector2.left, 10f, obstacleLayers);
 
-        if (rightRay.collider != null) {
-            return -1f;
+        // ... o resto da lógica permanece igual
+        if (rightRay.collider != null)
+        {
+            return -1f; 
         }
-        if(leftRay.collider != null) {
+        if (leftRay.collider != null)
+        {
             return 1f;
         }
 
-        return 1f;
+        return 1f; 
     }
 
     private void OnDrawGizmos()

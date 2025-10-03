@@ -15,6 +15,7 @@ TagManager:
   - Wall
   - Spawner
   - Collider
+  - Exit
   layers:
   - Default
   - TransparentFX

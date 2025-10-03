@@ -227,5 +227,9 @@ public class Player : MonoBehaviour
             itemVida++;  
             Debug.Log("Item de Vida: " + itemVida);  
         }
+
+        if (collision.gameObject.CompareTag("Exit")) {
+            Debug.Log("Zerou o jogo");
+        }
     }
 }
