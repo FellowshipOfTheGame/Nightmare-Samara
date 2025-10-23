@@ -10,7 +10,8 @@ public class InputSystem
     public bool JumpInput { get; private set; }
     public bool RunInput { get; private set; }
     public bool AttackInput { get; private set; }
-    public float ChangeItemInput { get; private set; }
+    public bool ChangeItemInput { get; private set; }
+    public float ChangeItemValue { get; private set; }
     public bool PauseInput { get; private set; }
 
     public InputSystem()
@@ -34,7 +35,15 @@ public class InputSystem
         JumpInput = playerControls.Player.Jump.WasPerformedThisFrame();
         RunInput = playerControls.Player.Run.IsPressed();
         AttackInput = playerControls.Player.Attack.WasPerformedThisFrame();
-        ChangeItemInput = playerControls.Player.ChangeItem.ReadValue<float>();
         PauseInput = playerControls.Player.Pause.WasPerformedThisFrame();
+
+        if (playerControls.Player.ChangeItem.WasPerformedThisFrame())
+        {
+            ChangeItemValue = playerControls.Player.ChangeItem.ReadValue<float>();
+        }
+        else
+        {
+            ChangeItemValue = 0f;
+        }
     }
 }

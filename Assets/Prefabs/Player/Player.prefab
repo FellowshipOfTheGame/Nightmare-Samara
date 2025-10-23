@@ -483,7 +483,7 @@ MonoBehaviour:
   walkSpeed: 5
   runSpeed: 10
   acceleration: 100
-  jumpForce: 10
+  jumpForce: 7
   fallMult: 2.5
   lowJumpMult: 2
   wallSlideSpeed: 2

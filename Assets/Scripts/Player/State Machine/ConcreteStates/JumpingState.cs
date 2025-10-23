@@ -16,6 +16,11 @@ public class JumpingState : PlayerState
 
     public override void FrameUpdate()
     {
+        if (player.inputSystem.AttackInput)
+        {
+            stateMachine.ChangeState(player.attackState);
+            return;
+        }
         if (player.rb.velocity.y < 0f)
         {
             stateMachine.ChangeState(player.fallingState);

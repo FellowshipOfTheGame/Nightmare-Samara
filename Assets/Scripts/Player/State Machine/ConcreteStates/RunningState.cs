@@ -12,7 +12,11 @@ public class RunningState : PlayerState
     {
         FlipPlayer();
         float input = HandleInput();
-
+        if (player.inputSystem.AttackInput)
+        {
+            stateMachine.ChangeState(player.attackState);
+            return;
+        }
         if (!player.isGrounded)
         {
             stateMachine.ChangeState(player.fallingState);

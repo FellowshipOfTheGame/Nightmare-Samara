@@ -45,6 +45,7 @@ public class Player : MonoBehaviour
     [HideInInspector] public int woodenBat;
     [HideInInspector] public int itemVida;
     [HideInInspector] public int itemIndex;
+    [HideInInspector] public InventorySystem inventorySystem;
     #endregion
 
     #region Knockback System
@@ -64,6 +65,7 @@ public class Player : MonoBehaviour
     [HideInInspector] public JumpingState jumpingState;
     [HideInInspector] public WallJumpState wallJumpState;
     [HideInInspector] public WallSlideState wallSlideState;
+    [HideInInspector] public PlayerAttackState attackState;
     [HideInInspector] public bool isGrounded = false;
     [HideInInspector] public bool isWalled = false;
     [HideInInspector] public bool canMove = true;
@@ -115,6 +117,12 @@ public class Player : MonoBehaviour
         jumpingState = new JumpingState(this, stateMachine);
         wallSlideState = new WallSlideState(this, stateMachine);
         wallJumpState = new WallJumpState(this, stateMachine);
+        attackState = new PlayerAttackState(this, stateMachine);
+
+
+        inventorySystem= new InventorySystem(this);
+
+        itemIndex = 0;
 
         poisonFlask = 0;
         woodenBat = 0;
@@ -200,6 +208,14 @@ public class Player : MonoBehaviour
     {
         inputSystem.Tick();
         stateMachine.FrameUpdate();
+        if (inputSystem.ChangeItemValue == 1)
+        {
+            inventorySystem.goToNext();
+        }
+        else if (inputSystem.ChangeItemValue == -1)
+        {
+            inventorySystem.goToLast();
+        }
     }
 
     private void FixedUpdate()

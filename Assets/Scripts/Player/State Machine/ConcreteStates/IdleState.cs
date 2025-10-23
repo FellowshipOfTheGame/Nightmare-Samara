@@ -12,6 +12,12 @@ public class IdleState : PlayerState
     public override void FrameUpdate()
     {
         float input = HandleInput();
+        if (player.inputSystem.AttackInput)
+        {
+            stateMachine.ChangeState(player.attackState);
+            return;
+        }
+
         if (player.inputSystem.JumpInput && player.isGrounded)
         {
             stateMachine.ChangeState(player.jumpingState);

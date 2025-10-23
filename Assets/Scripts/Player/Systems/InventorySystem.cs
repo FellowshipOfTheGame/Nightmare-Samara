@@ -5,25 +5,36 @@ using UnityEngine;
 public class InventorySystem
 {
     Player player;
-    List<int> inventory = new List<int>();
 
     public InventorySystem(Player player)
     {
         this.player = player;
-        inventory.Add(0);
-        inventory.Add(1);   
-        inventory.Add(2);
         player.itemIndex = 0;
     }
 
+    public void verificaItem()
+    {
+        if (player.itemIndex == 0) {
+            Debug.Log("Trocou para mão");
+        } else if (player.itemIndex == 1)
+        {
+            Debug.Log("Trocou para bastao");
+        }
+        if (player.itemIndex == 2)
+        {
+            Debug.Log("Trocou para veneno");
+        }
+
+    }
     public void goToNext() {
-        if (player.itemIndex + 1 < inventory.Count) {
+        if (player.itemIndex + 1 < 3) {
             player.itemIndex++;
         }
         else
         {
             player.itemIndex = 0;
         }
+        verificaItem();
     }
 
     public void goToLast()
@@ -36,6 +47,7 @@ public class InventorySystem
         {
             player.itemIndex = 2;
         }
+        verificaItem();
     }
 
     public void goToIndex(int index) { 
