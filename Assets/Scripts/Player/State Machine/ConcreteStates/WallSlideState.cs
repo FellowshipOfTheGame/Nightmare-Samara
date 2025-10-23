@@ -10,7 +10,7 @@ public class WallSlideState : PlayerState
 
     public override void FrameUpdate()
     {
-        if (Input.GetButtonDown("Jump"))
+        if (player.inputSystem.JumpInput)
         {
             stateMachine.ChangeState(player.wallJumpState);
             return;

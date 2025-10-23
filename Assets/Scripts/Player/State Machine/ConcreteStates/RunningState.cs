@@ -19,23 +19,21 @@ public class RunningState : PlayerState
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (player.inputSystem.JumpInput)
         {
             stateMachine.ChangeState(player.jumpingState);
             return;
         }
 
-        // Lógica de transição mais fluida
         if (input == 0)
         {
-            // Transição para ocioso se não houver input e a velocidade for baixa
             if (Mathf.Abs(player.rb.velocity.x) < 0.1f)
             {
                 stateMachine.ChangeState(player.idleState);
                 return;
             }
         }
-        else if (!Input.GetKey(KeyCode.LeftShift))
+        else if (!player.inputSystem.RunInput)
         {
             stateMachine.ChangeState(player.walkingState);
             return;
@@ -44,7 +42,6 @@ public class RunningState : PlayerState
 
     public override void PhysicsUpdate()
     {
-        // Debug.Log("Running"); // Mova esta linha para o EnterState se precisar, mas não é necessária aqui
 
         if (player.currentStamina <= 0)
         {

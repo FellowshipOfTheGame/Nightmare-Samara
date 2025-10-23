@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 
 public abstract class PlayerState
@@ -20,11 +21,9 @@ public abstract class PlayerState
     public virtual void Exit() { }
     public virtual void FrameUpdate() { }
     public virtual void PhysicsUpdate() { }
-    public virtual float HandleInput() {
-        float raw = Input.GetAxisRaw("Horizontal");
-        if (Mathf.Abs(raw) < 0.01f)
-            return 0f;
-        return Mathf.Sign(raw);
+    public virtual float HandleInput()
+    {
+        return player.inputSystem.MoveInput.x;
     }
 
     public virtual void FlipPlayer()

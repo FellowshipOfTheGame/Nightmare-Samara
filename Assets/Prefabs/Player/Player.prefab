@@ -297,7 +297,8 @@ GameObject:
   - component: {fileID: 7037650647630679748}
   - component: {fileID: 5292022439081389611}
   - component: {fileID: 1100300914165618648}
-  - component: {fileID: 7866778984396483684}
+  - component: {fileID: 869898314916616246}
+  - component: {fileID: 6457655289718741495}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -448,7 +449,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &7866778984396483684
+--- !u!114 &869898314916616246
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -467,24 +468,55 @@ MonoBehaviour:
   currentStamina: 0
   exhaustedWalkSpeed: 3
   exhaustedJumpForce: 4
-  staminaRegenRate: 1
-  staminaDrainRate: 2
+  staminaRegenRate: 2
+  staminaDrainRate: 1
   minStamina: 18
   poisonFlask: 0
   woodenBat: 0
   itemVida: 0
+  itemIndex: 0
   knockbackForce: 10
   knockbackDuration: 0.3
-  isGrounded: 1
+  isGrounded: 0
   isWalled: 0
   canMove: 1
   walkSpeed: 5
-  runSpeed: 7
+  runSpeed: 10
   acceleration: 100
-  jumpForce: 7
+  jumpForce: 10
   fallMult: 2.5
   lowJumpMult: 2
   wallSlideSpeed: 2
-  wallJumpForce: {x: 5, y: 10}
+  wallJumpForce: {x: 10, y: 15}
   disableMoveTime: 0.2
   wallDirection: 1
+--- !u!114 &6457655289718741495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7578951533980748361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: e9a3935623ad1d9459bcf6ec319844a2, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}

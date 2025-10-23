@@ -12,7 +12,7 @@ public class FallingState : PlayerState
         if (player.isGrounded)
         {
             if (input != 0) {
-                if (Input.GetKey(KeyCode.LeftShift))
+                if (player.inputSystem.RunInput)
                 {
                     stateMachine.ChangeState(player.runningState);
                     return;

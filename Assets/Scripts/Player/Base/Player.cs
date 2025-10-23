@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 public class Player : MonoBehaviour
 {
 
+    [HideInInspector] public InputSystem inputSystem;
+
     #region Player Systems
     [HideInInspector] public Rigidbody2D rb;
     [HideInInspector] public StaminaSystem staminaSystem;
@@ -42,6 +44,7 @@ public class Player : MonoBehaviour
     [HideInInspector] public int poisonFlask;
     [HideInInspector] public int woodenBat;
     [HideInInspector] public int itemVida;
+    [HideInInspector] public int itemIndex;
     #endregion
 
     #region Knockback System
@@ -99,6 +102,8 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
+        inputSystem = new InputSystem();
+
         staminaSystem = new StaminaSystem(this);
         stateMachine = new PlayerStateMachine();
 
@@ -121,6 +126,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        inputSystem.Enable();
         currentHealth = maxHealth;
         currentStamina = maxStamina;
         stateMachine.Start(idleState);
@@ -192,6 +198,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        inputSystem.Tick();
         stateMachine.FrameUpdate();
     }
 

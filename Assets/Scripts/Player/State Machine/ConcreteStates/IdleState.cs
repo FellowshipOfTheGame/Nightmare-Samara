@@ -12,7 +12,7 @@ public class IdleState : PlayerState
     public override void FrameUpdate()
     {
         float input = HandleInput();
-        if (Input.GetKeyDown(KeyCode.Space) && player.isGrounded)
+        if (player.inputSystem.JumpInput && player.isGrounded)
         {
             stateMachine.ChangeState(player.jumpingState);
             return;
@@ -25,7 +25,7 @@ public class IdleState : PlayerState
 
         if (input != 0)
         {
-            if (Input.GetKey(KeyCode.LeftShift))
+            if (player.inputSystem.RunInput)
             {
                 stateMachine.ChangeState(player.runningState);
             }

@@ -19,7 +19,7 @@ public class WalkingState : PlayerState
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (player.inputSystem.JumpInput)
         {
             stateMachine.ChangeState(player.jumpingState);
             return;
@@ -35,7 +35,7 @@ public class WalkingState : PlayerState
                 return;
             }
         }
-        else if (Input.GetKey(KeyCode.LeftShift))
+        else if (player.inputSystem.RunInput)
         {
             stateMachine.ChangeState(player.runningState);
             return;

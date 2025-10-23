@@ -26,7 +26,7 @@ public class ExhaustedState : PlayerState
         FlipPlayer();
         float input = HandleInput();
         // Pulo baixo
-        if (Input.GetKeyDown(KeyCode.Space) && player.isGrounded)
+        if (player.inputSystem.JumpInput && player.isGrounded)
         {
             player.rb.velocity = new Vector2(player.rb.velocity.x, player.exhaustedJumpForce);
         }
@@ -46,7 +46,6 @@ public class ExhaustedState : PlayerState
 
     public override void PhysicsUpdate()
     {
-        // Regenerar estamina
         player.staminaSystem.GainStamina(player.staminaRegenRate);
         player.currentStamina = Mathf.Clamp(player.currentStamina, 0, player.maxStamina);
 
