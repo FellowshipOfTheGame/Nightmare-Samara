@@ -279,7 +279,7 @@ Transform:
   m_GameObject: {fileID: 6201223202384939644}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.18, y: 0, z: 0}
+  m_LocalPosition: {x: 0.832, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -490,6 +490,16 @@ MonoBehaviour:
   wallJumpForce: {x: 10, y: 15}
   disableMoveTime: 0.2
   wallDirection: 1
+  attackDuration: 0.5
+  attackRadius: 1
+  damageLayer:
+    serializedVersion: 2
+    m_Bits: 2112
+  attackPoint: {fileID: 4297751864851532130}
+  throwPoint: {fileID: 4297751864851532130}
+  poisonPot: {fileID: 3973853249782757064, guid: 1ae26473a37d4e2418e9398a6f4933bc, type: 3}
+  throwForceX: 10
+  throwForceY: 8
 --- !u!114 &6457655289718741495
 MonoBehaviour:
   m_ObjectHideFlags: 0

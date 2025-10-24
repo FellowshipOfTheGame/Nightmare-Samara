@@ -41,10 +41,6 @@ public class Player : MonoBehaviour
     #endregion  
 
     #region Inventory System
-    [HideInInspector] public int poisonFlask;
-    [HideInInspector] public int woodenBat;
-    [HideInInspector] public int itemVida;
-    [HideInInspector] public int itemIndex;
     [HideInInspector] public InventorySystem inventorySystem;
     #endregion
 
@@ -102,6 +98,18 @@ public class Player : MonoBehaviour
     [HideInInspector] public int wallDirection = 1;
     #endregion
 
+    #region WallJump State
+    [Header("Attack State")]
+    public float attackDuration = 0.5f;
+    public float attackRadius = 1f;
+    public LayerMask damageLayer;
+    public Transform attackPoint;
+    public Transform throwPoint;
+    public GameObject poisonPot;
+    public float throwForceX = 10f;
+    public float throwForceY = 8f;
+    #endregion
+
     private void Awake()
     {
         inputSystem = new InputSystem();
@@ -119,14 +127,7 @@ public class Player : MonoBehaviour
         wallJumpState = new WallJumpState(this, stateMachine);
         attackState = new PlayerAttackState(this, stateMachine);
 
-
-        inventorySystem= new InventorySystem(this);
-
-        itemIndex = 0;
-
-        poisonFlask = 0;
-        woodenBat = 0;
-        itemVida = 0;
+        inventorySystem= new InventorySystem();
 
         rend = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
@@ -210,13 +211,30 @@ public class Player : MonoBehaviour
         stateMachine.FrameUpdate();
         if (inputSystem.ChangeItemValue == 1)
         {
-            inventorySystem.goToNext();
+            inventorySystem.GoToNext();
         }
         else if (inputSystem.ChangeItemValue == -1)
         {
-            inventorySystem.goToLast();
+            inventorySystem.GoToLast();
         }
     }
+
+    public void TriggerNormalAttack() {
+        RaycastHit2D hit = Physics2D.CircleCast(attackPoint.position, attackRadius, Vector2.right, 0, damageLayer);
+        ItemType item = inventorySystem.GetEquippedItem();
+
+
+        if (hit.collider != null) {
+            if (hit.collider.CompareTag("LootBox")) {
+                hit.collider.GetComponent<LootBox>().TakeDamage(item);
+            }
+            if (hit.collider.CompareTag("Skeleton")) {
+                hit.collider.GetComponent<Enemy>().TakeDamage(1, item);
+            }
+        }
+
+    }
+
 
     private void FixedUpdate()
     {
@@ -230,28 +248,8 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Veneno"))
+        if (collision.gameObject.CompareTag("Exit"))
         {
-            Destroy(collision.gameObject);
-            poisonFlask++;
-            Debug.Log("Frascos de veneno: " + poisonFlask);
-        }
-
-        if (collision.gameObject.CompareTag("Taco"))
-        {
-            Destroy(collision.gameObject);
-            woodenBat++;
-            Debug.Log("Tacos de madeira: " + woodenBat);
-        }
-
-        if (collision.gameObject.CompareTag("ItemVida"))
-        {   
-            Destroy(collision.gameObject);  
-            itemVida++;  
-            Debug.Log("Item de Vida: " + itemVida);  
-        }
-
-        if (collision.gameObject.CompareTag("Exit")) {
             Debug.Log("Zerou o jogo");
         }
     }

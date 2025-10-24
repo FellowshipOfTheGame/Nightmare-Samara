@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6871690789226219092}
   - component: {fileID: 72620507866390797}
   - component: {fileID: 2346747349672326567}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: BoxLoot
   m_TagString: LootBox
   m_Icon: {fileID: 0}
@@ -106,8 +106,8 @@ MonoBehaviour:
   itemDrops:
   - {fileID: 3973853249782757064, guid: 1ae26473a37d4e2418e9398a6f4933bc, type: 3}
   - {fileID: 2208326383373695282, guid: a1cd37b24d17a4e48b9abf6506736804, type: 3}
-  venenoDropChance: 80
-  tacoDropChance: 10
+  venenoDropChance: 10
+  tacoDropChance: 80
   nothingDropChance: 0
 --- !u!61 &72620507866390797
 BoxCollider2D:

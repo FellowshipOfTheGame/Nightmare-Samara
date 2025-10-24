@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 135573805014240878}
   - component: {fileID: 7848178871607530091}
   - component: {fileID: 2536842536739265902}
+  - component: {fileID: 7968474681033428053}
   m_Layer: 0
   m_Name: Veneno
   m_TagString: Veneno
@@ -174,3 +175,17 @@ MonoBehaviour:
   upForce: 5
   horizontalForceRange: 2
   spawnAreaPrefab: {fileID: 98905706144868989, guid: 75229e5eb7b985c4db78e0a3aa802c33, type: 3}
+--- !u!114 &7968474681033428053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3973853249782757064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d8ebb5a134a0974cbb8922b64d2316f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemType: 2
+  quantity: 1

@@ -13,22 +13,46 @@ public class PlayerAttackState : PlayerState
 
     public override void Enter()
     {
-        if (player.itemIndex == 0)
+        ItemType equippedItem = player.inventorySystem.GetEquippedItem();
+
+        int itemCount = player.inventorySystem.GetItemCount(equippedItem);
+
+        switch (equippedItem)
         {
-            Debug.Log("Ataque com a mao");
+            case ItemType.Hand:
+                Debug.Log("Ataque com a mão");
+                player.TriggerNormalAttack();
+                break;
+
+            case ItemType.WoddenBat:
+                if (itemCount > 0)
+                {
+                    Debug.Log($"Ataque com bastão. Usos restantes: {itemCount - 1}");
+                    player.TriggerNormalAttack();
+
+                    player.inventorySystem.UseItem(ItemType.PoisonPot);
+                }
+                break;
+
+            case ItemType.PoisonPot:
+                if (itemCount > 0)
+                {
+                    Debug.Log("Ataque com veneno");
+                    // player.ThrowPoisonPot();
+                    player.inventorySystem.UseItem(ItemType.PoisonPot);
+                }
+                else
+                {
+                    Debug.Log("Tentou jogar veneno, mas não tem");
+                }
+                break;
         }
-        else if (player.itemIndex == 1 && player.woodenBat >0)
-        {
-            Debug.Log("Ataque com bastao");
-        }
-        else if (player.itemIndex == 2 && player.poisonFlask > 0)
-        {
-            Debug.Log("Ataque com veneno");
-        }
-        
+
         startTime = Time.time;
         player.rb.velocity = new Vector2(0f, player.rb.velocity.y);
     }
+
+  
 
     public override void FrameUpdate()
     {

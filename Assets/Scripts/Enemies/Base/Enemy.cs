@@ -60,6 +60,11 @@ public class Enemy : MonoBehaviour
     [HideInInspector] public bool isWalled;
     #endregion
 
+    #region EnemyType
+    private bool isSkelleton =  false;
+    private bool isRat = false;
+    #endregion
+
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -69,6 +74,9 @@ public class Enemy : MonoBehaviour
         stateMachine = new EnemyStateMachine();
         patrolState = new PatrolState(this, stateMachine);
         chaseState = new ChaseState(this, stateMachine);
+
+        isSkelleton = gameObject.CompareTag("Skeleton");
+        isRat = gameObject.CompareTag("Rat");
     }
 
     void Start()
@@ -104,25 +112,35 @@ public class Enemy : MonoBehaviour
 
 
     #region Health/Hit Feedback
-    public void Damage()
+    public void TakeDamage(int amount, ItemType item)
     {
-        // Reduz a vida do inimigo se estiver com o item certo em mãos
-        currentHealth -= 1;
-        Debug.Log("Vida do inimigo: " + currentHealth);
-
-        // Inicia o feedback visual
-        if (spriteRenderer != null)
+        if (isSkelleton && item == ItemType.WoddenBat)
         {
-            StartCoroutine(HitFeedback());
+            currentHealth -= amount;
+            //Debug.Log("Vida do inimigo: " + currentHealth);
+
+            if (spriteRenderer != null)
+            {
+                StartCoroutine(HitFeedback());
+            }
         }
+        else if (isRat && item == ItemType.PoisonPot) {
+            currentHealth -= amount;
+            //Debug.Log("Vida do inimigo: " + currentHealth);
+
+            if (spriteRenderer != null)
+            {
+                StartCoroutine(HitFeedback());
+            }
+        }        
 
         if (currentHealth <= 0)
         {
-            if (gameObject.CompareTag("Skeleton"))
+            if (isSkelleton)
             {
                 Disassemble();
             }
-            if (gameObject.CompareTag("Rat"))
+            if (isRat)
             {
                 Die();
             }
@@ -131,35 +149,28 @@ public class Enemy : MonoBehaviour
 
     private IEnumerator HitFeedback()
     {
-        // Muda a cor para a cor de hit
         spriteRenderer.color = hitColor;
 
-        // Aguarda o tempo de feedback
         yield return new WaitForSeconds(hitDuration);
 
-        // Restaura a cor original
         spriteRenderer.color = originalColor;
     }
 
     private void Disassemble()
     {
-        // Faz o GameObject desaparecer
         gameObject.SetActive(false);
-
-        // Reaparece após o tempo especificado
         Invoke("Reappear", delay);
     }
 
     void Reappear()
     {
-        // Faz o esqueleto aparecer novamente
         currentHealth = maxHealth;
         gameObject.SetActive(true);
     }
 
     private void Die()
     {
-        Destroy(gameObject); // Remove o inimigo da cena
+        Destroy(gameObject); 
     }
     #endregion
 }

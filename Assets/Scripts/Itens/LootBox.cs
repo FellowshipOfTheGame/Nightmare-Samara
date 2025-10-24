@@ -42,12 +42,15 @@ public class LootBox : MonoBehaviour
     }
 
     //funcao para a caixa tomar dano
-    public void TakeDamageBox() {
-        BoxHealth -= 1; //diminui 1 de viida
-        Debug.Log("Vida da caixa: " + BoxHealth);
+    public void TakeDamage(ItemType item) {
+        if (item == ItemType.Hand || item == ItemType.WoddenBat) {
+            BoxHealth -= 1;
+            Debug.Log("Vida da caixa: " + BoxHealth);
 
-        if(spriteRenderer != null) {
-            StartCoroutine(HitFeedback());
+            if (spriteRenderer != null)
+            {
+                StartCoroutine(HitFeedback());
+            }
         }
 
         if(BoxHealth <= 0) {
@@ -76,7 +79,7 @@ public class LootBox : MonoBehaviour
     //funcao para dropar itens considerando a probabilidade de cada item ser dropado
     private void ItemDrop() {
         float randomChance = Random.Range(0,100);
-        Debug.Log("Valor aleatorio: " + randomChance);
+        //Debug.Log("Valor aleatorio: " + randomChance);
 
         if(randomChance < venenoDropChance) {
             Instantiate(itemDrops[0], transform.position + new Vector3(0, 1, 0), Quaternion.identity);

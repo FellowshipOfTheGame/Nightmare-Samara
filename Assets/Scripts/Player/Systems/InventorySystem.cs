@@ -6,52 +6,91 @@ public class InventorySystem
 {
     Player player;
 
-    public InventorySystem(Player player)
+    public Dictionary<ItemType, int> quantities = new Dictionary<ItemType, int>();
+
+    private List<ItemType> cycleOrder = new List<ItemType> { ItemType.Hand, ItemType.WoddenBat, ItemType.PoisonPot };
+    private int currentCycleIndex = 0;
+
+    private const int USES_PER_BAT = 3;
+
+    public InventorySystem()
     {
-        this.player = player;
-        player.itemIndex = 0;
+        // Inicializa o inventário
+        quantities[ItemType.Hand] = 1; // 1 "mão" (sempre disponível)
+        quantities[ItemType.WoddenBat] = 0;
+        quantities[ItemType.PoisonPot] = 0;
+        quantities[ItemType.HealthItem] = 0;
     }
 
-    public void verificaItem()
+    public void AddItem(ItemType type, int amountPickedUp)
     {
-        if (player.itemIndex == 0) {
-            Debug.Log("Trocou para mão");
-        } else if (player.itemIndex == 1)
+        if (quantities.ContainsKey(type) == false)
         {
-            Debug.Log("Trocou para bastao");
-        }
-        if (player.itemIndex == 2)
-        {
-            Debug.Log("Trocou para veneno");
+            quantities.Add(type, 0);
         }
 
-    }
-    public void goToNext() {
-        if (player.itemIndex + 1 < 3) {
-            player.itemIndex++;
-        }
-        else
+        int amountToAdd = 0;
+
+        switch (type)
         {
-            player.itemIndex = 0;
+            case ItemType.WoddenBat:
+                amountToAdd = amountPickedUp * USES_PER_BAT;
+                break;
+
+            case ItemType.PoisonPot:
+            case ItemType.HealthItem:
+            default:
+                amountToAdd = amountPickedUp;
+                break;
         }
-        verificaItem();
+
+        quantities[type] += amountToAdd;
+        Debug.Log($"Adicionou {amountPickedUp} de {type}. Total de *usos/itens* agora é: {quantities[type]}");
     }
 
-    public void goToLast()
+    public void UseItem(ItemType type)
     {
-        if (player.itemIndex - 1 >= 0)
+        if (type == ItemType.Hand) return;
+
+        if (quantities.ContainsKey(type) && quantities[type] > 0)
         {
-            player.itemIndex--;
+            quantities[type]--;
+            Debug.Log($"Usou {type}. Restam (usos/itens): {quantities[type]}");
         }
-        else
-        {
-            player.itemIndex = 2;
-        }
-        verificaItem();
     }
 
-    public void goToIndex(int index) { 
-        player.itemIndex = index; 
+    public int GetItemCount(ItemType type)
+    {
+        if (quantities.ContainsKey(type))
+        {
+            return quantities[type];
+        }
+        return 0;
+    }
+
+    public ItemType GetEquippedItem()
+    {
+        return cycleOrder[currentCycleIndex];
+    }
+
+    public void GoToNext()
+    {
+        currentCycleIndex++;
+        if (currentCycleIndex >= cycleOrder.Count)
+        {
+            currentCycleIndex = 0; 
+        }
+        Debug.Log($"Item equipado: {GetEquippedItem()}");
+    }
+
+    public void GoToLast()
+    {
+        currentCycleIndex--;
+        if (currentCycleIndex < 0)
+        {
+            currentCycleIndex = cycleOrder.Count - 1;
+        }
+        Debug.Log($"Item equipado: {GetEquippedItem()}");
     }
 
 }
