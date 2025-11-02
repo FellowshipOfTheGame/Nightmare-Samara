@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 423427dfefe513c42aad5383869e61df, type: 3}
+  m_Name: RunState
+  m_EditorClassIdentifier: Assembly-CSharp::RunState
+  idleState: {fileID: 11400000, guid: 7be94dab4e796a14cb2ac3b4f528e209, type: 2}
+  walkState: {fileID: 11400000, guid: 8cb33765358196140a7633d76f140268, type: 2}
+  fallState: {fileID: 11400000, guid: 765343d9974f0ba4da8b1c9bad4e8a4c, type: 2}
+  jumpState: {fileID: 11400000, guid: 71780a76762fb0f46a64808de9fa4d11, type: 2}
+  runSpeed: 7
+  acceleration: 100

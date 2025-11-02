@@ -4,29 +4,54 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    private SpawnersController spawnersController;
     [SerializeField] private GameObject skelleton;
     [SerializeField] private float skelletonSpawnRate = 30f;
     [SerializeField] private GameObject rat;
     [SerializeField] private float ratSpawnRate = 40f;
-    [SerializeField] private float nothingSpawnRate = 30f;
+    [SerializeField] private int max = 10;
+    [SerializeField] private Transform enemiesParent;
 
+    [Header("Debug")]
+    [SerializeField] private Color gizmoColor = Color.blue;
+    [SerializeField] private float gizmoRadius = 0.3f;
+
+    private List<Transform> spawnPoints = new List<Transform>();
+    private int aux = 0;
 
     // Start is called before the first frame update
     void Start()
     {
-        spawnersController = GameObject.Find("SpawnersController").GetComponent<SpawnersController>();
 
         if (skelleton == null || rat ==null) return;
 
-        float range = Random.Range(0, 100);
-        /*
-        Debug.Log(spawnRate > range);
-        if (spawnRate > range && spawnersController.canSpawnLootBox())
+        spawnPoints.Clear();
+        foreach (Transform t in GetComponentsInChildren<Transform>())
         {
-            Instantiate(lootBox, transform.position, Quaternion.identity);
-            spawnersController.addLootBox();
+            if (t != transform)
+                spawnPoints.Add(t);
         }
-        */
+
+        for (int i = 0; i < spawnPoints.Count; i++) {
+            float range = Random.Range(0, 100);
+
+            if (ratSpawnRate > range && aux < max)
+            {
+                Instantiate(rat, spawnPoints[i].position, Quaternion.identity, enemiesParent);
+                aux++;
+            }
+            else if (skelletonSpawnRate > range && aux < max)
+            {
+                Instantiate(skelleton, spawnPoints[i].position, Quaternion.identity, enemiesParent);
+                aux++;
+            }
+        } 
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = gizmoColor;
+        foreach (Transform t in transform)
+        {
+            Gizmos.DrawSphere(t.position, gizmoRadius);
+        }
     }
 }

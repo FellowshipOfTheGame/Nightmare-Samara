@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f4ed98d60fd443439d3f408017b45e7, type: 3}
+  m_Name: JumpState
+  m_EditorClassIdentifier: Assembly-CSharp::JumpState
+  fallState: {fileID: 11400000, guid: 765343d9974f0ba4da8b1c9bad4e8a4c, type: 2}
+  moveSpeed: 5
+  jumpForce: 7
+  lowJumpMult: 2
+  fallMult: 3
