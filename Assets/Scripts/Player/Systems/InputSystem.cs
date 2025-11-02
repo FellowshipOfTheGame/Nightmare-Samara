@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public class InputSystem 
+public class InputSystem : MonoBehaviour
 {
     private MainInputAction playerControls;
     public Vector2 MoveInput { get; private set; }
@@ -14,22 +11,18 @@ public class InputSystem
     public float ChangeItemValue { get; private set; }
     public bool PauseInput { get; private set; }
 
-    public InputSystem()
+    public void Start()
     {
         playerControls = new MainInputAction();
-    }
-
-    public void Enable()
-    {
         playerControls.Player.Enable();
     }
-
+    
     public void Disable()
     {
         playerControls.Player.Disable();
     }
 
-    public void Tick()
+    public void Update()
     {
         MoveInput = playerControls.Player.Move.ReadValue<Vector2>();
         JumpInput = playerControls.Player.Jump.WasPerformedThisFrame();

@@ -2,33 +2,28 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 2
+  serializedVersion: 3
   tags:
   - Ground
-  - Box
-  - Skeleton
-  - Rat
-  - LootBox
-  - Veneno
-  - Taco
-  - ItemVida
   - Wall
-  - Spawner
-  - Collider
+  - Taco
+  - Veneno
+  - LootBox
   - Exit
+  - Rat
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Player
+  - 
   - Water
   - UI
+  - Scene
+  - Player
   - Enemies
   - Ground
   - Wall
-  - Camera
-  - PostProcessing
-  - LootBox
+  - 
   - 
   - 
   - 
@@ -53,3 +48,5 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  m_RenderingLayers:
+  - Default

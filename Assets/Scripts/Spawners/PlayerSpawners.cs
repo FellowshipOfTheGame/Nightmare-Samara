@@ -1,12 +1,12 @@
-using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class PlayerSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject playerPrefab;
-    [SerializeField] private CinemachineVirtualCamera virtualCamera;
+    [SerializeField] private CinemachineCamera virtualCamera;
     [SerializeField] private LayerMask obstacleLayers;
     [Header("Debug")]
     [SerializeField] private Color gizmoColor = Color.green;
