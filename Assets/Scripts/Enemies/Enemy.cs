@@ -28,7 +28,7 @@ public class Enemy : MonoBehaviour
     void Update()
     {
 
-        Debug.Log(isWalled);
+        //Debug.Log(isWalled);
     }
 
     public void Flip()

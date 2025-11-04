@@ -17,11 +17,15 @@ public class RunState : State
     public override void Enter(Player player)
     {
         Debug.Log("Entrando no RunState");
+        player.animator.SetBool("Moving", true);
+        player.animator.SetBool("Running", false);
     }
 
     public override void Exit(Player player)
     {
         Debug.Log("Saindo do RunState");
+        player.animator.SetBool("Moving", false);
+        player.animator.SetBool("Running", false);
     }
 
 
