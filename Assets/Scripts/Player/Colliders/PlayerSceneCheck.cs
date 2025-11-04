@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SceneCheck : MonoBehaviour
+public class PlayerSceneCheck : MonoBehaviour
 {
     private Player player;
     public Vector2 groundCheckSize;
@@ -13,7 +13,7 @@ public class SceneCheck : MonoBehaviour
         player = GetComponentInParent<Player>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (player == null) return;
 

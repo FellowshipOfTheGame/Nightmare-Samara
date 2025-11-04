@@ -7,8 +7,8 @@ public class Player : MonoBehaviour
     public InputSystem inputSystem { get; private set; }
     public StateMachine stateMachine { get; private set; }
 
-    public bool isGrounded;
-    public bool isWalled;
+    [HideInInspector] public bool isGrounded;
+    [HideInInspector] public bool isWalled;
 
     void Awake()
     {
@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
         stateMachine = GetComponent<StateMachine>();
     }
 
-    private void Start()
+    public void Start()
     {
         isGrounded = false;
         isWalled = false;
