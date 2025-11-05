@@ -117,11 +117,11 @@ MonoBehaviour:
   m_Nodes:
   - rid: 7539824082057429096
   - rid: 7539824082057429107
-  - rid: 7539824082057429126
   - rid: 7539824082057429221
   - rid: 7539824082057429248
   - rid: 7539824082057429302
-  m_VersionTimestamp: 638976903058848718
+  - rid: 7539824150752788575
+  m_VersionTimestamp: 638979506696482215
   m_SerializedVersion: 1
   m_DebugInfo: {fileID: -251714314929803318}
   m_RuntimeGraph: {fileID: 8171712850527112646}
@@ -158,21 +158,6 @@ MonoBehaviour:
       Tooltip: 
     NamedChildren: []
     IsPlaceholder: 0
-  - Name: Wait (Seconds)
-    Story: Wait for [SecondsToWait] seconds
-    RuntimeTypeString: Unity.Behavior.WaitAction, Unity.Behavior, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-    RuntimeTypeID:
-      m_Value0: 7729581452106168333
-      m_Value1: 8820302366443624372
-    Variables:
-    - Name: SecondsToWait
-      Type:
-        m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-          PublicKeyToken=b77a5c561934e089
-      Tooltip: 
-    NamedChildren: []
-    IsPlaceholder: 0
   - Name: Enemy flips
     Story: '[Enemy] flip'
     RuntimeTypeString: EnemyFlipsAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
@@ -206,6 +191,21 @@ MonoBehaviour:
       m_Value0: 3696095273264312494
       m_Value1: 14191201703811421854
     Variables: []
+    NamedChildren: []
+    IsPlaceholder: 0
+  - Name: Wait seconds
+    Story: 'Wait [seconds]'
+    RuntimeTypeString: WaitSecondsAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+    RuntimeTypeID:
+      m_Value0: 11089830659891963481
+      m_Value1: 14360152293533481814
+    Variables:
+    - Name: Seconds
+      Type:
+        m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+          PublicKeyToken=b77a5c561934e089
+      Tooltip: 
     NamedChildren: []
     IsPlaceholder: 0
   m_Blackboards: []
@@ -296,7 +296,7 @@ MonoBehaviour:
         LocalValue:
           rid: 7539824082057429111
         LinkedVariable:
-          rid: 7539824082057429117
+          rid: 7539824150752788647
     - rid: 7539824082057429111
       type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -305,73 +305,6 @@ MonoBehaviour:
           m_Value1: 0
         Name: 
         m_Value: {fileID: 0}
-    - rid: 7539824082057429117
-      type: {class: 'TypedVariableModel`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
-      data:
-        ID:
-          m_Value0: 1
-          m_Value1: 0
-        Name: Enemy
-        IsExposed: 1
-        m_IsShared: 0
-        m_Value: {fileID: 0}
-    - rid: 7539824082057429126
-      type: {class: ActionNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
-      data:
-        Position: {x: -199.93622, y: 288.99832}
-        ID:
-          m_Value0: 13720223995305414102
-          m_Value1: 17394530597909681315
-        Parents: []
-        PortModels:
-        - rid: 7539824082057429127
-        - rid: 7539824082057429128
-        NodeType:
-          m_SerializableType: Unity.Behavior.WaitAction, Unity.Behavior, Version=0.0.0.0,
-            Culture=neutral, PublicKeyToken=null
-        NodeTypeID:
-          m_Value0: 7729581452106168333
-          m_Value1: 8820302366443624372
-        m_FieldValues:
-        - rid: 7539824082057429129
-    - rid: 7539824082057429127
-      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
-      data:
-        m_Name: InputPort
-        m_PortDataFlowType: 0
-        m_IsFloating: 0
-        m_NodeModel:
-          rid: 7539824082057429126
-        m_Connections:
-        - rid: 7539824082057429250
-    - rid: 7539824082057429128
-      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
-      data:
-        m_Name: OutputPort
-        m_PortDataFlowType: 1
-        m_IsFloating: 0
-        m_NodeModel:
-          rid: 7539824082057429126
-        m_Connections: []
-    - rid: 7539824082057429129
-      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
-      data:
-        FieldName: SecondsToWait
-        Type:
-          m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-            PublicKeyToken=b77a5c561934e089
-        LocalValue:
-          rid: 7539824082057429130
-        LinkedVariable:
-          rid: 7539824082057429384
-    - rid: 7539824082057429130
-      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 0
-          m_Value1: 0
-        Name: 
-        m_Value: 1.5
     - rid: 7539824082057429221
       type: {class: ActionNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
       data:
@@ -420,7 +353,7 @@ MonoBehaviour:
         LocalValue:
           rid: 7539824082057429225
         LinkedVariable:
-          rid: 7539824082057429226
+          rid: 7539824150752788624
     - rid: 7539824082057429225
       type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -428,16 +361,6 @@ MonoBehaviour:
           m_Value0: 0
           m_Value1: 0
         Name: 
-        m_Value: {fileID: 0}
-    - rid: 7539824082057429226
-      type: {class: 'TypedVariableModel`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
-      data:
-        ID:
-          m_Value0: 1
-          m_Value1: 0
-        Name: Enemy
-        IsExposed: 1
-        m_IsShared: 0
         m_Value: {fileID: 0}
     - rid: 7539824082057429248
       type: {class: CompositeNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
@@ -477,7 +400,7 @@ MonoBehaviour:
           rid: 7539824082057429248
         m_Connections:
         - rid: 7539824082057429108
-        - rid: 7539824082057429127
+        - rid: 7539824150752788576
         - rid: 7539824082057429222
     - rid: 7539824082057429302
       type: {class: RepeatNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
@@ -522,7 +445,64 @@ MonoBehaviour:
           rid: 7539824082057429302
         m_Connections:
         - rid: 7539824082057429249
-    - rid: 7539824082057429384
+    - rid: 7539824150752788575
+      type: {class: ActionNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        Position: {x: -186.91965, y: 287.21252}
+        ID:
+          m_Value0: 14683924540229120961
+          m_Value1: 14792620081612343123
+        Parents: []
+        PortModels:
+        - rid: 7539824150752788576
+        - rid: 7539824150752788577
+        NodeType:
+          m_SerializableType: WaitSecondsAction, Assembly-CSharp, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        NodeTypeID:
+          m_Value0: 11089830659891963481
+          m_Value1: 14360152293533481814
+        m_FieldValues:
+        - rid: 7539824150752788578
+    - rid: 7539824150752788576
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: InputPort
+        m_PortDataFlowType: 0
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 7539824150752788575
+        m_Connections:
+        - rid: 7539824082057429250
+    - rid: 7539824150752788577
+      type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        m_Name: OutputPort
+        m_PortDataFlowType: 1
+        m_IsFloating: 0
+        m_NodeModel:
+          rid: 7539824150752788575
+        m_Connections: []
+    - rid: 7539824150752788578
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: Seconds
+        Type:
+          m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        LocalValue:
+          rid: 7539824150752788579
+        LinkedVariable:
+          rid: 7539824150752788589
+    - rid: 7539824150752788579
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 0
+    - rid: 7539824150752788589
       type: {class: 'TypedVariableModel`1[[System.Single, mscorlib]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
       data:
         ID:
@@ -530,8 +510,28 @@ MonoBehaviour:
           m_Value1: 10331756828685338167
         Name: WaitTime
         IsExposed: 1
+        m_IsShared: 1
+        m_Value: 1
+    - rid: 7539824150752788624
+      type: {class: 'TypedVariableModel`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 1
+          m_Value1: 0
+        Name: Enemy
+        IsExposed: 1
         m_IsShared: 0
-        m_Value: 0
+        m_Value: {fileID: 0}
+    - rid: 7539824150752788647
+      type: {class: 'TypedVariableModel`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 1
+          m_Value1: 0
+        Name: Enemy
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 0}
 --- !u!114 &8171712850527112646
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -564,14 +564,14 @@ MonoBehaviour:
           rid: 7539824082057429099
         BlackboardGroupReferences: []
         Root:
-          rid: 7539824082057429414
+          rid: 7539824150752788648
         m_ActiveNodes: []
         m_NodesToTick: []
         m_NodesToEnd:
           rid: 7539824082057429101
         m_EndedNodes:
           rid: 7539824082057429102
-        m_VersionTimestamp: 638976903058848718
+        m_VersionTimestamp: 638979506696482215
     - rid: 7539824082057429099
       type: {class: BlackboardReference, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -590,33 +590,6 @@ MonoBehaviour:
         m_Variables:
         - rid: 7539824082057429416
         - rid: 7539824082057429417
-    - rid: 7539824082057429414
-      type: {class: Start, ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        ID:
-          m_Value0: 2003064969326508803
-          m_Value1: 6432817602459560554
-        Graph:
-          rid: 7539824082057429098
-        m_Parent:
-          rid: -2
-        m_Child:
-          rid: 7539824082057429415
-        Repeat: 0
-        AllowMultipleRepeatsPerTick: 0
-    - rid: 7539824082057429415
-      type: {class: RepeaterModifier, ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        ID:
-          m_Value0: 6150028761084155632
-          m_Value1: 12521958032920386928
-        Graph:
-          rid: 7539824082057429098
-        m_Parent:
-          rid: 7539824082057429414
-        m_Child:
-          rid: 7539824082057429418
-        m_AllowMultipleRepeatsPerTick: 0
     - rid: 7539824082057429416
       type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -634,7 +607,34 @@ MonoBehaviour:
         Name: WaitTime
         m_Value: 0
         m_SharedVariablesRuntimeAsset: {fileID: -2391249720045762264}
-    - rid: 7539824082057429418
+    - rid: 7539824150752788648
+      type: {class: Start, ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        ID:
+          m_Value0: 2003064969326508803
+          m_Value1: 6432817602459560554
+        Graph:
+          rid: 7539824082057429098
+        m_Parent:
+          rid: -2
+        m_Child:
+          rid: 7539824150752788649
+        Repeat: 0
+        AllowMultipleRepeatsPerTick: 0
+    - rid: 7539824150752788649
+      type: {class: RepeaterModifier, ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        ID:
+          m_Value0: 6150028761084155632
+          m_Value1: 12521958032920386928
+        Graph:
+          rid: 7539824082057429098
+        m_Parent:
+          rid: 7539824150752788648
+        m_Child:
+          rid: 7539824150752788650
+        m_AllowMultipleRepeatsPerTick: 0
+    - rid: 7539824150752788650
       type: {class: SequenceComposite, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         ID:
@@ -643,12 +643,12 @@ MonoBehaviour:
         Graph:
           rid: 7539824082057429098
         m_Parent:
-          rid: 7539824082057429415
+          rid: 7539824150752788649
         m_Children:
-        - rid: 7539824082057429419
-        - rid: 7539824082057429420
-        - rid: 7539824082057429421
-    - rid: 7539824082057429419
+        - rid: 7539824150752788651
+        - rid: 7539824150752788652
+        - rid: 7539824150752788653
+    - rid: 7539824150752788651
       type: {class: PatrolAction, ns: , asm: Assembly-CSharp}
       data:
         ID:
@@ -657,23 +657,23 @@ MonoBehaviour:
         Graph:
           rid: 7539824082057429098
         m_Parent:
-          rid: 7539824082057429418
+          rid: 7539824150752788650
         Enemy:
           rid: 7539824082057429416
         patrolSpeed: 2
-    - rid: 7539824082057429420
-      type: {class: WaitAction, ns: Unity.Behavior, asm: Unity.Behavior}
+    - rid: 7539824150752788652
+      type: {class: WaitSecondsAction, ns: , asm: Assembly-CSharp}
       data:
         ID:
-          m_Value0: 13720223995305414102
-          m_Value1: 17394530597909681315
+          m_Value0: 14683924540229120961
+          m_Value1: 14792620081612343123
         Graph:
           rid: 7539824082057429098
         m_Parent:
-          rid: 7539824082057429418
-        SecondsToWait:
+          rid: 7539824150752788650
+        Seconds:
           rid: 7539824082057429417
-    - rid: 7539824082057429421
+    - rid: 7539824150752788653
       type: {class: EnemyFlipsAction, ns: , asm: Assembly-CSharp}
       data:
         ID:
@@ -682,6 +682,6 @@ MonoBehaviour:
         Graph:
           rid: 7539824082057429098
         m_Parent:
-          rid: 7539824082057429418
+          rid: 7539824150752788650
         Enemy:
           rid: 7539824082057429416

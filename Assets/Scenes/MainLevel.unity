@@ -11284,7 +11284,7 @@ Rigidbody2D:
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 6200000, guid: cbfdbbcaf6a80354bad629557479155e, type: 2}
+  m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -14677,7 +14677,7 @@ Rigidbody2D:
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 6200000, guid: cbfdbbcaf6a80354bad629557479155e, type: 2}
+  m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -14734,17 +14734,50 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6170414792447851925, guid: cb9f096bf543c4847831373199ebe619, type: 3}
+      propertyPath: 'managedReferences[7539824150752788633]'
+      value: 'Unity.Behavior Unity.Behavior.SharedBlackboardVariable`1[[System.Single,
+        mscorlib]]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6170414792447851925, guid: cb9f096bf543c4847831373199ebe619, type: 3}
+      propertyPath: managedReferences[7539824150752788633].Name
+      value: WaitTime
+      objectReference: {fileID: 0}
+    - target: {fileID: 6170414792447851925, guid: cb9f096bf543c4847831373199ebe619, type: 3}
+      propertyPath: m_BlackboardVariableOverridesList.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6170414792447851925, guid: cb9f096bf543c4847831373199ebe619, type: 3}
+      propertyPath: managedReferences[7539824150752788633].m_Value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6170414792447851925, guid: cb9f096bf543c4847831373199ebe619, type: 3}
+      propertyPath: 'm_BlackboardVariableOverridesList.Array.data[1]'
+      value: 7539824150752788633
+      objectReference: {fileID: 0}
+    - target: {fileID: 6170414792447851925, guid: cb9f096bf543c4847831373199ebe619, type: 3}
+      propertyPath: managedReferences[7539824150752788633].GUID.m_Value0
+      value: 8690145796637653782
+      objectReference: {fileID: 0}
+    - target: {fileID: 6170414792447851925, guid: cb9f096bf543c4847831373199ebe619, type: 3}
+      propertyPath: managedReferences[7539824150752788633].GUID.m_Value1
+      value: 10331756828685338167
+      objectReference: {fileID: 0}
+    - target: {fileID: 6170414792447851925, guid: cb9f096bf543c4847831373199ebe619, type: 3}
+      propertyPath: managedReferences[7539824150752788633].m_SharedVariablesRuntimeAsset
+      value: 
+      objectReference: {fileID: -2391249720045762264, guid: a1f8b5b54aa4c7c41aee3426cb623baa, type: 2}
     - target: {fileID: 7072119911534346191, guid: cb9f096bf543c4847831373199ebe619, type: 3}
       propertyPath: m_Name
       value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 7757376988678918374, guid: cb9f096bf543c4847831373199ebe619, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.124235
+      value: 32.97
       objectReference: {fileID: 0}
     - target: {fileID: 7757376988678918374, guid: cb9f096bf543c4847831373199ebe619, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.675448
+      value: -15.27
       objectReference: {fileID: 0}
     - target: {fileID: 7757376988678918374, guid: cb9f096bf543c4847831373199ebe619, type: 3}
       propertyPath: m_LocalPosition.z
@@ -14922,7 +14955,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 5.4
+  orthographic size: 2.4
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

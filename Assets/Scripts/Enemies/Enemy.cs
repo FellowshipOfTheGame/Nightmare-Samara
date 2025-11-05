@@ -8,20 +8,15 @@ public class Enemy : MonoBehaviour
     public Animator animator { get; private set; }
     public BehaviorGraphAgent behaviorGraph { get; private set; }
 
-    [HideInInspector] public bool isGrounded;
-    [HideInInspector] public bool isWalled;
+    public EnemySceneCheck sceneCheck { get; private set; }
+
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         behaviorGraph = GetComponent<BehaviorGraphAgent>();
-    }
-
-    private void Start()
-    {
-        isGrounded = false;
-        isWalled = false;
+        sceneCheck = GetComponentInChildren<EnemySceneCheck>();
     }
 
     // Update is called once per frame
@@ -29,6 +24,7 @@ public class Enemy : MonoBehaviour
     {
 
         //Debug.Log(isWalled);
+        //Debug.Log(rb.linearVelocity);
     }
 
     public void Flip()

@@ -24,16 +24,19 @@ public partial class PatrolAction : Action
 
     protected override Status OnUpdate()
     {
-        if (!enemyController.isGrounded || enemyController.isWalled)
+        bool flip = enemyController.sceneCheck.CheckForObstacles();
+
+        if (!flip) {
+
+            enemyController.rb.linearVelocity = new Vector2(enemyController.transform.localScale.x * patrolSpeed, enemyController.rb.linearVelocity.y);
+            return Status.Running;
+        }
+        else
         {
             enemyController.rb.linearVelocity = new Vector2(0, enemyController.rb.linearVelocity.y);
             return Status.Success;
         }
-        else
-        {
-            enemyController.rb.linearVelocity = new Vector2(enemyController.transform.localScale.x * patrolSpeed, enemyController.rb.linearVelocity.y);
-            return Status.Running;
-        }
+        
     }
 
     protected override void OnEnd()
