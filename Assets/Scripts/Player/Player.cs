@@ -50,4 +50,13 @@ public class Player : MonoBehaviour
             animator.SetTrigger("Blink");
         }
     }
+
+    public void AnimationTriggerEvent()
+    {
+        // Avisa o estado atual que um evento de animação ocorreu
+        if (stateMachine.currentState != null)
+        {
+            stateMachine.currentState.AnimationTrigger(this);
+        }
+    }
 }

@@ -294,5 +294,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb1a38b9b4c249746849c14770675684, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  isGrounded: 0
-  isWalled: 0

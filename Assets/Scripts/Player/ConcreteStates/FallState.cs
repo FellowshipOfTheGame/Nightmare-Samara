@@ -15,12 +15,13 @@ public class FallState : State
 
     public override void Enter(Player player)
     {
-        Debug.Log("Entrando no FallState");
+        //Debug.Log("Entrando no FallState");
     }
 
     public override void Exit(Player player)
     {
-        Debug.Log("Saindo do FallState");
+        //Debug.Log("Saindo do FallState");
+       
     }
 
     public override void FrameUpdate(Player player)

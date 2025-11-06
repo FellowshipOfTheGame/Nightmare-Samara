@@ -14,14 +14,20 @@ public class JumpState : State
 
     public override void Enter(Player player)
     {
-        Debug.Log("Entrando no JumpState");
+        //Debug.Log("Entrando no JumpState");
+        player.animator.SetBool("Jumping", true);
+    }
+
+    public override void AnimationTrigger(Player player)
+    {
         player.rb.linearVelocity = new Vector2(player.rb.linearVelocity.x, 0f);
         player.rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
     }
 
     public override void Exit(Player player)
     {
-        Debug.Log("Saindo do JumpState");
+        //Debug.Log("Saindo do JumpState");
+        player.animator.SetBool("Jumping", false);
     }
 
     public override void FrameUpdate(Player player)
