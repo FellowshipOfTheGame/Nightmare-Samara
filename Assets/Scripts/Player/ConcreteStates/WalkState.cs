@@ -16,12 +16,14 @@ public class WalkState : State
 
     public override void Enter(Player player)
     {
-        Debug.Log("Entrando no WalkState");
+        //Debug.Log("Entrando no WalkState");
+        player.animator.SetBool("Moving", true);
     }
 
     public override void Exit(Player player)
     {
-        Debug.Log("Saindo do WalkState");
+        //Debug.Log("Saindo do WalkState");
+        player.animator.SetBool("Moving", false);
     }
 
     public override void FrameUpdate(Player player)

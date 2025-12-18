@@ -12,12 +12,12 @@ public class IdleState : State
 
     public override void Enter(Player player)
     {
-        Debug.Log("Entrando no IdleState");
+        //Debug.Log("Entrando no IdleState");
     }
 
     public override void Exit(Player player)
     {
-        Debug.Log("Saindo do IdleState");
+        //Debug.Log("Saindo do IdleState");
     }
 
     public override void FrameUpdate(Player player)

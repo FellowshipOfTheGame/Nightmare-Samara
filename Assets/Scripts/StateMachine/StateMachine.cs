@@ -4,7 +4,7 @@ using UnityEngine.Playables;
 public class StateMachine : MonoBehaviour
 {
     [SerializeField] private State initialState;
-    private State currentState;
+    public State currentState;
 
     public Player player { get; private set; }
 
